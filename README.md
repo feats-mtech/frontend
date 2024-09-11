@@ -6,7 +6,12 @@ Documentation WIP
 
 1. Install via `npm i`
 2. Run `npm run prepare` to setup husky into your repository (one-time setup)
-2. Start the application locally via `npm run dev`
+3. Start the application locally via `npm run dev`
+
+### Running Tests
+
+Run unit tests by running the following command:
+`npm run test`
 
 ### Commit Message Guidelines
 
