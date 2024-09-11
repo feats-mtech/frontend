@@ -7,7 +7,6 @@ Documentation WIP
 1. Install via `npm i`
 2. Start the application locally via `npm run dev`
 
-
 ### Commit Message Guidelines
 
 `husky` is used as a commit linting tool to check and enforce a [commit message guideline](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines).
