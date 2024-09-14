@@ -27,7 +27,7 @@ export type FiltersProps = {
   category: string;
 };
 
-type ProductFiltersProps = {
+type RecipeFiltersProps = {
   canReset: boolean;
   openFilter: boolean;
   filters: FiltersProps;
@@ -44,7 +44,7 @@ type ProductFiltersProps = {
   };
 };
 
-export function ProductFilters({
+export function RecipeFilters({
   filters,
   options,
   canReset,
@@ -53,7 +53,7 @@ export function ProductFilters({
   onOpenFilter,
   onCloseFilter,
   onResetFilter,
-}: ProductFiltersProps) {
+}: RecipeFiltersProps) {
   const renderGender = (
     <Stack spacing={1}>
       <Typography variant="subtitle2">Gender</Typography>

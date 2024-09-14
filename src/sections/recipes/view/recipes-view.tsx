@@ -5,15 +5,15 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Pagination from '@mui/material/Pagination';
 import Typography from '@mui/material/Typography';
 
-import { _products } from 'src/_mock';
+import { _recipes } from 'src/_mock';
 import { DashboardContent } from 'src/layouts/dashboard';
 
-import { ProductItem } from '../product-item';
-import { ProductSort } from '../product-sort';
-import { CartIcon } from '../product-cart-widget';
-import { ProductFilters } from '../product-filters';
+import { RecipeItem } from '../recipe-item';
+import { RecipeSort } from '../recipe-sort';
+import { CartIcon } from '../recipe-cart-widget';
+import { RecipeFilters } from '../recipe-filters';
 
-import type { FiltersProps } from '../product-filters';
+import type { FiltersProps } from '../recipe-filters';
 
 // ----------------------------------------------------------------------
 
@@ -57,7 +57,7 @@ const defaultFilters = {
   category: CATEGORY_OPTIONS[0].value,
 };
 
-export function ProductsView() {
+export function RecipesView() {
   const [sortBy, setSortBy] = useState('featured');
 
   const [openFilter, setOpenFilter] = useState(false);
@@ -87,7 +87,7 @@ export function ProductsView() {
   return (
     <DashboardContent>
       <Typography variant="h4" sx={{ mb: 5 }}>
-        Products
+        Recipes
       </Typography>
 
       <CartIcon totalItems={8} />
@@ -100,7 +100,7 @@ export function ProductsView() {
         sx={{ mb: 5 }}
       >
         <Box gap={1} display="flex" flexShrink={0} sx={{ my: 1 }}>
-          <ProductFilters
+          <RecipeFilters
             canReset={canReset}
             filters={filters}
             onSetFilters={handleSetFilters}
@@ -117,7 +117,7 @@ export function ProductsView() {
             }}
           />
 
-          <ProductSort
+          <RecipeSort
             sortBy={sortBy}
             onSort={handleSort}
             options={[
@@ -131,9 +131,9 @@ export function ProductsView() {
       </Box>
 
       <Grid container spacing={3}>
-        {_products.map((product) => (
-          <Grid key={product.id} xs={12} sm={6} md={3}>
-            <ProductItem product={product} />
+        {_recipes.map((recipe) => (
+          <Grid key={recipe.id} xs={12} sm={6} md={3}>
+            <RecipeItem recipe={recipe} />
           </Grid>
         ))}
       </Grid>

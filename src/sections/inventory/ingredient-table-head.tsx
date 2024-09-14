@@ -11,7 +11,7 @@ import { visuallyHidden } from './utils';
 
 // ----------------------------------------------------------------------
 
-type UserTableHeadProps = {
+type IngredientTableHeadProps = {
   orderBy: string;
   rowCount: number;
   numSelected: number;
@@ -21,7 +21,7 @@ type UserTableHeadProps = {
   onSelectAllRows: (checked: boolean) => void;
 };
 
-export function UserTableHead({
+export function IngredientTableHead({
   order,
   onSort,
   orderBy,
@@ -29,7 +29,7 @@ export function UserTableHead({
   headLabel,
   numSelected,
   onSelectAllRows,
-}: UserTableHeadProps) {
+}: IngredientTableHeadProps) {
   return (
     <TableHead>
       <TableRow>

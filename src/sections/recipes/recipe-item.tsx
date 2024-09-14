@@ -11,7 +11,7 @@ import { ColorPreview } from 'src/components/color-utils';
 
 // ----------------------------------------------------------------------
 
-export type ProductItemProps = {
+export type RecipeItemProps = {
   id: string;
   name: string;
   price: number;
@@ -21,11 +21,11 @@ export type ProductItemProps = {
   priceSale: number | null;
 };
 
-export function ProductItem({ product }: { product: ProductItemProps }) {
+export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
   const renderStatus = (
     <Label
       variant="inverted"
-      color={(product.status === 'sale' && 'error') || 'info'}
+      color={(recipe.status === 'sale' && 'error') || 'info'}
       sx={{
         zIndex: 9,
         top: 16,
@@ -34,15 +34,15 @@ export function ProductItem({ product }: { product: ProductItemProps }) {
         textTransform: 'uppercase',
       }}
     >
-      {product.status}
+      {recipe.status}
     </Label>
   );
 
   const renderImg = (
     <Box
       component="img"
-      alt={product.name}
-      src={product.coverUrl}
+      alt={recipe.name}
+      src={recipe.coverUrl}
       sx={{
         top: 0,
         width: 1,
@@ -63,28 +63,28 @@ export function ProductItem({ product }: { product: ProductItemProps }) {
           textDecoration: 'line-through',
         }}
       >
-        {product.priceSale && fCurrency(product.priceSale)}
+        {recipe.priceSale && fCurrency(recipe.priceSale)}
       </Typography>
       &nbsp;
-      {fCurrency(product.price)}
+      {fCurrency(recipe.price)}
     </Typography>
   );
 
   return (
     <Card>
       <Box sx={{ pt: '100%', position: 'relative' }}>
-        {product.status && renderStatus}
+        {recipe.status && renderStatus}
 
         {renderImg}
       </Box>
 
       <Stack spacing={2} sx={{ p: 3 }}>
         <Link color="inherit" underline="hover" variant="subtitle2" noWrap>
-          {product.name}
+          {recipe.name}
         </Link>
 
         <Box display="flex" alignItems="center" justifyContent="space-between">
-          <ColorPreview colors={product.colors} />
+          <ColorPreview colors={recipe.colors} />
           {renderPrice}
         </Box>
       </Stack>

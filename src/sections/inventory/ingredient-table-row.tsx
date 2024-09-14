@@ -16,7 +16,7 @@ import { Iconify } from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-export type UserProps = {
+export type IngredientProps = {
   id: string;
   name: string;
   role: string;
@@ -26,13 +26,13 @@ export type UserProps = {
   isVerified: boolean;
 };
 
-type UserTableRowProps = {
-  row: UserProps;
+type IngredientTableRowProps = {
+  row: IngredientProps;
   selected: boolean;
   onSelectRow: () => void;
 };
 
-export function UserTableRow({ row, selected, onSelectRow }: UserTableRowProps) {
+export function IngredientTableRow({ row, selected, onSelectRow }: IngredientTableRowProps) {
   const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
 
   const handleOpenPopover = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
