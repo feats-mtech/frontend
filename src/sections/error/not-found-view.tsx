@@ -4,7 +4,6 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
 import { RouterLink } from 'src/routes/components';
-
 import { SimpleLayout } from 'src/layouts/simple';
 
 export function NotFoundView() {
@@ -15,22 +14,28 @@ export function NotFoundView() {
           Sorry, page not found!
         </Typography>
 
-        <Typography sx={{ color: 'text.secondary' }}>
-          Sorry, we couldn’t find the page you’re looking for. Perhaps you’ve mistyped the URL? Be
-          sure to check your spelling.
-        </Typography>
-
         <Box
           component="img"
           src="/assets/illustrations/illustration-404.svg"
           sx={{
-            width: 320,
-            height: 'auto',
-            my: { xs: 5, sm: 10 },
+            width: 100,
+            height: 100,
+            my: { xs: 2, sm: 5 },
           }}
         />
 
-        <Button component={RouterLink} href="/" size="large" variant="contained" color="inherit">
+        <Typography sx={{ color: 'text.secondary' }}>
+          We couldn’t find the page you’re looking for. Perhaps you’ve mistyped the URL?
+        </Typography>
+
+        <Button
+          sx={{ my: 2 }}
+          component={RouterLink}
+          href="/"
+          size="large"
+          variant="contained"
+          color="inherit"
+        >
           Go to home
         </Button>
       </Container>
