@@ -1,31 +1,44 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
+import 'src/global.css';
 
-function App() {
-  const [count, setCount] = useState(0);
+import Fab from '@mui/material/Fab';
+
+import { Router } from 'src/routes/sections';
+
+import { useScrollToTop } from 'src/hooks/use-scroll-to-top';
+
+import { ThemeProvider } from 'src/theme/theme-provider';
+
+import { Iconify } from 'src/components/iconify';
+
+// ----------------------------------------------------------------------
+
+export default function App() {
+  useScrollToTop();
+
+  const githubButton = (
+    <Fab
+      size="medium"
+      aria-label="Github"
+      href="https://github.com/minimal-ui-kit/material-kit-react"
+      sx={{
+        zIndex: 9,
+        right: 20,
+        bottom: 20,
+        width: 44,
+        height: 44,
+        position: 'fixed',
+        bgcolor: 'grey.800',
+        color: 'common.white',
+      }}
+    >
+      <Iconify width={24} icon="eva:github-fill" />
+    </Fab>
+  );
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-    </>
+    <ThemeProvider>
+      <Router />
+      {githubButton}
+    </ThemeProvider>
   );
 }
-
-export default App;
