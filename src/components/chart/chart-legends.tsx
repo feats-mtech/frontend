@@ -1,12 +1,9 @@
 import React from 'react';
 
 import type { BoxProps } from '@mui/material/Box';
-
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
-
-// ----------------------------------------------------------------------
 
 export const StyledLegend = styled(Box)(({ theme }) => ({
   gap: 6,
@@ -28,8 +25,6 @@ export const StyledDot = styled(Box)(() => ({
   justifyContent: 'center',
   backgroundColor: 'currentColor',
 }));
-
-// ----------------------------------------------------------------------
 
 type Props = BoxProps & {
   labels?: string[];

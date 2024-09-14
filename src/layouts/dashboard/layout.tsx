@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import { useTheme } from '@mui/material/styles';
 
-import { _langs, _notifications } from 'src/_mock';
+import { _notifications } from 'src/_mock';
 
 import { Iconify } from 'src/components/iconify';
 
@@ -21,8 +21,6 @@ import { LayoutSection } from '../core/layout-section';
 import { HeaderSection } from '../core/header-section';
 import { AccountPopover } from '../components/account-popover';
 import { NotificationsPopover } from '../components/notifications-popover';
-
-// ----------------------------------------------------------------------
 
 export type DashboardLayoutProps = {
   sx?: SxProps<Theme>;
@@ -41,9 +39,6 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
 
   return (
     <LayoutSection
-      /** **************************************
-       * Header
-       *************************************** */
       headerSection={
         <HeaderSection
           layoutQuery={layoutQuery}
@@ -105,19 +100,10 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
           }}
         />
       }
-      /** **************************************
-       * Sidebar
-       *************************************** */
       sidebarSection={
         <NavDesktop data={navData} layoutQuery={layoutQuery} workspaces={_workspaces} />
       }
-      /** **************************************
-       * Footer
-       *************************************** */
       footerSection={null}
-      /** **************************************
-       * Style
-       *************************************** */
       cssVars={{
         '--layout-nav-vertical-width': '300px',
         '--layout-dashboard-content-pt': theme.spacing(1),

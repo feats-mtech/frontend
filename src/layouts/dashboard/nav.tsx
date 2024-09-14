@@ -16,11 +16,9 @@ import { varAlpha } from 'src/theme/styles';
 import { Logo } from 'src/components/logo';
 import { Scrollbar } from 'src/components/scrollbar';
 
-import { WorkspacesPopover } from '../components/workspaces-popover';
+// import { WorkspacesPopover } from '../components/workspaces-popover';
 
 import type { WorkspacesPopoverProps } from '../components/workspaces-popover';
-
-// ----------------------------------------------------------------------
 
 export type NavContentProps = {
   data: {
@@ -72,8 +70,6 @@ export function NavDesktop({
   );
 }
 
-// ----------------------------------------------------------------------
-
 export function NavMobile({
   sx,
   data,
@@ -110,8 +106,6 @@ export function NavMobile({
     </Drawer>
   );
 }
-
-// ----------------------------------------------------------------------
 
 export function NavContent({ data, slots, workspaces, sx }: NavContentProps) {
   const pathname = usePathname();

@@ -1,10 +1,6 @@
 import { useTheme } from '@mui/material/styles';
-
 import { varAlpha } from 'src/theme/styles';
-
 import type { ChartOptions } from './types';
-
-// ----------------------------------------------------------------------
 
 export function useChart(options?: ChartOptions): ChartOptions {
   const theme = useTheme();
@@ -51,10 +47,6 @@ export function useChart(options?: ChartOptions): ChartOptions {
 
   return {
     ...options,
-
-    /** **************************************
-     * Chart
-     *************************************** */
     chart: {
       toolbar: {
         show: false,
@@ -74,10 +66,6 @@ export function useChart(options?: ChartOptions): ChartOptions {
         ...options?.chart?.animations,
       },
     },
-
-    /** **************************************
-     * Colors
-     *************************************** */
     colors: options?.colors ?? [
       theme.palette.primary.main,
       theme.palette.warning.main,
@@ -89,10 +77,6 @@ export function useChart(options?: ChartOptions): ChartOptions {
       theme.palette.info.dark,
       theme.palette.info.darker,
     ],
-
-    /** **************************************
-     * States
-     *************************************** */
     states: {
       ...options?.states,
       hover: {
@@ -104,10 +88,6 @@ export function useChart(options?: ChartOptions): ChartOptions {
         filter: { type: 'darken', value: 0.88, ...options?.states?.active?.filter },
       },
     },
-
-    /** **************************************
-     * Fill
-     *************************************** */
     fill: {
       opacity: 1,
       ...options?.fill,
@@ -120,28 +100,16 @@ export function useChart(options?: ChartOptions): ChartOptions {
         ...options?.fill?.gradient,
       },
     },
-
-    /** **************************************
-     * Data labels
-     *************************************** */
     dataLabels: {
       enabled: false,
       ...options?.dataLabels,
     },
-
-    /** **************************************
-     * Stroke
-     *************************************** */
     stroke: {
       width: 2.5,
       curve: 'smooth',
       lineCap: 'round',
       ...options?.stroke,
     },
-
-    /** **************************************
-     * Grid
-     *************************************** */
     grid: {
       strokeDashArray: 3,
       borderColor: theme.vars.palette.divider,
@@ -159,10 +127,6 @@ export function useChart(options?: ChartOptions): ChartOptions {
         ...options?.grid?.xaxis,
       },
     },
-
-    /** **************************************
-     * Axis
-     *************************************** */
     xaxis: {
       axisBorder: {
         show: false,
@@ -176,19 +140,11 @@ export function useChart(options?: ChartOptions): ChartOptions {
       tickAmount: 5,
       ...options?.yaxis,
     },
-
-    /** **************************************
-     * Markers
-     *************************************** */
     markers: {
       size: 0,
       strokeColors: theme.vars.palette.background.paper,
       ...options?.markers,
     },
-
-    /** **************************************
-     * Tooltip
-     *************************************** */
     tooltip: {
       theme: 'false',
       fillSeriesColor: false,
@@ -197,10 +153,6 @@ export function useChart(options?: ChartOptions): ChartOptions {
       },
       ...options?.tooltip,
     },
-
-    /** **************************************
-     * Legend
-     *************************************** */
     legend: {
       show: false,
       position: 'top',
@@ -222,10 +174,6 @@ export function useChart(options?: ChartOptions): ChartOptions {
         ...options?.legend?.itemMargin,
       },
     },
-
-    /** **************************************
-     * plotOptions
-     *************************************** */
     plotOptions: {
       ...options?.plotOptions,
       // plotOptions: Bar

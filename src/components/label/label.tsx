@@ -8,8 +8,6 @@ import { labelClasses } from './classes';
 
 import type { LabelProps } from './types';
 
-// ----------------------------------------------------------------------
-
 export const Label = forwardRef<HTMLSpanElement, LabelProps>(
   (
     { children, color = 'default', variant = 'soft', startIcon, endIcon, sx, className, ...other },

@@ -11,8 +11,6 @@ import { varAlpha } from 'src/theme/styles';
 
 import { Iconify } from 'src/components/iconify';
 
-// ----------------------------------------------------------------------
-
 type PostSortProps = ButtonProps & {
   sortBy: string;
   onSort: (newSort: string) => void;

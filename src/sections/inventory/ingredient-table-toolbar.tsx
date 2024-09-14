@@ -9,8 +9,6 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 import { Iconify } from 'src/components/iconify';
 
-// ----------------------------------------------------------------------
-
 type IngredientTableToolbarProps = {
   numSelected: number;
   filterName: string;

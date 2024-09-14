@@ -10,10 +10,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { useRouter } from 'src/routes/hooks';
-
 import { Iconify } from 'src/components/iconify';
-
-// ----------------------------------------------------------------------
 
 export function SignInView() {
   const router = useRouter();

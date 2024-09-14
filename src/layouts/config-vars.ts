@@ -2,8 +2,6 @@ import type { Theme } from '@mui/material/styles';
 
 import { varAlpha } from 'src/theme/styles';
 
-// ----------------------------------------------------------------------
-
 export const baseVars = (theme: Theme) => ({
   // nav
   '--layout-nav-bg': theme.vars.palette.common.white,

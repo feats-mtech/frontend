@@ -15,8 +15,6 @@ import { Main } from './main';
 import { HeaderSection } from '../core/header-section';
 import { LayoutSection } from '../core/layout-section';
 
-// ----------------------------------------------------------------------
-
 export type AuthLayoutProps = {
   sx?: SxProps<Theme>;
   children: React.ReactNode;

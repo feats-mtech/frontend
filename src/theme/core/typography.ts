@@ -4,8 +4,6 @@ import type { TypographyOptions } from '@mui/material/styles/createTypography';
 
 import { setFont, pxToRem, responsiveFontSizes } from '../styles/utils';
 
-// ----------------------------------------------------------------------
-
 declare module '@mui/material/styles' {
   interface TypographyVariants {
     fontSecondaryFamily: React.CSSProperties['fontFamily'];
@@ -20,15 +18,9 @@ declare module '@mui/material/styles' {
   }
 }
 
-// ----------------------------------------------------------------------
-
 export const defaultFont = 'DM Sans Variable';
-
 export const primaryFont = setFont(defaultFont);
-
 export const secondaryFont = setFont('Barlow');
-
-// ----------------------------------------------------------------------
 
 export const typography: TypographyOptions = {
   fontFamily: primaryFont,

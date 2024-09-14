@@ -25,8 +25,6 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 
 import type { IngredientProps } from '../ingredient-table-row';
 
-// ----------------------------------------------------------------------
-
 export function InventoryView() {
   const table = useTable();
 

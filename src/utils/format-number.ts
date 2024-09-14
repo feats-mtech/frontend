@@ -14,8 +14,6 @@ function processInput(inputValue: InputNumberValue): number | null {
   return Number(inputValue);
 }
 
-// ----------------------------------------------------------------------
-
 export function fNumber(inputValue: InputNumberValue, options?: Options) {
   const locale = DEFAULT_LOCALE;
 
@@ -50,8 +48,6 @@ export function fCurrency(inputValue: InputNumberValue, options?: Options) {
   return fm;
 }
 
-// ----------------------------------------------------------------------
-
 export function fPercent(inputValue: InputNumberValue, options?: Options) {
   const locale = DEFAULT_LOCALE;
 
@@ -67,8 +63,6 @@ export function fPercent(inputValue: InputNumberValue, options?: Options) {
 
   return fm;
 }
-
-// ----------------------------------------------------------------------
 
 export function fShortenNumber(inputValue: InputNumberValue, options?: Options) {
   const locale = DEFAULT_LOCALE;

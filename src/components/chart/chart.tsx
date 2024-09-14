@@ -1,14 +1,8 @@
 import type { BoxProps } from '@mui/material/Box';
-
 import ApexChart from 'react-apexcharts';
-
 import Box from '@mui/material/Box';
-
 import { chartClasses } from './classes';
-
 import type { ChartProps } from './types';
-
-// ----------------------------------------------------------------------
 
 export function Chart({
   sx,

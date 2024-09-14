@@ -1,15 +1,10 @@
-import type { BoxProps } from '@mui/material/Box';
-
 import { useId, forwardRef } from 'react';
 
+import type { BoxProps } from '@mui/material/Box';
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
-
 import { RouterLink } from 'src/routes/components';
-
 import { logoClasses } from './classes';
-
-// ----------------------------------------------------------------------
 
 export type LogoProps = BoxProps & {
   href?: string;

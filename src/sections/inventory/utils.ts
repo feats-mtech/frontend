@@ -1,7 +1,5 @@
 import type { IngredientProps } from './ingredient-table-row';
 
-// ----------------------------------------------------------------------
-
 export const visuallyHidden = {
   border: 0,
   margin: -1,
@@ -14,13 +12,9 @@ export const visuallyHidden = {
   clip: 'rect(0 0 0 0)',
 } as const;
 
-// ----------------------------------------------------------------------
-
 export function emptyRows(page: number, rowsPerPage: number, arrayLength: number) {
   return page ? Math.max(0, (1 + page) * rowsPerPage - arrayLength) : 0;
 }
-
-// ----------------------------------------------------------------------
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -31,8 +25,6 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   }
   return 0;
 }
-
-// ----------------------------------------------------------------------
 
 export function getComparator<Key extends keyof any>(
   order: 'asc' | 'desc',

@@ -8,16 +8,12 @@ import { varAlpha } from 'src/theme/styles';
 import { AuthLayout } from 'src/layouts/auth';
 import { DashboardLayout } from 'src/layouts/dashboard';
 
-// ----------------------------------------------------------------------
-
 export const HomePage = lazy(() => import('src/pages/home'));
 export const BlogPage = lazy(() => import('src/pages/blog'));
 export const InventoryPage = lazy(() => import('src/pages/inventory'));
 export const SignInPage = lazy(() => import('src/pages/sign-in'));
 export const RecipesPage = lazy(() => import('src/pages/recipes'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
-
-// ----------------------------------------------------------------------
 
 const renderFallback = (
   <Box display="flex" alignItems="center" justifyContent="center" flex="1 1 auto">

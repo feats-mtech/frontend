@@ -14,8 +14,6 @@ import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 
-// ----------------------------------------------------------------------
-
 export type IngredientProps = {
   id: string;
   name: string;

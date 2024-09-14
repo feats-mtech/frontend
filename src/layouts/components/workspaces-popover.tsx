@@ -13,8 +13,6 @@ import { varAlpha } from 'src/theme/styles';
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 
-// ----------------------------------------------------------------------
-
 export type WorkspacesPopoverProps = ButtonBaseProps & {
   data?: {
     id: string;

@@ -1,10 +1,6 @@
 import type { Theme, Components } from '@mui/material/styles';
-
 import SvgIcon from '@mui/material/SvgIcon';
-
 import { varAlpha } from '../styles';
-
-// ----------------------------------------------------------------------
 
 const MuiBackdrop: Components<Theme>['MuiBackdrop'] = {
   styleOverrides: {

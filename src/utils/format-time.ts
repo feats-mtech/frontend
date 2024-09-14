@@ -4,12 +4,8 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
-// ----------------------------------------------------------------------
-
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
-
-// ----------------------------------------------------------------------
 
 export type DatePickerFormat = Dayjs | Date | string | number | null | undefined;
 
@@ -34,8 +30,6 @@ export function today(format?: string) {
   return dayjs(new Date()).startOf('day').format(format);
 }
 
-// ----------------------------------------------------------------------
-
 /** output: 17 Apr 2022 12:00 am
  */
 export function fDateTime(date: DatePickerFormat, format?: string) {
@@ -47,8 +41,6 @@ export function fDateTime(date: DatePickerFormat, format?: string) {
 
   return isValid ? dayjs(date).format(format ?? formatStr.dateTime) : 'Invalid time value';
 }
-
-// ----------------------------------------------------------------------
 
 /** output: 17 Apr 2022
  */
@@ -62,8 +54,6 @@ export function fDate(date: DatePickerFormat, format?: string) {
   return isValid ? dayjs(date).format(format ?? formatStr.date) : 'Invalid time value';
 }
 
-// ----------------------------------------------------------------------
-
 /** output: 12:00 am
  */
 export function fTime(date: DatePickerFormat, format?: string) {
@@ -76,8 +66,6 @@ export function fTime(date: DatePickerFormat, format?: string) {
   return isValid ? dayjs(date).format(format ?? formatStr.time) : 'Invalid time value';
 }
 
-// ----------------------------------------------------------------------
-
 /** output: 1713250100
  */
 export function fTimestamp(date: DatePickerFormat) {
@@ -89,8 +77,6 @@ export function fTimestamp(date: DatePickerFormat) {
 
   return isValid ? dayjs(date).valueOf() : 'Invalid time value';
 }
-
-// ----------------------------------------------------------------------
 
 /** output: a few seconds, 2 years
  */

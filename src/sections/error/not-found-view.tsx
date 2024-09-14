@@ -7,8 +7,6 @@ import { RouterLink } from 'src/routes/components';
 
 import { SimpleLayout } from 'src/layouts/simple';
 
-// ----------------------------------------------------------------------
-
 export function NotFoundView() {
   return (
     <SimpleLayout content={{ compact: true }}>

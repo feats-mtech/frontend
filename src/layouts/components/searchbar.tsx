@@ -15,8 +15,6 @@ import { bgBlur } from 'src/theme/styles';
 
 import { Iconify } from 'src/components/iconify';
 
-// ----------------------------------------------------------------------
-
 export function Searchbar({ sx, ...other }: BoxProps) {
   const theme = useTheme();
 

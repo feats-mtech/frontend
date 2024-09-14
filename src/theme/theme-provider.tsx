@@ -8,8 +8,6 @@ import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material/s
 
 import { createTheme } from './create-theme';
 
-// ----------------------------------------------------------------------
-
 type Props = {
   children: React.ReactNode;
 };

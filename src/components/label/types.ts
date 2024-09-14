@@ -2,8 +2,6 @@ import React from 'react';
 
 import type { BoxProps } from '@mui/material/Box';
 
-// ----------------------------------------------------------------------
-
 export type LabelColor =
   | 'default'
   | 'primary'

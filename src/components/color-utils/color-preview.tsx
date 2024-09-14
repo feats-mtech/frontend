@@ -1,14 +1,9 @@
-import type { BoxProps } from '@mui/material/Box';
-
 import { forwardRef } from 'react';
 
 import Box from '@mui/material/Box';
-
+import type { BoxProps } from '@mui/material/Box';
 import { varAlpha } from 'src/theme/styles';
-
 import type { ColorPreviewProps } from './types';
-
-// ----------------------------------------------------------------------
 
 export const ColorPreview = forwardRef<HTMLDivElement, BoxProps & ColorPreviewProps>(
   ({ colors, limit = 3, sx, ...other }, ref) => {

@@ -8,8 +8,6 @@ import { Iconify } from 'src/components/iconify';
 
 import type { PostItemProps } from './post-item';
 
-// ----------------------------------------------------------------------
-
 type PostSearchProps = {
   posts: PostItemProps[];
   sx?: SxProps<Theme>;

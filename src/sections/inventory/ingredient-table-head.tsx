@@ -9,8 +9,6 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 
 import { visuallyHidden } from './utils';
 
-// ----------------------------------------------------------------------
-
 type IngredientTableHeadProps = {
   orderBy: string;
   rowCount: number;

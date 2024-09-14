@@ -1,8 +1,6 @@
 import { varAlpha } from '../styles';
 import { grey, info, error, common, primary, success, warning, secondary } from './palette';
 
-// ----------------------------------------------------------------------
-
 export interface CustomShadows {
   z1?: string;
   z4?: string;

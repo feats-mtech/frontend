@@ -16,8 +16,6 @@ import { useRouter, usePathname } from 'src/routes/hooks';
 
 import { _myAccount } from 'src/_mock';
 
-// ----------------------------------------------------------------------
-
 export type AccountPopoverProps = IconButtonProps & {
   data?: {
     label: string;

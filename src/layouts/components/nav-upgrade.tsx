@@ -6,8 +6,6 @@ import Typography from '@mui/material/Typography';
 
 import { textGradient } from 'src/theme/styles';
 
-// ----------------------------------------------------------------------
-
 export function NavUpgrade({ sx, ...other }: StackProps) {
   return (
     <Box

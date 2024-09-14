@@ -14,8 +14,6 @@ import { varAlpha } from 'src/theme/styles';
 import { Iconify } from 'src/components/iconify';
 import { SvgColor } from 'src/components/svg-color';
 
-// ----------------------------------------------------------------------
-
 export type PostItemProps = {
   id: string;
   title: string;
