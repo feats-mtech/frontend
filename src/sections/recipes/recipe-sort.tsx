@@ -10,8 +10,6 @@ import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
 
 import { Iconify } from 'src/components/iconify';
 
-// ----------------------------------------------------------------------
-
 type RecipeSortProps = ButtonProps & {
   sortBy: string;
   onSort: (newSort: string) => void;

@@ -15,8 +15,6 @@ import { RecipeFilters } from '../recipe-filters';
 
 import type { FiltersProps } from '../recipe-filters';
 
-// ----------------------------------------------------------------------
-
 const GENDER_OPTIONS = [
   { value: 'men', label: 'Men' },
   { value: 'women', label: 'Women' },

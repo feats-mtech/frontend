@@ -15,8 +15,6 @@ import { PostItem } from '../post-item';
 import { PostSort } from '../post-sort';
 import { PostSearch } from '../post-search';
 
-// ----------------------------------------------------------------------
-
 export function BlogView() {
   const [sortBy, setSortBy] = useState('latest');
 

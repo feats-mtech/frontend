@@ -17,8 +17,6 @@ import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import { ColorPicker } from 'src/components/color-utils';
 
-// ----------------------------------------------------------------------
-
 export type FiltersProps = {
   price: string;
   rating: string;
