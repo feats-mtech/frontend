@@ -4,14 +4,35 @@ Documentation WIP
 
 ### Getting Started
 
-1. Install via `npm i`
-2. Run `npm run prepare` to setup husky into your repository (one-time setup)
-3. Start the application locally via `npm run dev`
+1. Ensure node is installed on your machine
+2. `npm i` - install project dependencies
+3. `npm run prepare` to setup husky (one-time setup)
+4. `npm run dev` - start application locally
 
 ### Running Tests
 
 Run unit tests by running the following command:
 `npm run test`
+
+### Folder Structure
+
+```
+🗂️── __tests__               Unit tests
+🗂️── dist                    Compiled files
+🗂️── src                     Source files
+|  ├──🗂️ __mock              Mock data
+|  ├──🗂️ components          Components used throughout the application
+|  ├──🗂️ hooks               Custom React hooks
+|  ├──🗂️ layouts             Overall application presentation layer
+|  ├──🗂️ pages               Specific pages of application
+|  ├──🗂️ routes              Routing for different pages
+|  ├──🗂️ sections            Module-specific views
+|  ├──🗂️ theme               Themes for components and application
+|  ├──🗂️ utils               Other helpful utility functions
+|  ├── README.md
+|  └── package.json          Project dependencies
+└── ...
+```
 
 ### Commit Message Guidelines
 
