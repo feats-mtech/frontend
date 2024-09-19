@@ -17,7 +17,7 @@ Documentation WIP
 
 #### Docker
 
-`docker build -t feats-frontend` .: build a docker container named feats-frontend with the latest tag
+`docker build -t feats-frontend .`: build a docker container named feats-frontend with the latest tag
 `docker run -d -p 3000:3000 feats-frontend`: run the docker container on port 3000
 
 ### Running Tests
