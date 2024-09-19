@@ -44,8 +44,9 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Get version from package.json
-        run: echo "VERSION=$(node -p 'require(\"./package.json\").version')" >> $GITHUB_ENV
+      - name: get-npm-version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
 
       - name: Push Docker image (latest) to Docker Hub
         run: |
@@ -53,5 +54,5 @@ jobs:
 
       - name: Push Docker image (version) to Docker Hub
         run: |
-          docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/feats-frontend:latest ${{ secrets.DOCKER_HUB_USERNAME }}/feats-frontend:${{ env.VERSION }}
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/feats-frontend:${{ env.VERSION }}
+          docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/feats-frontend:latest ${{ secrets.DOCKER_HUB_USERNAME }}/feats-frontend:${{ steps.package-version.outputs.current-version}}
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/feats-frontend:${{ steps.package-version.outputs.current-version}}
