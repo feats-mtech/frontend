@@ -3,9 +3,8 @@ import checker from 'vite-plugin-checker';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 
-// ----------------------------------------------------------------------
-
-const PORT = 3039;
+const PORT = 3000;
+const HOST = '127.0.0.1';
 
 export default defineConfig({
   plugins: [
@@ -34,6 +33,6 @@ export default defineConfig({
       },
     ],
   },
-  server: { port: PORT, host: true },
+  server: { port: PORT, host: HOST },
   preview: { port: PORT, host: true },
 });
