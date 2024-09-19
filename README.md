@@ -22,7 +22,7 @@ Documentation WIP
 docker build -t feats-frontend .
 
 # run the docker container on port 3000
-docker run -d -p 3000:3000 feats-frontend
+docker run -d -p 3000:80 feats-frontend
 ```
 
 ### Running Tests
