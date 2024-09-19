@@ -11,14 +11,19 @@ Documentation WIP
 
 #### npm
 
-`npm i` - install project dependencies
-`npm run prepare` to setup husky (one-time setup)
+`npm i` - install project dependencies  
+`npm run prepare` to setup husky (one-time setup)  
 `npm run dev` - start application locally on localhost:3000
 
 #### Docker
 
-`docker build -t feats-frontend .`: build a docker container named feats-frontend with the latest tag
-`docker run -d -p 3000:3000 feats-frontend`: run the docker container on port 3000
+```sh
+# build a docker container named feats-frontend with the latest tag
+docker build -t feats-frontend .
+
+# run the docker container on port 3000
+docker run -d -p 3000:3000 feats-frontend
+```
 
 ### Running Tests
 
