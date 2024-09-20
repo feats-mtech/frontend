@@ -7,6 +7,8 @@ const PORT = 3000;
 const HOST = '127.0.0.1';
 
 export default defineConfig({
+  base: './',
+  assetsInclude: ['**/*.svg', '**/*.webp'],
   plugins: [
     react(),
     checker({
@@ -30,6 +32,10 @@ export default defineConfig({
       {
         find: /^src(.+)/,
         replacement: path.join(process.cwd(), 'src/$1'),
+      },
+      {
+        find: /^assets(.+)/,
+        replacement: path.join(process.cwd(), 'assets/$1'),
       },
     ],
   },
