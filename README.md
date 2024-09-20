@@ -5,9 +5,25 @@ Documentation WIP
 ### Getting Started
 
 1. Ensure node is installed on your machine
-2. `npm i` - install project dependencies
-3. `npm run prepare` to setup husky (one-time setup)
-4. `npm run dev` - start application locally
+2. Install Prettier extention on VSCode
+
+### Commands
+
+#### npm
+
+`npm i` - install project dependencies  
+`npm run prepare` to setup husky (one-time setup)  
+`npm run dev` - start application locally on localhost:3000
+
+#### Docker
+
+```sh
+# build a docker container named feats-frontend with the latest tag
+docker build -t feats-frontend .
+
+# run the docker container on port 3000
+docker run -d -p 3000:80 feats-frontend
+```
 
 ### Running Tests
 
