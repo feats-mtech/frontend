@@ -1,0 +1,45 @@
+name: 'sast-scan'
+
+# on:
+#   push:
+#   pull_request:
+
+on: workflow_dispatch
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        if: steps.cache-nodemodules.outputs.cache-hit != 'true'
+        run: |
+          npm ci --force
+
+      - name: OWASP Dependency Check
+        run: |
+          wget https://github.com/jeremylong/DependencyCheck/releases/download/v10.0.4/dependency-check-10.0.4-release.zip
+          unzip dependency-check-10.0.4-release.zip
+
+      - name: Run scan with ODC
+        run: |
+          # Suppress SLF4J warnings and handle illegal reflective access
+          sudo dependency-check/bin/dependency-check.sh \
+            --project "feats-frontend" \
+            --scan . \
+            --failOnCVSS 7 \
+            --disableAssembly \
+            --log odc.log > ODC-report
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: sast report
+          path: |
+            ./ODC-report
