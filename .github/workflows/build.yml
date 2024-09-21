@@ -16,11 +16,29 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Cache node modules
+        id: cache-nodemodules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          # caching node_modules
+          path: node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
       - name: Install dependencies
         run: npm install
 
       - name: Build project
         run: npm run build
+
+      - name: Lint
+        run: |
+          npm run lint
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v3
