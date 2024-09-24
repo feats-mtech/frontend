@@ -1,45 +1,31 @@
-name: 'sast-scan'
+name: SAST Scan with Aikido Dev
 
-# on:
-#   push:
-#   pull_request:
-
-on: workflow_dispatch
+on:
+  push:
+  pull_request:
 
 jobs:
-  test:
+  sast-scan:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [20.x]
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Install Dependencies
-        if: steps.cache-nodemodules.outputs.cache-hit != 'true'
-        run: |
-          npm ci --force
-
-      - name: OWASP Dependency Check
-        run: |
-          wget https://github.com/jeremylong/DependencyCheck/releases/download/v10.0.4/dependency-check-10.0.4-release.zip
-          unzip dependency-check-10.0.4-release.zip
-
-      - name: Run scan with ODC
-        run: |
-          # Suppress SLF4J warnings and handle illegal reflective access
-          sudo dependency-check/bin/dependency-check.sh \
-            --project "feats-frontend" \
-            --scan . \
-            --failOnCVSS 7 \
-            --disableAssembly \
-            --log odc.log > ODC-report
-
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v3
+      - name: Detect new vulnerabilities
+        uses: AikidoSec/github-actions-workflow@v1.0.13
         with:
-          name: sast report
-          path: |
-            ./ODC-report
+          secret-key: ${{ secrets.AIKIDO_SECRET_KEY }}
+          fail-on-timeout: true
+          fail-on-dependency-scan: true
+          fail-on-sast-scan: true
+          fail-on-iac-scan: false
+          minimum-severity: 'CRITICAL'
+          timeout-seconds: 180
+          post-scan-status-comment: 'off'
+          post-sast-review-comments: 'off'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
