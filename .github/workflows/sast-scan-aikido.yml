@@ -1,0 +1,41 @@
+name: SAST Scan with Aikido Dev
+
+# on:
+#   push:
+#   pull_request:
+
+on: workflow_dispatch
+
+jobs:
+  sast-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      #   - name: Install Aikido CLI
+      #     run: |
+      #       curl -LO https://aikido.dev/cli/install.sh
+      #       chmod +x install.sh
+      #       ./install.sh
+
+      - name: Detect new vulnerabilities
+        uses: AikidoSec/github-actions-workflow@v1.0.13
+        with:
+          secret-key: ${{ secrets.AIKIDO_SECRET_KEY }}
+          fail-on-timeout: true
+          fail-on-dependency-scan: true
+          fail-on-sast-scan: false
+          fail-on-iac-scan: false
+          minimum-severity: 'CRITICAL'
+          timeout-seconds: 180
+          post-scan-status-comment: 'off'
+          post-sast-review-comments: 'off'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload SAST scan report
+        uses: actions/upload-artifact@v3
+        with:
+          name: sast-report
+          path: aikido-reports/
