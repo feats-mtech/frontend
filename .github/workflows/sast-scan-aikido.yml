@@ -1,10 +1,10 @@
 name: SAST Scan with Aikido Dev
 
-# on:
-#   push:
+on:
+  push:
 #   pull_request:
 
-on: workflow_dispatch
+# on: workflow_dispatch
 
 jobs:
   sast-scan:
