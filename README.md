@@ -1,7 +1,5 @@
 # Frontend (Practice Module)
 
-Documentation WIP
-
 ### Getting Started
 
 1. Ensure node is installed on your machine
@@ -71,3 +69,27 @@ Example:
 ```
 feat: add user login page
 ```
+
+## Continuous Integration
+
+The project is using [GitHub Actions](https://docs.github.com/en/actions) for the Continuous Integration (CI) pipeline.
+
+Refer to `.github/workflows/build.yml` file for the detailed steps in the CI pipeline.
+
+The following diagram illustrates the overview of the CI workflow:
+
+```mermaid
+flowchart LR
+    A[Build] --> B[Run tests] --> C[Build Docker Containers] --> D[Deploy to DockerHub]
+```
+
+```mermaid
+flowchart LR
+    A[Scanning]
+    A -->|SAST| B[1- Aikido Scan
+2. Linting with JSHint]
+    A -->|SCA| C[Aikido Scan]
+    A -->|DAST| D[ZAP scan]
+```
+
+**TODO**: to deploy to DigitalOcean Container Registry instead of DockerHub
