@@ -1,7 +1,6 @@
 name: 'owasp-scan'
 
 on:
-  push:
   pull_request:
 
 jobs:

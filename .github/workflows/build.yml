@@ -1,7 +1,6 @@
 name: fEATs frontend
 
 on:
-  push:
   pull_request:
 
 jobs:
