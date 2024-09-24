@@ -1,7 +1,5 @@
 # Frontend (Practice Module)
 
-Documentation WIP
-
 ### Getting Started
 
 1. Ensure node is installed on your machine
@@ -88,9 +86,10 @@ flowchart LR
 ```mermaid
 flowchart LR
     A[Scanning]
-    A -->|SAST| B[1- OWASP Dependency check
+    A -->|SAST| B[1- Aikido Scan
 2. Linting with JSHint]
-    A -->|DAST| C[ZAP scan]
+    A -->|SCA| C[Aikido Scan]
+    A -->|DAST| D[ZAP scan]
 ```
 
 **TODO**: to deploy to DigitalOcean Container Registry instead of DockerHub
