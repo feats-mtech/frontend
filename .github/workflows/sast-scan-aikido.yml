@@ -14,12 +14,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      #   - name: Install Aikido CLI
-      #     run: |
-      #       curl -LO https://aikido.dev/cli/install.sh
-      #       chmod +x install.sh
-      #       ./install.sh
-
       - name: Detect new vulnerabilities
         uses: AikidoSec/github-actions-workflow@v1.0.13
         with:
@@ -33,6 +27,9 @@ jobs:
           post-scan-status-comment: 'off'
           post-sast-review-comments: 'off'
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: List output files
+        run: ls -R
 
       - name: Upload SAST scan report
         uses: actions/upload-artifact@v3
