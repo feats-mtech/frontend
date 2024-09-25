@@ -33,7 +33,7 @@ export function InventoryView() {
   const dataFiltered: IngredientProps[] = applyFilter({
     inputData: _users,
     comparator: getComparator(table.order, table.orderBy),
-    filterName,
+    filterItem: filterName,
   });
 
   const notFound = !dataFiltered.length && !!filterName;
@@ -79,11 +79,10 @@ export function InventoryView() {
                   )
                 }
                 headLabel={[
-                  { id: 'name', label: 'Name' },
-                  { id: 'company', label: 'Company' },
-                  { id: 'role', label: 'Role' },
-                  { id: 'isVerified', label: 'Verified', align: 'center' },
-                  { id: 'status', label: 'Status' },
+                  { id: 'item', label: 'Item' },
+                  { id: 'quantity', label: 'Quantity' },
+                  { id: 'unitOfMeasurement', label: 'UOM' },
+                  { id: 'consumeBy', label: 'Consume By' },
                   { id: '' },
                 ]}
               />
@@ -129,7 +128,7 @@ export function InventoryView() {
 
 export function useTable() {
   const [page, setPage] = useState(0);
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('item');
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [selected, setSelected] = useState<string[]>([]);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');

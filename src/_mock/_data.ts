@@ -2,9 +2,10 @@ import {
   _id,
   _price,
   _times,
-  _company,
+  _quantity,
   _boolean,
-  _fullName,
+  _items,
+  _consumeBy,
   _taskNames,
   _postTitles,
   _description,
@@ -21,24 +22,13 @@ export const _myAccount = {
 
 export const _users = [...Array(24)].map((_, index) => ({
   id: _id(index),
-  name: _fullName(index),
-  company: _company(index),
+  item: _items(index),
+  quantity: _quantity(index),
   isVerified: _boolean(index),
   avatarUrl: `/assets/images/avatar/avatar-${index + 1}.webp`,
-  status: index % 4 ? 'active' : 'banned',
-  role:
-    [
-      'Leader',
-      'Hr Manager',
-      'UI Designer',
-      'UX Designer',
-      'UI/UX Designer',
-      'Project Manager',
-      'Backend Developer',
-      'Full Stack Designer',
-      'Front End Developer',
-      'Full Stack Developer',
-    ][index] || 'UI Designer',
+  consumeBy: _consumeBy(index),
+  unitOfMeasurement:
+    ['kg', 'ml', 'piece', 'g', 'ml', 'piece', 'piece', 'kg', 'ml', 'g'][index] || 'piece',
 }));
 
 // ----------------------------------------------------------------------
@@ -54,7 +44,7 @@ export const _posts = [...Array(23)].map((_, index) => ({
   totalFavorites: 8870,
   postedAt: _times(index),
   author: {
-    name: _fullName(index),
+    name: _items(index),
     avatarUrl: `/assets/images/avatar/avatar-${index + 1}.webp`,
   },
 }));
@@ -150,7 +140,7 @@ export const _notifications = [
   },
   {
     id: _id(2),
-    title: _fullName(2),
+    title: _items(2),
     description: 'answered to your comment on the Minimal',
     avatarUrl: '/assets/images/avatar/avatar-2.webp',
     type: 'friend-interactive',
