@@ -1,6 +1,8 @@
 import React from 'react';
 import { useState, useCallback } from 'react';
 
+import { useRouter } from 'src/routes/hooks';
+
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
@@ -26,6 +28,7 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 import type { IngredientProps } from '../ingredient-table-row';
 
 export function InventoryView() {
+  const router = useRouter();
   const table = useTable();
 
   const [filterName, setFilterName] = useState('');
@@ -38,6 +41,8 @@ export function InventoryView() {
 
   const notFound = !dataFiltered.length && !!filterName;
 
+  const handleClickItem = useCallback((path: string) => router.push(path), [router]);
+
   return (
     <DashboardContent>
       <Box display="flex" alignItems="center" mb={5}>
@@ -48,6 +53,7 @@ export function InventoryView() {
           variant="contained"
           color="inherit"
           startIcon={<Iconify icon="mingcute:add-line" />}
+          onClick={() => handleClickItem('new')}
         >
           New ingredient
         </Button>
