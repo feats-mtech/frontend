@@ -89,6 +89,7 @@ export function InventoryView() {
                   { id: 'quantity', label: 'Quantity' },
                   { id: 'unitOfMeasurement', label: 'UOM' },
                   { id: 'consumeBy', label: 'Consume By' },
+                  { id: 'expiryDate', label: 'Expiry Date' },
                   { id: '' },
                 ]}
               />

@@ -12,12 +12,15 @@ import IconButton from '@mui/material/IconButton';
 import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
 
 import { Iconify } from 'src/components/iconify';
+import { getDaysLeft } from 'src/utils/format-expiry';
+import { fDate } from 'src/utils/format-time';
 
 export type IngredientProps = {
   id: string;
   item: string;
   unitOfMeasurement: string;
   consumeBy: string;
+  expiryDate: string;
   quantity: number;
   avatarUrl: string;
   isVerified: boolean;
@@ -58,7 +61,9 @@ export function IngredientTableRow({ row, selected, onSelectRow }: IngredientTab
 
         <TableCell>{row.unitOfMeasurement}</TableCell>
 
-        <TableCell>{row.consumeBy}</TableCell>
+        <TableCell>{getDaysLeft(row.consumeBy)} days</TableCell>
+
+        <TableCell>{fDate(row.expiryDate)}</TableCell>
 
         <TableCell align="right">
           <IconButton onClick={handleOpenPopover}>
