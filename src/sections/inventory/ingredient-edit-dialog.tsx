@@ -3,26 +3,45 @@ import { IngredientProps } from './ingredient-table-row';
 
 import { TextField, Button } from '@mui/material';
 import { useState } from 'react';
+import { ResponseSnackbar } from './ingredient-snackbar';
 
-export interface SimpleDialogProps {
+interface IngredientEditDialogProps {
   open: boolean;
   selectedIngredient: IngredientProps;
   handleIsOpenEditDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const IngredientEditDialog = (props: SimpleDialogProps) => {
+export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
   const { handleIsOpenEditDialog, selectedIngredient, open } = props;
   const [ingredientDetails, setIngredientDetails] = useState(selectedIngredient);
 
+  const [loading, setLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isError, setIsError] = useState(false);
+
   const handleClose = () => handleIsOpenEditDialog(false);
 
-  const handleSave = () => {
-    // TODO: Logic to save the updated ingredient details to backend
+  const handleSave = async () => {
+    setLoading(true);
+    try {
+      // TODO: Logic to send edit ingredient request to backend
 
-    // TODO: implement loading spinner while waiting for response
+      // Simulate async edit request
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    // TODO: await response before proceeding. if error, show error message
-    handleIsOpenEditDialog(false);
+      // Assuming the edit was successful:
+      setIsSuccess(true);
+    } catch (error) {
+      setIsError(true);
+    } finally {
+      setLoading(false);
+      handleClose();
+    }
+  };
+
+  const handleCloseSnackbar = () => {
+    setIsSuccess(false);
+    setIsError(false);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,71 +53,89 @@ export const IngredientEditDialog = (props: SimpleDialogProps) => {
   };
 
   return (
-    <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>Edit Ingredient Details for {selectedIngredient.item}</DialogTitle>
-      <List sx={{ pt: 0 }}>
-        <>
-          <ListItem>
-            <TextField
-              required
-              label="Item"
-              name="item"
-              value={ingredientDetails.item}
-              onChange={handleChange}
-              fullWidth
-            />
-          </ListItem>
-          <ListItem>
-            <TextField
-              required
-              type="number"
-              placeholder={'e.g. 35'}
-              label="Quantity"
-              name="quantity"
-              value={ingredientDetails.quantity}
-              onChange={handleChange}
-              fullWidth
-            />
-          </ListItem>
-          <ListItem>
-            <TextField
-              required
-              label="Unit of Measurement"
-              name="unitOfMeasurement"
-              value={ingredientDetails.unitOfMeasurement}
-              onChange={handleChange}
-              fullWidth
-            />
-          </ListItem>
+    <>
+      <Dialog onClose={handleClose} open={open}>
+        <DialogTitle>Edit Ingredient Details for {selectedIngredient.item}</DialogTitle>
+        <List sx={{ pt: 0 }}>
+          <>
+            <ListItem>
+              <TextField
+                required
+                label="Item"
+                name="item"
+                value={ingredientDetails.item}
+                onChange={handleChange}
+                fullWidth
+              />
+            </ListItem>
+            <ListItem>
+              <TextField
+                required
+                type="number"
+                placeholder={'e.g. 35'}
+                label="Quantity"
+                name="quantity"
+                value={ingredientDetails.quantity}
+                onChange={handleChange}
+                fullWidth
+              />
+            </ListItem>
+            <ListItem>
+              <TextField
+                required
+                label="Unit of Measurement"
+                name="unitOfMeasurement"
+                value={ingredientDetails.unitOfMeasurement}
+                onChange={handleChange}
+                fullWidth
+              />
+            </ListItem>
 
-          <ListItem>
-            <TextField
-              required
-              type="date"
-              InputLabelProps={{ shrink: true }}
-              label="Expiry date"
-              name="expiryDate"
-              value={ingredientDetails.expiryDate}
-              onChange={handleChange}
-              fullWidth
-            />
-          </ListItem>
-          <ListItem>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleSave}
-              sx={{ mr: 2 }}
-              disabled={JSON.stringify(ingredientDetails) === JSON.stringify(selectedIngredient)}
-            >
-              Save
-            </Button>
-            <Button variant="contained" color="error" onClick={handleClose} sx={{ ml: 'auto' }}>
-              Cancel
-            </Button>
-          </ListItem>
-        </>
-      </List>
-    </Dialog>
+            <ListItem>
+              <TextField
+                required
+                type="date"
+                InputLabelProps={{ shrink: true }}
+                label="Expiry date"
+                name="expiryDate"
+                value={ingredientDetails.expiryDate.split('T')[0]} // YYYY-MM-DD
+                onChange={handleChange}
+                fullWidth
+              />
+            </ListItem>
+            <ListItem>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSave}
+                sx={{ mr: 2 }}
+                disabled={
+                  JSON.stringify(ingredientDetails) === JSON.stringify(selectedIngredient) ||
+                  loading
+                }
+              >
+                {loading ? 'Editing...' : 'Save'}
+              </Button>
+              <Button variant="contained" color="error" onClick={handleClose} sx={{ ml: 'auto' }}>
+                Cancel
+              </Button>
+            </ListItem>
+          </>
+        </List>
+      </Dialog>
+      <ResponseSnackbar
+        isOpen={isSuccess}
+        handleCloseSnackbar={handleCloseSnackbar}
+        severity="success"
+        message="Ingredient details saved successfully!"
+      />
+
+      <ResponseSnackbar
+        isOpen={isError}
+        handleCloseSnackbar={handleCloseSnackbar}
+        severity="error"
+        message="Failed to edit the ingredient. Please try again."
+      />
+    </>
   );
 };
