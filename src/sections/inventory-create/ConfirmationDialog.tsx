@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  ListItem,
   Typography,
 } from '@mui/material';
 
@@ -33,18 +34,30 @@ export const ConfirmationDialog = ({
       <DialogContent>
         <DialogContentText>Please review the ingredient details.</DialogContentText>
         <br />
-        <Typography variant="body1">
-          <strong>Item Name:</strong> {itemName || 'N/A'}
-        </Typography>
-        <Typography variant="body1">
-          <strong>Quantity:</strong> {quantity || 'N/A'}
-        </Typography>
-        <Typography variant="body1">
-          <strong>Unit of Measurement:</strong> {unitOfMeasurement || 'N/A'}
-        </Typography>
-        <Typography variant="body1">
-          <strong>Expiry Date:</strong> {expiryDate || 'N/A'}
-        </Typography>
+
+        <ListItem>
+          <Typography variant="body1">
+            <strong>Item Name:</strong> {itemName || 'N/A'}
+          </Typography>
+        </ListItem>
+
+        <ListItem>
+          <Typography variant="body1">
+            <strong>Quantity:</strong> {quantity || 'N/A'}
+          </Typography>
+        </ListItem>
+
+        <ListItem>
+          <Typography variant="body1">
+            <strong>Unit of Measurement:</strong> {unitOfMeasurement || 'N/A'}
+          </Typography>
+        </ListItem>
+
+        <ListItem>
+          <Typography variant="body1">
+            <strong>Expiry Date:</strong> {expiryDate || 'N/A'}
+          </Typography>
+        </ListItem>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleCloseDialog} color="secondary">
