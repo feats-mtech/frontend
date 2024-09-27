@@ -15,6 +15,7 @@ import { Iconify } from 'src/components/iconify';
 import { getDaysLeft } from 'src/utils/format-expiry';
 import { fDate } from 'src/utils/format-time';
 import { IngredientEditDialog } from './ingredient-edit-dialog';
+import { IngredientDeleteDialog } from './ingredient-delete-dialog';
 
 export type IngredientProps = {
   id: string;
@@ -36,6 +37,7 @@ type IngredientTableRowProps = {
 export function IngredientTableRow({ row, selected, onSelectRow }: IngredientTableRowProps) {
   const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
   const [isOpenEditDialog, handleIsOpenEditDialog] = useState(false);
+  const [isOpenDeleteDialog, handleIsOpenDeleteDialog] = useState(false);
 
   const handleOpenPopover = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     setOpenPopover(event.currentTarget);
@@ -48,6 +50,11 @@ export function IngredientTableRow({ row, selected, onSelectRow }: IngredientTab
   const handleCloseEditDialog = useCallback(() => {
     setOpenPopover(null);
     handleIsOpenEditDialog(true);
+  }, []);
+
+  const handleCloseDeleteDialog = useCallback(() => {
+    setOpenPopover(null);
+    handleIsOpenDeleteDialog(true);
   }, []);
 
   return (
@@ -107,7 +114,7 @@ export function IngredientTableRow({ row, selected, onSelectRow }: IngredientTab
             Edit
           </MenuItem>
 
-          <MenuItem onClick={handleClosePopover} sx={{ color: 'error.main' }}>
+          <MenuItem onClick={handleCloseDeleteDialog} sx={{ color: 'error.main' }}>
             <Iconify icon="solar:trash-bin-trash-bold" />
             Delete
           </MenuItem>
@@ -117,6 +124,11 @@ export function IngredientTableRow({ row, selected, onSelectRow }: IngredientTab
         selectedIngredient={row}
         open={isOpenEditDialog}
         handleIsOpenEditDialog={handleIsOpenEditDialog}
+      />
+      <IngredientDeleteDialog
+        selectedIngredient={row}
+        open={isOpenDeleteDialog}
+        handleIsOpenDeleteDialog={handleIsOpenDeleteDialog}
       />
     </>
   );
