@@ -14,6 +14,7 @@ import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
 import { Iconify } from 'src/components/iconify';
 import { getDaysLeft } from 'src/utils/format-expiry';
 import { fDate } from 'src/utils/format-time';
+import { IngredientEditDialog } from './ingredient-edit-dialog';
 
 export type IngredientProps = {
   id: string;
@@ -34,6 +35,7 @@ type IngredientTableRowProps = {
 
 export function IngredientTableRow({ row, selected, onSelectRow }: IngredientTableRowProps) {
   const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
+  const [isOpenEditDialog, handleIsOpenEditDialog] = useState(false);
 
   const handleOpenPopover = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     setOpenPopover(event.currentTarget);
@@ -41,6 +43,11 @@ export function IngredientTableRow({ row, selected, onSelectRow }: IngredientTab
 
   const handleClosePopover = useCallback(() => {
     setOpenPopover(null);
+  }, []);
+
+  const handleCloseEditDialog = useCallback(() => {
+    setOpenPopover(null);
+    handleIsOpenEditDialog(true);
   }, []);
 
   return (
@@ -95,7 +102,7 @@ export function IngredientTableRow({ row, selected, onSelectRow }: IngredientTab
             },
           }}
         >
-          <MenuItem onClick={handleClosePopover}>
+          <MenuItem onClick={handleCloseEditDialog}>
             <Iconify icon="solar:pen-bold" />
             Edit
           </MenuItem>
@@ -106,6 +113,11 @@ export function IngredientTableRow({ row, selected, onSelectRow }: IngredientTab
           </MenuItem>
         </MenuList>
       </Popover>
+      <IngredientEditDialog
+        selectedIngredient={row}
+        open={isOpenEditDialog}
+        handleIsOpenEditDialog={handleIsOpenEditDialog}
+      />
     </>
   );
 }
