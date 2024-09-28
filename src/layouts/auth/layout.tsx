@@ -28,9 +28,6 @@ export function AuthLayout({ sx, children, header }: AuthLayoutProps) {
 
   return (
     <LayoutSection
-      /** **************************************
-       * Header
-       *************************************** */
       headerSection={
         <HeaderSection
           layoutQuery={layoutQuery}
@@ -63,13 +60,7 @@ export function AuthLayout({ sx, children, header }: AuthLayoutProps) {
           }}
         />
       }
-      /** **************************************
-       * Footer
-       *************************************** */
       footerSection={null}
-      /** **************************************
-       * Style
-       *************************************** */
       cssVars={{ '--layout-auth-content-width': '420px' }}
       sx={{
         '&::before': {
