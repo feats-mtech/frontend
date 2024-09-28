@@ -11,6 +11,7 @@ import { TextField, Grid } from '@mui/material';
 import { DashboardContent } from 'src/layouts/dashboard';
 import { Iconify } from 'src/components/iconify';
 import { ConfirmationDialog } from '../ConfirmationDialog';
+import { Ingredient } from 'src/types/Ingredient';
 
 export function InventoryCreateView() {
   const navigate = useNavigate();
@@ -23,6 +24,13 @@ export function InventoryCreateView() {
 
   const handleOpenDialog = () => setOpenDialog(true);
   const handleCloseDialog = () => setOpenDialog(false);
+
+  const ingredientDetails: Ingredient = {
+    item: itemName,
+    quantity: quantity,
+    unitOfMeasurement: unitOfMeasurement,
+    expiryDate: expiryDate,
+  };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -41,7 +49,7 @@ export function InventoryCreateView() {
           variant="contained"
           color="inherit"
           startIcon={<Iconify icon="mingcute:back" />}
-          onClick={() => navigate(-1)}
+          onClick={() => navigate('../inventory')}
         >
           Back
         </Button>
@@ -115,11 +123,7 @@ export function InventoryCreateView() {
       <ConfirmationDialog
         openDialog={openDialog}
         handleCloseDialog={handleCloseDialog}
-        itemName={itemName}
-        quantity={quantity}
-        unitOfMeasurement={unitOfMeasurement}
-        expiryDate={expiryDate}
-        handleSubmit={handleSubmit}
+        ingredient={ingredientDetails}
       />
     </DashboardContent>
   );

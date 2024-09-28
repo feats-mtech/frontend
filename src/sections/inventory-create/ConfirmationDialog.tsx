@@ -8,65 +8,101 @@ import {
   ListItem,
   Typography,
 } from '@mui/material';
+import { useState } from 'react';
+import { ResponseSnackbar } from '../inventory/ingredient-snackbar';
+import { Ingredient } from 'src/types/Ingredient';
+
+interface IngredientDetailRowProps {
+  label: string;
+  ingredientDetail: string;
+}
+
+const IngredientDetailRow = ({ label, ingredientDetail }: IngredientDetailRowProps) => {
+  return (
+    <ListItem>
+      <Typography variant="body1">
+        <strong>{label}:</strong> {ingredientDetail || 'N/A'}
+      </Typography>
+    </ListItem>
+  );
+};
 
 interface ConfirmationDialogProps {
   openDialog: boolean;
   handleCloseDialog: () => void;
-  itemName: string;
-  quantity: string;
-  unitOfMeasurement: string;
-  expiryDate: string;
-  handleSubmit: (event: React.FormEvent) => void;
+  ingredient: Ingredient;
 }
 
 export const ConfirmationDialog = ({
   openDialog,
   handleCloseDialog,
-  itemName,
-  quantity,
-  unitOfMeasurement,
-  expiryDate,
-  handleSubmit,
+  ingredient,
 }: ConfirmationDialogProps) => {
+  const [loading, setLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      // TODO: Logic to send create ingredient request to backend
+
+      // Simulate async create request
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Assuming the create was successful
+      setIsSuccess(true);
+    } catch (error) {
+      setIsError(true);
+    } finally {
+      setLoading(false);
+      handleCloseDialog();
+    }
+  };
+
+  const handleCloseSnackbar = () => {
+    setIsSuccess(false);
+    setIsError(false);
+  };
+
   return (
-    <Dialog open={openDialog} onClose={handleCloseDialog}>
-      <DialogTitle>Confirm Addition</DialogTitle>
-      <DialogContent>
-        <DialogContentText>Please review the ingredient details.</DialogContentText>
-        <br />
+    <>
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Confirm Addition</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Please review the ingredient details.</DialogContentText>
+          <br />
 
-        <ListItem>
-          <Typography variant="body1">
-            <strong>Item Name:</strong> {itemName || 'N/A'}
-          </Typography>
-        </ListItem>
+          <IngredientDetailRow label="Item Name" ingredientDetail={ingredient.item} />
+          <IngredientDetailRow label="Quantity" ingredientDetail={ingredient.quantity} />
+          <IngredientDetailRow
+            label="Unit of Measurement"
+            ingredientDetail={ingredient.unitOfMeasurement}
+          />
+          <IngredientDetailRow label="Expiry Date" ingredientDetail={ingredient.expiryDate} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="secondary">
+            Cancel
+          </Button>
+          <Button onClick={handleSubmit} color="primary" disabled={loading}>
+            {loading ? 'Creating...' : 'Confirm'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <ResponseSnackbar
+        isOpen={isSuccess}
+        handleCloseSnackbar={handleCloseSnackbar}
+        severity="success"
+        message="Ingredient added successfully!"
+      />
 
-        <ListItem>
-          <Typography variant="body1">
-            <strong>Quantity:</strong> {quantity || 'N/A'}
-          </Typography>
-        </ListItem>
-
-        <ListItem>
-          <Typography variant="body1">
-            <strong>Unit of Measurement:</strong> {unitOfMeasurement || 'N/A'}
-          </Typography>
-        </ListItem>
-
-        <ListItem>
-          <Typography variant="body1">
-            <strong>Expiry Date:</strong> {expiryDate || 'N/A'}
-          </Typography>
-        </ListItem>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleCloseDialog} color="secondary">
-          Cancel
-        </Button>
-        <Button onClick={handleSubmit} color="primary">
-          Confirm
-        </Button>
-      </DialogActions>
-    </Dialog>
+      <ResponseSnackbar
+        isOpen={isError}
+        handleCloseSnackbar={handleCloseSnackbar}
+        severity="error"
+        message="Failed to add the ingredient. Please try again."
+      />
+    </>
   );
 };
