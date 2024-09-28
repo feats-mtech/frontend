@@ -17,7 +17,7 @@ import { fDate } from 'src/utils/format-time';
 import { IngredientEditDialog } from './ingredient-edit-dialog';
 import { IngredientDeleteDialog } from './ingredient-delete-dialog';
 
-export type IngredientProps = {
+export type IngredientRowProps = {
   id: string;
   item: string;
   unitOfMeasurement: string;
@@ -25,11 +25,10 @@ export type IngredientProps = {
   expiryDate: string;
   quantity: number;
   avatarUrl: string;
-  isVerified: boolean;
 };
 
 type IngredientTableRowProps = {
-  row: IngredientProps;
+  row: IngredientRowProps;
   selected: boolean;
   onSelectRow: () => void;
 };

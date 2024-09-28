@@ -1,5 +1,5 @@
 import { Dialog, DialogTitle, List, ListItem } from '@mui/material';
-import { IngredientProps } from './ingredient-table-row';
+import { IngredientRowProps } from './ingredient-table-row';
 
 import { TextField, Button } from '@mui/material';
 import { useState } from 'react';
@@ -7,7 +7,7 @@ import { ResponseSnackbar } from './ingredient-snackbar';
 
 interface IngredientEditDialogProps {
   open: boolean;
-  selectedIngredient: IngredientProps;
+  selectedIngredient: IngredientRowProps;
   handleIsOpenEditDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }
 

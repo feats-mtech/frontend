@@ -1,4 +1,4 @@
-import type { IngredientProps } from './ingredient-table-row';
+import type { IngredientRowProps } from './ingredient-table-row';
 
 export const visuallyHidden = {
   border: 0,
@@ -45,7 +45,7 @@ export function getComparator<Key extends keyof any>(
 // ----------------------------------------------------------------------
 
 type ApplyFilterProps = {
-  inputData: IngredientProps[];
+  inputData: IngredientRowProps[];
   filterItem: string;
   comparator: (a: any, b: any) => number;
 };

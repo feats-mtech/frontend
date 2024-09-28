@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Dialog, DialogTitle, List, ListItem, Typography } from '@mui/material';
-import { IngredientProps } from './ingredient-table-row';
+import { IngredientRowProps } from './ingredient-table-row';
 import { Button } from '@mui/material';
 import { fDate } from 'src/utils/format-time';
 import { ResponseSnackbar } from './ingredient-snackbar';
 
 interface IngredientDeleteDialogProps {
   open: boolean;
-  selectedIngredient: IngredientProps;
+  selectedIngredient: IngredientRowProps;
   handleIsOpenDeleteDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }
 

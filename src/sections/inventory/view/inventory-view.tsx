@@ -25,7 +25,7 @@ import { TableEmptyRows } from '../table-empty-rows';
 import { IngredientTableToolbar } from '../ingredient-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
-import type { IngredientProps } from '../ingredient-table-row';
+import type { IngredientRowProps } from '../ingredient-table-row';
 
 export function InventoryView() {
   const router = useRouter();
@@ -33,7 +33,7 @@ export function InventoryView() {
 
   const [filterName, setFilterName] = useState('');
 
-  const dataFiltered: IngredientProps[] = applyFilter({
+  const dataFiltered: IngredientRowProps[] = applyFilter({
     inputData: _users,
     comparator: getComparator(table.order, table.orderBy),
     filterItem: filterName,
