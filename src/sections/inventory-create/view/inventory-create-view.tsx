@@ -59,7 +59,10 @@ export function InventoryCreateView() {
               fullWidth
               label="Item name"
               value={itemName}
-              onChange={(e) => setItemName(e.target.value)}
+              onChange={(e) => {
+                const lettersOnly = e.target.value.replace(/[^a-zA-Z\s]/g, ''); // Allow only letters and spaces
+                setItemName(lettersOnly);
+              }}
             />
           </Grid>
           <Grid item xs={3} sm={3}>
@@ -88,7 +91,10 @@ export function InventoryCreateView() {
               fullWidth
               label="Unit of measurement"
               value={unitOfMeasurement}
-              onChange={(e) => setUnitOfMeasurement(e.target.value)}
+              onChange={(e) => {
+                const lettersOnly = e.target.value.replace(/[^a-zA-Z\s]/g, ''); // Allow only letters and spaces
+                setUnitOfMeasurement(lettersOnly);
+              }}
             />
           </Grid>
           <Grid item xs={3} sm={12}>

@@ -46,6 +46,12 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    const lettersOnlyPattern = /^[a-zA-Z\s]*$/;
+
+    if (name === 'item' || name === 'unitOfMeasurement') {
+      if (!lettersOnlyPattern.test(value)) return;
+    }
+
     setIngredientDetails({
       ...ingredientDetails,
       [name]: value,
