@@ -1,4 +1,4 @@
-name: SAST Scan with Aikido Dev
+name: SAST Scan with Synk
 
 # on:
 #   pull_request:
