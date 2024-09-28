@@ -1,6 +1,8 @@
 import React from 'react';
 import { useState, useCallback } from 'react';
 
+import { useRouter } from 'src/routes/hooks';
+
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
@@ -23,20 +25,23 @@ import { TableEmptyRows } from '../table-empty-rows';
 import { IngredientTableToolbar } from '../ingredient-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
-import type { IngredientProps } from '../ingredient-table-row';
+import type { IngredientRowProps } from '../ingredient-table-row';
 
 export function InventoryView() {
+  const router = useRouter();
   const table = useTable();
 
   const [filterName, setFilterName] = useState('');
 
-  const dataFiltered: IngredientProps[] = applyFilter({
+  const dataFiltered: IngredientRowProps[] = applyFilter({
     inputData: _users,
     comparator: getComparator(table.order, table.orderBy),
-    filterName,
+    filterItem: filterName,
   });
 
   const notFound = !dataFiltered.length && !!filterName;
+
+  const handleClickItem = useCallback((path: string) => router.push(path), [router]);
 
   return (
     <DashboardContent>
@@ -48,6 +53,7 @@ export function InventoryView() {
           variant="contained"
           color="inherit"
           startIcon={<Iconify icon="mingcute:add-line" />}
+          onClick={() => handleClickItem('new')}
         >
           New ingredient
         </Button>
@@ -79,11 +85,11 @@ export function InventoryView() {
                   )
                 }
                 headLabel={[
-                  { id: 'name', label: 'Name' },
-                  { id: 'company', label: 'Company' },
-                  { id: 'role', label: 'Role' },
-                  { id: 'isVerified', label: 'Verified', align: 'center' },
-                  { id: 'status', label: 'Status' },
+                  { id: 'item', label: 'Item' },
+                  { id: 'quantity', label: 'Quantity' },
+                  { id: 'unitOfMeasurement', label: 'UOM' },
+                  { id: 'consumeBy', label: 'Consume By' },
+                  { id: 'expiryDate', label: 'Expiry Date' },
                   { id: '' },
                 ]}
               />
@@ -129,7 +135,7 @@ export function InventoryView() {
 
 export function useTable() {
   const [page, setPage] = useState(0);
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('item');
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [selected, setSelected] = useState<string[]>([]);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');

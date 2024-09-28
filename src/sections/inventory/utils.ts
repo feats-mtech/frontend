@@ -1,4 +1,4 @@
-import type { IngredientProps } from './ingredient-table-row';
+import type { IngredientRowProps } from './ingredient-table-row';
 
 export const visuallyHidden = {
   border: 0,
@@ -45,12 +45,12 @@ export function getComparator<Key extends keyof any>(
 // ----------------------------------------------------------------------
 
 type ApplyFilterProps = {
-  inputData: IngredientProps[];
-  filterName: string;
+  inputData: IngredientRowProps[];
+  filterItem: string;
   comparator: (a: any, b: any) => number;
 };
 
-export function applyFilter({ inputData, comparator, filterName }: ApplyFilterProps) {
+export function applyFilter({ inputData, comparator, filterItem }: ApplyFilterProps) {
   const stabilizedThis = inputData.map((el, index) => [el, index] as const);
 
   stabilizedThis.sort((a, b) => {
@@ -61,9 +61,9 @@ export function applyFilter({ inputData, comparator, filterName }: ApplyFilterPr
 
   inputData = stabilizedThis.map((el) => el[0]);
 
-  if (filterName) {
+  if (filterItem) {
     inputData = inputData.filter(
-      (user) => user.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1,
+      (ingredient) => ingredient.item.toLowerCase().indexOf(filterItem.toLowerCase()) !== -1,
     );
   }
 

@@ -1,15 +1,4 @@
-import {
-  _id,
-  _price,
-  _times,
-  _company,
-  _boolean,
-  _fullName,
-  _taskNames,
-  _postTitles,
-  _description,
-  _productNames,
-} from './_mock';
+import { _id, _price, _times, _quantity, _items, _expiryDates, _productNames } from './_mock';
 
 export const _myAccount = {
   displayName: 'Jaydon Frankie',
@@ -17,49 +6,16 @@ export const _myAccount = {
   photoURL: '/assets/images/avatar/avatar-25.webp',
 };
 
-// ----------------------------------------------------------------------
-
 export const _users = [...Array(24)].map((_, index) => ({
   id: _id(index),
-  name: _fullName(index),
-  company: _company(index),
-  isVerified: _boolean(index),
+  item: _items(index),
+  quantity: _quantity(index),
   avatarUrl: `/assets/images/avatar/avatar-${index + 1}.webp`,
-  status: index % 4 ? 'active' : 'banned',
-  role:
-    [
-      'Leader',
-      'Hr Manager',
-      'UI Designer',
-      'UX Designer',
-      'UI/UX Designer',
-      'Project Manager',
-      'Backend Developer',
-      'Full Stack Designer',
-      'Front End Developer',
-      'Full Stack Developer',
-    ][index] || 'UI Designer',
+  consumeBy: _expiryDates(index),
+  expiryDate: _expiryDates(index),
+  unitOfMeasurement:
+    ['kg', 'ml', 'piece', 'g', 'ml', 'piece', 'piece', 'kg', 'ml', 'g'][index] || 'piece',
 }));
-
-// ----------------------------------------------------------------------
-
-export const _posts = [...Array(23)].map((_, index) => ({
-  id: _id(index),
-  title: _postTitles(index),
-  description: _description(index),
-  coverUrl: `/assets/images/cover/cover-${index + 1}.webp`,
-  totalViews: 8829,
-  totalComments: 7977,
-  totalShares: 8556,
-  totalFavorites: 8870,
-  postedAt: _times(index),
-  author: {
-    name: _fullName(index),
-    avatarUrl: `/assets/images/avatar/avatar-${index + 1}.webp`,
-  },
-}));
-
-// ----------------------------------------------------------------------
 
 const COLORS = [
   '#00AB55',
@@ -94,28 +50,6 @@ export const _recipes = [...Array(24)].map((_, index) => {
   };
 });
 
-// ----------------------------------------------------------------------
-
-export const _langs = [
-  {
-    value: 'en',
-    label: 'English',
-    icon: '/assets/icons/flags/ic-flag-en.svg',
-  },
-  {
-    value: 'de',
-    label: 'German',
-    icon: '/assets/icons/flags/ic-flag-de.svg',
-  },
-  {
-    value: 'fr',
-    label: 'French',
-    icon: '/assets/icons/flags/ic-flag-fr.svg',
-  },
-];
-
-// ----------------------------------------------------------------------
-
 export const _timeline = [...Array(5)].map((_, index) => ({
   id: _id(index),
   title: [
@@ -129,15 +63,6 @@ export const _timeline = [...Array(5)].map((_, index) => ({
   time: _times(index),
 }));
 
-// ----------------------------------------------------------------------
-
-export const _tasks = [...Array(5)].map((_, index) => ({
-  id: _id(index),
-  name: _taskNames(index),
-}));
-
-// ----------------------------------------------------------------------
-
 export const _notifications = [
   {
     id: _id(1),
@@ -150,7 +75,7 @@ export const _notifications = [
   },
   {
     id: _id(2),
-    title: _fullName(2),
+    title: _items(2),
     description: 'answered to your comment on the Minimal',
     avatarUrl: '/assets/images/avatar/avatar-2.webp',
     type: 'friend-interactive',

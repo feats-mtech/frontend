@@ -11,27 +11,32 @@ import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
 import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
 
-import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
+import { getDaysLeft } from 'src/utils/format-expiry';
+import { fDate } from 'src/utils/format-time';
+import { IngredientEditDialog } from './ingredient-edit-dialog';
+import { IngredientDeleteDialog } from './ingredient-delete-dialog';
 
-export type IngredientProps = {
+export type IngredientRowProps = {
   id: string;
-  name: string;
-  role: string;
-  status: string;
-  company: string;
+  item: string;
+  unitOfMeasurement: string;
+  consumeBy: string;
+  expiryDate: string;
+  quantity: number;
   avatarUrl: string;
-  isVerified: boolean;
 };
 
 type IngredientTableRowProps = {
-  row: IngredientProps;
+  row: IngredientRowProps;
   selected: boolean;
   onSelectRow: () => void;
 };
 
 export function IngredientTableRow({ row, selected, onSelectRow }: IngredientTableRowProps) {
   const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
+  const [isOpenEditDialog, handleIsOpenEditDialog] = useState(false);
+  const [isOpenDeleteDialog, handleIsOpenDeleteDialog] = useState(false);
 
   const handleOpenPopover = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     setOpenPopover(event.currentTarget);
@@ -39,6 +44,16 @@ export function IngredientTableRow({ row, selected, onSelectRow }: IngredientTab
 
   const handleClosePopover = useCallback(() => {
     setOpenPopover(null);
+  }, []);
+
+  const handleCloseEditDialog = useCallback(() => {
+    setOpenPopover(null);
+    handleIsOpenEditDialog(true);
+  }, []);
+
+  const handleCloseDeleteDialog = useCallback(() => {
+    setOpenPopover(null);
+    handleIsOpenDeleteDialog(true);
   }, []);
 
   return (
@@ -50,26 +65,18 @@ export function IngredientTableRow({ row, selected, onSelectRow }: IngredientTab
 
         <TableCell component="th" scope="row">
           <Box gap={2} display="flex" alignItems="center">
-            <Avatar alt={row.name} src={row.avatarUrl} />
-            {row.name}
+            <Avatar alt={row.item} src={row.avatarUrl} />
+            {row.item}
           </Box>
         </TableCell>
 
-        <TableCell>{row.company}</TableCell>
+        <TableCell>{row.quantity}</TableCell>
 
-        <TableCell>{row.role}</TableCell>
+        <TableCell>{row.unitOfMeasurement}</TableCell>
 
-        <TableCell align="center">
-          {row.isVerified ? (
-            <Iconify width={22} icon="solar:check-circle-bold" sx={{ color: 'success.main' }} />
-          ) : (
-            '-'
-          )}
-        </TableCell>
+        <TableCell>{getDaysLeft(row.consumeBy)} days</TableCell>
 
-        <TableCell>
-          <Label color={(row.status === 'banned' && 'error') || 'success'}>{row.status}</Label>
-        </TableCell>
+        <TableCell>{fDate(row.expiryDate)}</TableCell>
 
         <TableCell align="right">
           <IconButton onClick={handleOpenPopover}>
@@ -101,17 +108,27 @@ export function IngredientTableRow({ row, selected, onSelectRow }: IngredientTab
             },
           }}
         >
-          <MenuItem onClick={handleClosePopover}>
+          <MenuItem onClick={handleCloseEditDialog}>
             <Iconify icon="solar:pen-bold" />
             Edit
           </MenuItem>
 
-          <MenuItem onClick={handleClosePopover} sx={{ color: 'error.main' }}>
+          <MenuItem onClick={handleCloseDeleteDialog} sx={{ color: 'error.main' }}>
             <Iconify icon="solar:trash-bin-trash-bold" />
             Delete
           </MenuItem>
         </MenuList>
       </Popover>
+      <IngredientEditDialog
+        selectedIngredient={row}
+        open={isOpenEditDialog}
+        handleIsOpenEditDialog={handleIsOpenEditDialog}
+      />
+      <IngredientDeleteDialog
+        selectedIngredient={row}
+        open={isOpenDeleteDialog}
+        handleIsOpenDeleteDialog={handleIsOpenDeleteDialog}
+      />
     </>
   );
 }
