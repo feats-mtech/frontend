@@ -18,7 +18,7 @@ export function InventoryCreateView() {
 
   const [itemName, setItemName] = useState('');
   const [unitOfMeasurement, setUnitOfMeasurement] = useState('');
-  const [quantity, setQuantity] = useState('');
+  const [quantity, setQuantity] = useState(0);
   const [expiryDate, setExpiryDate] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -32,12 +32,7 @@ export function InventoryCreateView() {
     expiryDate: expiryDate,
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    // TODO: send ingredient to backend endpoint
-
-    // handleCloseDialog();
-  };
+  const handleSubmit = (event: React.FormEvent) => event.preventDefault();
 
   return (
     <DashboardContent>
@@ -83,7 +78,7 @@ export function InventoryCreateView() {
                   event.preventDefault();
                 }
               }}
-              onChange={(e) => setQuantity(e.target.value)}
+              onChange={(e) => setQuantity(+e.target.value)}
             />
           </Grid>
           <Grid item xs={3} sm={3}>

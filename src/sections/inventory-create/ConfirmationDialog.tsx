@@ -74,7 +74,7 @@ export const ConfirmationDialog = ({
           <br />
 
           <IngredientDetailRow label="Item Name" ingredientDetail={ingredient.item} />
-          <IngredientDetailRow label="Quantity" ingredientDetail={ingredient.quantity} />
+          <IngredientDetailRow label="Quantity" ingredientDetail={String(ingredient.quantity)} />
           <IngredientDetailRow
             label="Unit of Measurement"
             ingredientDetail={ingredient.unitOfMeasurement}

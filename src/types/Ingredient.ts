@@ -1,6 +1,6 @@
 export interface Ingredient {
   item: string;
-  quantity: string;
+  quantity: number;
   unitOfMeasurement: string;
   expiryDate: string;
 }
