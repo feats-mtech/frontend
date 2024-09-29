@@ -1,7 +1,7 @@
 name: SAST Scan with Synk
 
 on:
-  pull_request:
+  workflow_dispatch: # manual trigger
 
 jobs:
   sast-scan:
