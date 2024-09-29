@@ -1,10 +1,7 @@
 name: SAST Scan with Synk
 
-# on:
-#   pull_request:
-
 on:
-  push:
+  pull_request:
 
 jobs:
   sast-scan:

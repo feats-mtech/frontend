@@ -86,9 +86,9 @@ flowchart LR
 ```mermaid
 flowchart LR
     A[Scanning]
-    A -->|SAST| B[1- Aikido Scan
+    A -->|SAST| B[1- Snyk.io
 2. Linting with JSHint]
-    A -->|SCA| C[Aikido Scan]
+    A -->|SCA| C[Dependabot]
     A -->|DAST| D[ZAP scan]
 ```
 
