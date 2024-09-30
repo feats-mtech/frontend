@@ -3,9 +3,19 @@ updates:
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
-      interval: 'weekly'
+      interval: 'monthly'
+    commit-message:
+      prefix: 'npm'
+    groups:
+      all:
+        patterns:
+          - '*'
 
   - package-ecosystem: 'docker'
     directory: '/'
     schedule:
-      interval: 'weekly'
+      interval: 'monthly'
+    groups:
+      all:
+        patterns:
+          - '*'
