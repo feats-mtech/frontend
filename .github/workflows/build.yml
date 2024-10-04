@@ -49,14 +49,17 @@ jobs:
         run: npm run test
 
       - name: Install doctl
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
       - name: Build container image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: docker build -t ${{ secrets.REGISTRY_NAME }}/feats-frontend:latest .
 
       - name: Log in to DigitalOcean Container Registry with short-lived credentials
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: doctl registry login --expiry-seconds 1200
 
       # Docker steps to run only when merged to main
