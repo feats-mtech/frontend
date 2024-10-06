@@ -2,6 +2,7 @@ name: fEATs frontend
 
 on:
   pull_request:
+  workflow_dispatch: # Allows manual triggers
 
 jobs:
   ci:
@@ -78,3 +79,59 @@ jobs:
         run: |
           docker tag ${{ secrets.REGISTRY_NAME }}/feats-frontend:latest ${{ secrets.REGISTRY_NAME }}/feats-frontend:${{ steps.package-version.outputs.current-version}}
           docker push ${{ secrets.REGISTRY_NAME }}/feats-frontend:${{ steps.package-version.outputs.current-version}}
+
+  update-image-version:
+    needs: ci
+
+    runs-on: ubuntu-latest
+
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: get-npm-version
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
+
+      - name: Clone target repository
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          echo "Cloning repository..."
+          git clone https://x-access-token:${{ secrets.TARGET_REPO_TOKEN }}@github.com/dmss-group3-practice-module/deployment.git
+          echo "Cloned repository, checking structure:"
+          ls -la deployment
+
+      - name: Update image version in Kubernetes YML
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          cd deployment
+          sed -i "s|image: registry.digitalocean.com/group3/feats-frontend:[^ ]*|image: registry.digitalocean.com/group3/feats-frontend:$IMAGE_VERSION|" k8s/test/frontend-test.yml
+          cat k8s/test/frontend-test.yml
+          echo "Updated the image version in frontend-test.yml to $IMAGE_VERSION"
+        env:
+          IMAGE_VERSION: ${{ steps.package-version.outputs.current-version}}
+
+      - name: Commit changes to the deployment repository
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          cd deployment
+          echo "Current directory: $(pwd)"
+          git config --global user.email "pinardy.yang@gmail.com"
+          git config --global user.name "GitHub Action"
+          git add k8s/test/frontend-test.yml
+          git commit -m "[frontend-test] update image version to ${{ env.IMAGE_VERSION }}"
+        env:
+          IMAGE_VERSION: ${{ steps.package-version.outputs.current-version}}
+
+      - name: Pushes to deployment repository
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+        with:
+          source-directory: './deployment'
+          destination-github-username: 'dmss-group3-practice-module'
+          destination-repository-name: 'deployment'
+          user-email: pinardy.yang@gmail.com
