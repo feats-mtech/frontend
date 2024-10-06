@@ -1,7 +1,8 @@
 name: fEATs frontend
 
 on:
-  pull_request:
+  # pull_request:
+  push:
 
 jobs:
   ci:
@@ -29,52 +30,70 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
-      - name: Install dependencies
-        run: npm install
+      # - name: Install dependencies
+      #   run: npm install
 
-      - name: Build project
-        run: npm run build
+      # - name: Build project
+      #   run: npm run build
 
-      - name: Lint
-        run: |
-          npm run lint
+      # - name: Lint
+      #   run: |
+      #     npm run lint
 
-      - name: Upload production-ready build files
-        uses: actions/upload-artifact@v3
-        with:
-          name: build
-          path: dist/
+      # - name: Upload production-ready build files
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: build
+      #     path: dist/
 
-      - name: Run tests
-        run: npm run test
+      # - name: Run tests
+      #   run: npm run test
 
-      - name: Install doctl
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: digitalocean/action-doctl@v2
-        with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      # - name: Install doctl
+      #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      #   uses: digitalocean/action-doctl@v2
+      #   with:
+      #     token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
-      - name: Build container image
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: docker build -t ${{ secrets.REGISTRY_NAME }}/feats-frontend:latest .
+      # - name: Build container image
+      #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      #   run: docker build -t ${{ secrets.REGISTRY_NAME }}/feats-frontend:latest .
 
-      - name: Log in to DigitalOcean Container Registry with short-lived credentials
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: doctl registry login --expiry-seconds 1200
+      # - name: Log in to DigitalOcean Container Registry with short-lived credentials
+      #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      #   run: doctl registry login --expiry-seconds 1200
 
-      # Docker steps to run only when merged to main
+      # # Docker steps to run only when merged to main
       - name: get-npm-version
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         id: package-version
         uses: martinbeentjes/npm-get-version-action@v1.3.1
 
-      - name: Push Docker image (latest) to DigitalOcean Container Registry
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          docker push ${{ secrets.REGISTRY_NAME }}/feats-frontend:latest
+      # - name: Push Docker image (latest) to DigitalOcean Container Registry
+      #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      #   run: |
+      #     docker push ${{ secrets.REGISTRY_NAME }}/feats-frontend:latest
 
-      - name: Push Docker image (version) to DigitalOcean Container Registry
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          docker tag ${{ secrets.REGISTRY_NAME }}/feats-frontend:latest ${{ secrets.REGISTRY_NAME }}/feats-frontend:${{ steps.package-version.outputs.current-version}}
-          docker push ${{ secrets.REGISTRY_NAME }}/feats-frontend:${{ steps.package-version.outputs.current-version}}
+      # - name: Push Docker image (version) to DigitalOcean Container Registry
+      #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      #   run: |
+      #     docker tag ${{ secrets.REGISTRY_NAME }}/feats-frontend:latest ${{ secrets.REGISTRY_NAME }}/feats-frontend:${{ steps.package-version.outputs.current-version}}
+      #     docker push ${{ secrets.REGISTRY_NAME }}/feats-frontend:${{ steps.package-version.outputs.current-version}}
+
+      # TODO: Update image version in another github repo "deployment/k8s/test/backend-test.yml
+      # - name: Update image version in deployment repo
+      #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      #   run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|${{ secrets.REGISTRY_NAME }}/feats-frontend:${{ steps.package-version.outputs.current-version}}|' $GITHUB_WORKSPACE/k8s/test/frontend-test.yml
+
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+        with:
+          source-directory: 'k8s/local/test'
+          destination-github-username: 'pinardy'
+          destination-repository-name: 'deployment'
+          user-email: pinardy.yang@gmail.com
+          target-branch: main
+          commit-message: 'Test github action push from frontend'
+          create-target-branch-if-needed: test
