@@ -79,8 +79,11 @@ Refer to `.github/workflows/build.yml` file for the detailed steps in the CI pip
 The following diagram illustrates the overview of the CI workflow:
 
 ```mermaid
-flowchart LR
-    A[Build] --> B[Run tests] --> C[Build Docker Containers] --> D[Deploy to DockerHub]
+flowchart TB
+    A[Build] --> B[Run tests]
+    B --> C[Build Docker Containers]
+    C --> D[Push Image to DigitalOcean Container Registry]
+    D --> E[Update image version]
 ```
 
 ```mermaid
@@ -91,5 +94,3 @@ flowchart LR
     A -->|SCA| C[Dependabot]
     A -->|DAST| D[ZAP scan]
 ```
-
-**TODO**: to deploy to DigitalOcean Container Registry instead of DockerHub
