@@ -94,3 +94,7 @@ flowchart LR
     A -->|SCA| C[Dependabot]
     A -->|DAST| D[ZAP scan]
 ```
+
+## Continuous Deployment
+
+Continuous Deployment is done using [ArgoCD](https://argo-cd.readthedocs.io/en/stable/). The CI pipeline will end with updating the application's image version onto the kubernetes yaml file found in the [deployment repo](https://github.com/dmss-group3-practice-module/deployment). There will be an ArgoCD agent in the kubernetes cluster on hosted on DigitalOcean which listens to version changes in the `deployment` repository.
