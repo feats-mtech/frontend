@@ -65,7 +65,7 @@ jobs:
 
       # Docker steps to run only when merged to main
       - name: get-npm-version
-        # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         id: package-version
         uses: martinbeentjes/npm-get-version-action@v1.3.1
 
@@ -91,11 +91,12 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: get-npm-version
-        # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         id: package-version
         uses: martinbeentjes/npm-get-version-action@v1.3.1
 
       - name: Clone target repository
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           echo "Cloning repository..."
           git clone https://x-access-token:${{ secrets.TARGET_REPO_TOKEN }}@github.com/dmss-group3-practice-module/deployment.git
@@ -103,6 +104,7 @@ jobs:
           ls -la deployment
 
       - name: Update image version in Kubernetes YML
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           cd deployment
           sed -i "s|image: registry.digitalocean.com/group3/feats-frontend:[^ ]*|image: registry.digitalocean.com/group3/feats-frontend:$IMAGE_VERSION|" k8s/test/frontend-test.yml
@@ -112,6 +114,7 @@ jobs:
           IMAGE_VERSION: ${{ steps.package-version.outputs.current-version}}
 
       - name: Commit changes to the deployment repository
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           cd deployment
           echo "Current directory: $(pwd)"
@@ -123,6 +126,7 @@ jobs:
           IMAGE_VERSION: ${{ steps.package-version.outputs.current-version}}
 
       - name: Pushes to deployment repository
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: cpina/github-action-push-to-another-repository@main
         env:
           SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
