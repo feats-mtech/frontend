@@ -26,9 +26,9 @@ export function InventoryCreateView() {
   const handleCloseDialog = () => setOpenDialog(false);
 
   const ingredientDetails: Ingredient = {
-    item: itemName,
+    name: itemName,
     quantity: quantity,
-    unitOfMeasurement: unitOfMeasurement,
+    uom: unitOfMeasurement,
     expiryDate: expiryDate,
   };
 

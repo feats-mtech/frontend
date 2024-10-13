@@ -1,6 +1,7 @@
 export interface Ingredient {
-  item: string;
+  id?: number;
+  name: string;
   quantity: number;
-  unitOfMeasurement: string;
+  uom: string;
   expiryDate: string;
 }

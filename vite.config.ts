@@ -39,6 +39,6 @@ export default defineConfig({
       },
     ],
   },
-  server: { port: Number(process.env.PORT), host: process.env.HOST },
-  preview: { port: Number(process.env.PORT), host: true },
+  server: { port: Number(process.env.VITE_PORT), host: process.env.VITE_HOST },
+  preview: { port: Number(process.env.VITE_PORT), host: true },
 });

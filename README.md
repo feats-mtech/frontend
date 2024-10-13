@@ -3,7 +3,8 @@
 ### Getting Started
 
 1. Ensure node is installed on your machine
-2. Install Prettier extention on VSCode
+2. Install Prettier extension on VSCode
+3. Ensure that your backend is also running along with the database for the frontend to interact with the backend
 
 ### Commands
 

@@ -1,3 +1,4 @@
+import { Ingredient } from 'src/types/Ingredient';
 import type { IngredientRowProps } from './ingredient-table-row';
 
 export const visuallyHidden = {
@@ -42,8 +43,6 @@ export function getComparator<Key extends keyof any>(
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-// ----------------------------------------------------------------------
-
 type ApplyFilterProps = {
   inputData: IngredientRowProps[];
   filterItem: string;
@@ -63,9 +62,21 @@ export function applyFilter({ inputData, comparator, filterItem }: ApplyFilterPr
 
   if (filterItem) {
     inputData = inputData.filter(
-      (ingredient) => ingredient.item.toLowerCase().indexOf(filterItem.toLowerCase()) !== -1,
+      (ingredient) => ingredient.name.toLowerCase().indexOf(filterItem.toLowerCase()) !== -1,
     );
   }
 
   return inputData;
 }
+
+export const mapToIngredientRowProps = (ingredients: Ingredient[]): IngredientRowProps[] => {
+  return ingredients.map((ingredient) => ({
+    id: String(ingredient.id),
+    name: ingredient.name,
+    quantity: ingredient.quantity,
+    uom: ingredient.uom,
+    consumeBy: ingredient.expiryDate,
+    expiryDate: ingredient.expiryDate,
+    avatarUrl: `/assets/images/avatar/avatar-${(ingredient.id ?? 0) + 1}.webp`,
+  }));
+};
