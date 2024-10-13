@@ -4,15 +4,17 @@ import { IngredientRowProps } from './ingredient-table-row';
 import { TextField, Button } from '@mui/material';
 import { useState } from 'react';
 import { ResponseSnackbar } from './ingredient-snackbar';
+import { updateIngredient } from 'src/dao/ingredientDao';
 
 interface IngredientEditDialogProps {
   open: boolean;
   selectedIngredient: IngredientRowProps;
   handleIsOpenEditDialog: React.Dispatch<React.SetStateAction<boolean>>;
+  fetchIngredientsForUser: () => void;
 }
 
 export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
-  const { handleIsOpenEditDialog, selectedIngredient, open } = props;
+  const { handleIsOpenEditDialog, selectedIngredient, open, fetchIngredientsForUser } = props;
   const [ingredientDetails, setIngredientDetails] = useState(selectedIngredient);
 
   const [loading, setLoading] = useState(false);
@@ -23,20 +25,16 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
 
   const handleSave = async () => {
     setLoading(true);
-    try {
-      // TODO: Logic to send edit ingredient request to backend
+    const result = await updateIngredient(ingredientDetails, 1);
 
-      // Simulate async edit request
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Assuming the edit was successful:
+    if (result.success) {
       setIsSuccess(true);
-    } catch (error) {
+      fetchIngredientsForUser();
+    } else {
       setIsError(true);
-    } finally {
-      setLoading(false);
-      handleClose();
     }
+    setLoading(false);
+    handleClose();
   };
 
   const handleCloseSnackbar = () => {
@@ -48,7 +46,7 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
     const { name, value } = e.target;
     const lettersOnlyPattern = /^[a-zA-Z\s]*$/;
 
-    if (name === 'item' || name === 'unitOfMeasurement') {
+    if (name === 'name' || name === 'uom') {
       if (!lettersOnlyPattern.test(value)) return;
     }
 
@@ -61,15 +59,15 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
   return (
     <>
       <Dialog onClose={handleClose} open={open}>
-        <DialogTitle>Edit Ingredient Details for {selectedIngredient.item}</DialogTitle>
+        <DialogTitle>Edit Ingredient Details for {selectedIngredient.name}</DialogTitle>
         <List sx={{ pt: 0 }}>
           <>
             <ListItem>
               <TextField
                 required
                 label="Item"
-                name="item"
-                value={ingredientDetails.item}
+                name="name"
+                value={ingredientDetails.name}
                 onChange={handleChange}
                 fullWidth
               />
@@ -90,8 +88,8 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
               <TextField
                 required
                 label="Unit of Measurement"
-                name="unitOfMeasurement"
-                value={ingredientDetails.unitOfMeasurement}
+                name="uom"
+                value={ingredientDetails.uom}
                 onChange={handleChange}
                 fullWidth
               />

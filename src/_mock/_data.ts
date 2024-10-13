@@ -6,7 +6,7 @@ export const _myAccount = {
   photoURL: '/assets/images/avatar/avatar-25.webp',
 };
 
-export const _users = [...Array(24)].map((_, index) => ({
+export const _ingredients = [...Array(24)].map((_, index) => ({
   id: _id(index),
   item: _items(index),
   quantity: _quantity(index),

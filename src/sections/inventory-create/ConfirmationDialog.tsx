@@ -12,6 +12,8 @@ import { useState } from 'react';
 import { ResponseSnackbar } from '../inventory/ingredient-snackbar';
 import { Ingredient } from 'src/types/Ingredient';
 
+import { createIngredient } from 'src/dao/ingredientDao';
+
 interface IngredientDetailRowProps {
   label: string;
   ingredientDetail: string;
@@ -44,20 +46,16 @@ export const ConfirmationDialog = ({
 
   const handleSubmit = async () => {
     setLoading(true);
-    try {
-      // TODO: Logic to send create ingredient request to backend
+    // TODO: replace 1 with userId
+    const result = await createIngredient(ingredient, 1);
 
-      // Simulate async create request
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Assuming the create was successful
+    if (result.success) {
       setIsSuccess(true);
-    } catch (error) {
+    } else {
       setIsError(true);
-    } finally {
-      setLoading(false);
-      handleCloseDialog();
     }
+    setLoading(false);
+    handleCloseDialog();
   };
 
   const handleCloseSnackbar = () => {
@@ -73,12 +71,9 @@ export const ConfirmationDialog = ({
           <DialogContentText>Please review the ingredient details.</DialogContentText>
           <br />
 
-          <IngredientDetailRow label="Item Name" ingredientDetail={ingredient.item} />
+          <IngredientDetailRow label="Item Name" ingredientDetail={ingredient.name} />
           <IngredientDetailRow label="Quantity" ingredientDetail={String(ingredient.quantity)} />
-          <IngredientDetailRow
-            label="Unit of Measurement"
-            ingredientDetail={ingredient.unitOfMeasurement}
-          />
+          <IngredientDetailRow label="Unit of Measurement" ingredientDetail={ingredient.uom} />
           <IngredientDetailRow label="Expiry Date" ingredientDetail={ingredient.expiryDate} />
         </DialogContent>
         <DialogActions>

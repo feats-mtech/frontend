@@ -4,15 +4,17 @@ import { IngredientRowProps } from './ingredient-table-row';
 import { Button } from '@mui/material';
 import { fDate } from 'src/utils/format-time';
 import { ResponseSnackbar } from './ingredient-snackbar';
+import { deleteIngredient } from 'src/dao/ingredientDao';
 
 interface IngredientDeleteDialogProps {
   open: boolean;
   selectedIngredient: IngredientRowProps;
   handleIsOpenDeleteDialog: React.Dispatch<React.SetStateAction<boolean>>;
+  fetchIngredientsForUser: () => void;
 }
 
 export const IngredientDeleteDialog = (props: IngredientDeleteDialogProps) => {
-  const { handleIsOpenDeleteDialog, selectedIngredient, open } = props;
+  const { handleIsOpenDeleteDialog, selectedIngredient, open, fetchIngredientsForUser } = props;
 
   const [loading, setLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -22,20 +24,16 @@ export const IngredientDeleteDialog = (props: IngredientDeleteDialogProps) => {
 
   const handleDelete = async () => {
     setLoading(true);
-    try {
-      // TODO: Logic to send delete ingredient request to backend
+    const result = await deleteIngredient(Number(selectedIngredient.id));
 
-      // Simulate async deletion request
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Assuming the delete was successful:
+    if (result.success) {
       setIsSuccess(true);
-    } catch (error) {
+      fetchIngredientsForUser();
+    } else {
       setIsError(true);
-    } finally {
-      setLoading(false);
-      handleClose();
     }
+    setLoading(false);
+    handleClose();
   };
 
   const handleCloseSnackbar = () => {
@@ -51,7 +49,7 @@ export const IngredientDeleteDialog = (props: IngredientDeleteDialogProps) => {
           <>
             <ListItem>
               <Typography variant="body1">
-                <strong>Item Name:</strong> {selectedIngredient.item || 'N/A'}
+                <strong>Item Name:</strong> {selectedIngredient.name || 'N/A'}
               </Typography>
             </ListItem>
 
@@ -63,8 +61,7 @@ export const IngredientDeleteDialog = (props: IngredientDeleteDialogProps) => {
 
             <ListItem>
               <Typography variant="body1">
-                <strong>Unit of Measurement:</strong>{' '}
-                {selectedIngredient.unitOfMeasurement || 'N/A'}
+                <strong>Unit of Measurement:</strong> {selectedIngredient.uom || 'N/A'}
               </Typography>
             </ListItem>
 
