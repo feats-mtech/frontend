@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState, useCallback } from 'react';
 
 import { useRouter } from 'src/routes/hooks';
@@ -12,7 +12,6 @@ import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
-import { _users } from 'src/_mock';
 import { DashboardContent } from 'src/layouts/dashboard';
 
 import { Iconify } from 'src/components/iconify';
@@ -23,21 +22,41 @@ import { IngredientTableRow } from '../ingredient-table-row';
 import { IngredientTableHead } from '../ingredient-table-head';
 import { TableEmptyRows } from '../table-empty-rows';
 import { IngredientTableToolbar } from '../ingredient-table-toolbar';
-import { emptyRows, applyFilter, getComparator } from '../utils';
+import { emptyRows, applyFilter, getComparator, mapToIngredientRowProps } from '../utils';
 
 import type { IngredientRowProps } from '../ingredient-table-row';
+import { getIngredientsByUser } from 'src/dao/ingredientDao';
+import { useTable } from 'src/components/table';
+import { ResponseSnackbar } from '../ingredient-snackbar';
 
 export function InventoryView() {
   const router = useRouter();
   const table = useTable();
 
-  const [filterName, setFilterName] = useState('');
+  const [filterName, setFilterName] = useState<string>('');
+  const [ingredients, setIngredients] = useState<IngredientRowProps[]>([]);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isError, setIsError] = useState(false);
+
+  const fetchIngredientsForUser = useCallback(async () => {
+    const ingredients = await getIngredientsByUser(1);
+    setIngredients(mapToIngredientRowProps(ingredients));
+  }, []);
+
+  useEffect(() => {
+    fetchIngredientsForUser();
+  }, [fetchIngredientsForUser]);
 
   const dataFiltered: IngredientRowProps[] = applyFilter({
-    inputData: _users,
+    inputData: ingredients,
     comparator: getComparator(table.order, table.orderBy),
     filterItem: filterName,
   });
+
+  const handleCloseSnackbar = () => {
+    setIsSuccess(false);
+    setIsError(false);
+  };
 
   const notFound = !dataFiltered.length && !!filterName;
 
@@ -75,13 +94,13 @@ export function InventoryView() {
               <IngredientTableHead
                 order={table.order}
                 orderBy={table.orderBy}
-                rowCount={_users.length}
+                rowCount={ingredients.length}
                 numSelected={table.selected.length}
                 onSort={table.onSort}
                 onSelectAllRows={(checked) =>
                   table.onSelectAllRows(
                     checked,
-                    _users.map((user) => user.id),
+                    ingredients.map((user) => user.id),
                   )
                 }
                 headLabel={[
@@ -105,12 +124,15 @@ export function InventoryView() {
                       row={row}
                       selected={table.selected.includes(row.id)}
                       onSelectRow={() => table.onSelectRow(row.id)}
+                      fetchIngredientsForUser={fetchIngredientsForUser}
+                      setIsSuccess={setIsSuccess}
+                      setIsError={setIsError}
                     />
                   ))}
 
                 <TableEmptyRows
                   height={68}
-                  emptyRows={emptyRows(table.page, table.rowsPerPage, _users.length)}
+                  emptyRows={emptyRows(table.page, table.rowsPerPage, ingredients.length)}
                 />
 
                 {notFound && <TableNoData searchQuery={filterName} />}
@@ -122,79 +144,27 @@ export function InventoryView() {
         <TablePagination
           component="div"
           page={table.page}
-          count={_users.length}
+          count={ingredients.length}
           rowsPerPage={table.rowsPerPage}
           onPageChange={table.onChangePage}
           rowsPerPageOptions={[5, 10, 25]}
           onRowsPerPageChange={table.onChangeRowsPerPage}
         />
       </Card>
+
+      <ResponseSnackbar
+        isOpen={isSuccess}
+        handleCloseSnackbar={handleCloseSnackbar}
+        severity="success"
+        message="Ingredient deleted successfully!"
+      />
+
+      <ResponseSnackbar
+        isOpen={isError}
+        handleCloseSnackbar={handleCloseSnackbar}
+        severity="error"
+        message="Failed to delete the ingredient. Please try again."
+      />
     </DashboardContent>
   );
-}
-
-export function useTable() {
-  const [page, setPage] = useState(0);
-  const [orderBy, setOrderBy] = useState('item');
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [selected, setSelected] = useState<string[]>([]);
-  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
-
-  const onSort = useCallback(
-    (id: string) => {
-      const isAsc = orderBy === id && order === 'asc';
-      setOrder(isAsc ? 'desc' : 'asc');
-      setOrderBy(id);
-    },
-    [order, orderBy],
-  );
-
-  const onSelectAllRows = useCallback((checked: boolean, newSelecteds: string[]) => {
-    if (checked) {
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  }, []);
-
-  const onSelectRow = useCallback(
-    (inputValue: string) => {
-      const newSelected = selected.includes(inputValue)
-        ? selected.filter((value) => value !== inputValue)
-        : [...selected, inputValue];
-
-      setSelected(newSelected);
-    },
-    [selected],
-  );
-
-  const onResetPage = useCallback(() => {
-    setPage(0);
-  }, []);
-
-  const onChangePage = useCallback((event: unknown, newPage: number) => {
-    setPage(newPage);
-  }, []);
-
-  const onChangeRowsPerPage = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setRowsPerPage(parseInt(event.target.value, 10));
-      onResetPage();
-    },
-    [onResetPage],
-  );
-
-  return {
-    page,
-    order,
-    onSort,
-    orderBy,
-    selected,
-    rowsPerPage,
-    onSelectRow,
-    onResetPage,
-    onChangePage,
-    onSelectAllRows,
-    onChangeRowsPerPage,
-  };
 }

@@ -3,52 +3,52 @@ import { IngredientRowProps } from './ingredient-table-row';
 
 import { TextField, Button } from '@mui/material';
 import { useState } from 'react';
-import { ResponseSnackbar } from './ingredient-snackbar';
+import { updateIngredient } from 'src/dao/ingredientDao';
 
 interface IngredientEditDialogProps {
   open: boolean;
   selectedIngredient: IngredientRowProps;
   handleIsOpenEditDialog: React.Dispatch<React.SetStateAction<boolean>>;
+  fetchIngredientsForUser: () => void;
+  setIsSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsError: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
-  const { handleIsOpenEditDialog, selectedIngredient, open } = props;
+  const {
+    handleIsOpenEditDialog,
+    selectedIngredient,
+    open,
+    fetchIngredientsForUser,
+    setIsSuccess,
+    setIsError,
+  } = props;
   const [ingredientDetails, setIngredientDetails] = useState(selectedIngredient);
 
   const [loading, setLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [isError, setIsError] = useState(false);
 
   const handleClose = () => handleIsOpenEditDialog(false);
 
   const handleSave = async () => {
     setLoading(true);
-    try {
-      // TODO: Logic to send edit ingredient request to backend
+    // TODO: replace 1 with userId to be fetched from useContext
+    const result = await updateIngredient(ingredientDetails, 1);
 
-      // Simulate async edit request
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Assuming the edit was successful:
+    if (result.success) {
       setIsSuccess(true);
-    } catch (error) {
+      fetchIngredientsForUser();
+    } else {
       setIsError(true);
-    } finally {
-      setLoading(false);
-      handleClose();
     }
-  };
-
-  const handleCloseSnackbar = () => {
-    setIsSuccess(false);
-    setIsError(false);
+    setLoading(false);
+    handleClose();
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const lettersOnlyPattern = /^[a-zA-Z\s]*$/;
 
-    if (name === 'item' || name === 'unitOfMeasurement') {
+    if (name === 'name' || name === 'uom') {
       if (!lettersOnlyPattern.test(value)) return;
     }
 
@@ -61,15 +61,15 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
   return (
     <>
       <Dialog onClose={handleClose} open={open}>
-        <DialogTitle>Edit Ingredient Details for {selectedIngredient.item}</DialogTitle>
+        <DialogTitle>Edit Ingredient Details for {selectedIngredient.name}</DialogTitle>
         <List sx={{ pt: 0 }}>
           <>
             <ListItem>
               <TextField
                 required
                 label="Item"
-                name="item"
-                value={ingredientDetails.item}
+                name="name"
+                value={ingredientDetails.name}
                 onChange={handleChange}
                 fullWidth
               />
@@ -90,8 +90,8 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
               <TextField
                 required
                 label="Unit of Measurement"
-                name="unitOfMeasurement"
-                value={ingredientDetails.unitOfMeasurement}
+                name="uom"
+                value={ingredientDetails.uom}
                 onChange={handleChange}
                 fullWidth
               />
@@ -129,19 +129,6 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
           </>
         </List>
       </Dialog>
-      <ResponseSnackbar
-        isOpen={isSuccess}
-        handleCloseSnackbar={handleCloseSnackbar}
-        severity="success"
-        message="Ingredient details saved successfully!"
-      />
-
-      <ResponseSnackbar
-        isOpen={isError}
-        handleCloseSnackbar={handleCloseSnackbar}
-        severity="error"
-        message="Failed to edit the ingredient. Please try again."
-      />
     </>
   );
 };

@@ -19,8 +19,8 @@ import { IngredientDeleteDialog } from './ingredient-delete-dialog';
 
 export type IngredientRowProps = {
   id: string;
-  item: string;
-  unitOfMeasurement: string;
+  name: string;
+  uom: string;
   consumeBy: string;
   expiryDate: string;
   quantity: number;
@@ -31,9 +31,19 @@ type IngredientTableRowProps = {
   row: IngredientRowProps;
   selected: boolean;
   onSelectRow: () => void;
+  fetchIngredientsForUser: () => void;
+  setIsSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsError: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export function IngredientTableRow({ row, selected, onSelectRow }: IngredientTableRowProps) {
+export function IngredientTableRow({
+  row,
+  selected,
+  onSelectRow,
+  fetchIngredientsForUser,
+  setIsSuccess,
+  setIsError,
+}: IngredientTableRowProps) {
   const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
   const [isOpenEditDialog, handleIsOpenEditDialog] = useState(false);
   const [isOpenDeleteDialog, handleIsOpenDeleteDialog] = useState(false);
@@ -42,9 +52,7 @@ export function IngredientTableRow({ row, selected, onSelectRow }: IngredientTab
     setOpenPopover(event.currentTarget);
   }, []);
 
-  const handleClosePopover = useCallback(() => {
-    setOpenPopover(null);
-  }, []);
+  const handleClosePopover = useCallback(() => setOpenPopover(null), []);
 
   const handleCloseEditDialog = useCallback(() => {
     setOpenPopover(null);
@@ -65,14 +73,14 @@ export function IngredientTableRow({ row, selected, onSelectRow }: IngredientTab
 
         <TableCell component="th" scope="row">
           <Box gap={2} display="flex" alignItems="center">
-            <Avatar alt={row.item} src={row.avatarUrl} />
-            {row.item}
+            <Avatar alt={row.name} src={row.avatarUrl} />
+            {row.name}
           </Box>
         </TableCell>
 
         <TableCell>{row.quantity}</TableCell>
 
-        <TableCell>{row.unitOfMeasurement}</TableCell>
+        <TableCell>{row.uom}</TableCell>
 
         <TableCell>{getDaysLeft(row.consumeBy)} days</TableCell>
 
@@ -123,11 +131,17 @@ export function IngredientTableRow({ row, selected, onSelectRow }: IngredientTab
         selectedIngredient={row}
         open={isOpenEditDialog}
         handleIsOpenEditDialog={handleIsOpenEditDialog}
+        fetchIngredientsForUser={fetchIngredientsForUser}
+        setIsSuccess={setIsSuccess}
+        setIsError={setIsError}
       />
       <IngredientDeleteDialog
         selectedIngredient={row}
         open={isOpenDeleteDialog}
         handleIsOpenDeleteDialog={handleIsOpenDeleteDialog}
+        fetchIngredientsForUser={fetchIngredientsForUser}
+        setIsSuccess={setIsSuccess}
+        setIsError={setIsError}
       />
     </>
   );
