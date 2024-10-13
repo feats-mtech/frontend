@@ -1,4 +1,14 @@
-import { Dialog, DialogTitle, List, ListItem } from '@mui/material';
+import {
+  Dialog,
+  DialogTitle,
+  FormControl,
+  InputLabel,
+  List,
+  ListItem,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from '@mui/material';
 import { IngredientRowProps } from './ingredient-table-row';
 
 import { TextField, Button } from '@mui/material';
@@ -48,13 +58,18 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
     const { name, value } = e.target;
     const lettersOnlyPattern = /^[a-zA-Z\s]*$/;
 
-    if (name === 'name' || name === 'uom') {
-      if (!lettersOnlyPattern.test(value)) return;
-    }
+    if (name === 'name' && !lettersOnlyPattern.test(value)) return;
 
     setIngredientDetails({
       ...ingredientDetails,
       [name]: value,
+    });
+  };
+
+  const handleUom = (e: SelectChangeEvent<string>) => {
+    setIngredientDetails({
+      ...ingredientDetails,
+      uom: e.target.value,
     });
   };
 
@@ -87,14 +102,28 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
               />
             </ListItem>
             <ListItem>
-              <TextField
-                required
-                label="Unit of Measurement"
-                name="uom"
-                value={ingredientDetails.uom}
-                onChange={handleChange}
-                fullWidth
-              />
+              <FormControl required fullWidth>
+                <InputLabel>Unit of measurement</InputLabel>
+                <Select
+                  label="Unit of measurement"
+                  name="uom"
+                  value={ingredientDetails.uom}
+                  onChange={handleUom}
+                  MenuProps={{
+                    PaperProps: {
+                      style: {
+                        maxHeight: 200,
+                      },
+                    },
+                  }}
+                >
+                  <MenuItem value="pieces">pieces</MenuItem>
+                  <MenuItem value="kg">kg</MenuItem>
+                  <MenuItem value="g">g</MenuItem>
+                  <MenuItem value="l">l</MenuItem>
+                  <MenuItem value="ml">ml</MenuItem>
+                </Select>
+              </FormControl>
             </ListItem>
 
             <ListItem>

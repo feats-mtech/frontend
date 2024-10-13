@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { TextField, Grid } from '@mui/material';
+import { TextField, Grid, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 
 import { DashboardContent } from 'src/layouts/dashboard';
 import { Iconify } from 'src/components/iconify';
@@ -85,17 +85,27 @@ export function InventoryCreateView() {
             />
           </Grid>
           <Grid item xs={3} sm={3}>
-            <TextField
-              required
-              placeholder={'e.g. kg'}
-              fullWidth
-              label="Unit of measurement"
-              value={unitOfMeasurement}
-              onChange={(e) => {
-                const lettersOnly = e.target.value.replace(/[^a-zA-Z\s]/g, ''); // Allow only letters and spaces
-                setUnitOfMeasurement(lettersOnly);
-              }}
-            />
+            <FormControl required fullWidth>
+              <InputLabel>Unit of measurement</InputLabel>
+              <Select
+                label="Unit of measurement"
+                value={unitOfMeasurement}
+                onChange={(e) => setUnitOfMeasurement(e.target.value)}
+                MenuProps={{
+                  PaperProps: {
+                    style: {
+                      maxHeight: 200,
+                    },
+                  },
+                }}
+              >
+                <MenuItem value="pieces">pieces</MenuItem>
+                <MenuItem value="kg">kg</MenuItem>
+                <MenuItem value="g">g</MenuItem>
+                <MenuItem value="l">l</MenuItem>
+                <MenuItem value="ml">ml</MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
           <Grid item xs={3} sm={12}>
             <TextField
