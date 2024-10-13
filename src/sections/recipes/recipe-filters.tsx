@@ -16,13 +16,19 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import { ColorPicker } from 'src/components/color-utils';
+import React from 'react';
 
+//existing ingredient == yes or no
+//categories == any one of them....
+//rating == select 1 and all those above are displayed
+//cooking time == select 1 and all those within the time frame are displayed
+//difficulty == select 1 and all those easier are displayed...
 export type FiltersProps = {
-  price: string;
-  rating: string;
-  gender: string[];
-  colors: string[];
-  category: string;
+  existingIngredients: string[];
+  categories: string[];
+  rating: number | null;
+  cookingTime: number;
+  difficulty: number | null;
 };
 
 type RecipeFiltersProps = {
@@ -34,14 +40,13 @@ type RecipeFiltersProps = {
   onResetFilter: () => void;
   onSetFilters: (updateState: Partial<FiltersProps>) => void;
   options: {
-    colors: string[];
-    ratings: string[];
+    existingIngredients: { value: string; label: string }[];
     categories: { value: string; label: string }[];
-    genders: { value: string; label: string }[];
-    price: { value: string; label: string }[];
+    ratings: string[];
+    cookingTime: { value: number; label: string }[];
+    difficulty: string[];
   };
 };
-
 export function RecipeFilters({
   filters,
   options,
@@ -52,22 +57,23 @@ export function RecipeFilters({
   onCloseFilter,
   onResetFilter,
 }: RecipeFiltersProps) {
-  const renderGender = (
+  const renderExistingIngredients = (
     <Stack spacing={1}>
-      <Typography variant="subtitle2">Gender</Typography>
+      <Typography variant="subtitle2">Existing Ingredients</Typography>
       <FormGroup>
-        {options.genders.map((option) => (
+        {options.existingIngredients.map((option) => (
           <FormControlLabel
             key={option.value}
             control={
               <Checkbox
-                checked={filters.gender.includes(option.value)}
+                // TODO: if it we need to manual maintain the Any checked or other?
+                checked={filters.existingIngredients.includes(option.value)}
                 onChange={() => {
-                  const checked = filters.gender.includes(option.value)
-                    ? filters.gender.filter((value) => value !== option.value)
-                    : [...filters.gender, option.value];
+                  const checked = filters.existingIngredients.includes(option.value)
+                    ? filters.existingIngredients.filter((value) => value !== option.value)
+                    : [...filters.existingIngredients, option.value];
 
-                  onSetFilters({ gender: checked });
+                  onSetFilters({ existingIngredients: checked });
                 }}
               />
             }
@@ -81,54 +87,26 @@ export function RecipeFilters({
   const renderCategory = (
     <Stack spacing={1}>
       <Typography variant="subtitle2">Category</Typography>
-      <RadioGroup>
+      <FormGroup>
         {options.categories.map((option) => (
           <FormControlLabel
             key={option.value}
-            value={option.value}
             control={
-              <Radio
-                checked={filters.category.includes(option.value)}
-                onChange={() => onSetFilters({ category: option.value })}
+              <Checkbox
+                checked={filters.categories.includes(option.value)}
+                onChange={() => {
+                  const checked = filters.categories.includes(option.value)
+                    ? filters.categories.filter((value) => value !== option.value)
+                    : [...filters.categories, option.value];
+
+                  onSetFilters({ categories: checked });
+                }}
               />
             }
             label={option.label}
           />
         ))}
-      </RadioGroup>
-    </Stack>
-  );
-
-  const renderColors = (
-    <Stack spacing={1}>
-      <Typography variant="subtitle2">Colors</Typography>
-      <ColorPicker
-        selected={filters.colors}
-        onSelectColor={(colors) => onSetFilters({ colors: colors as string[] })}
-        colors={options.colors}
-        limit={6}
-      />
-    </Stack>
-  );
-
-  const renderPrice = (
-    <Stack spacing={1}>
-      <Typography variant="subtitle2">Price</Typography>
-      <RadioGroup>
-        {options.price.map((option) => (
-          <FormControlLabel
-            key={option.value}
-            value={option.value}
-            control={
-              <Radio
-                checked={filters.price.includes(option.value)}
-                onChange={() => onSetFilters({ price: option.value })}
-              />
-            }
-            label={option.label}
-          />
-        ))}
-      </RadioGroup>
+      </FormGroup>
     </Stack>
   );
 
@@ -137,30 +115,55 @@ export function RecipeFilters({
       <Typography variant="subtitle2" sx={{ mb: 2 }}>
         Rating
       </Typography>
-
-      {options.ratings.map((option, index) => (
-        <Box
-          key={option}
-          onClick={() => onSetFilters({ rating: option })}
-          sx={{
-            mb: 1,
-            gap: 1,
-            ml: -1,
-            p: 0.5,
-            display: 'flex',
-            borderRadius: 1,
-            cursor: 'pointer',
-            typography: 'body2',
-            alignItems: 'center',
-            '&:hover': { opacity: 0.48 },
-            ...(filters.rating === option && {
-              bgcolor: 'action.selected',
-            }),
+      <Box>
+        <Rating
+          name="Rating Label"
+          value={filters.rating}
+          onChange={(event, newValue) => {
+            onSetFilters({ rating: newValue });
           }}
-        >
-          <Rating readOnly value={4 - index} /> & Up
-        </Box>
-      ))}
+        />{' '}
+        & Above
+      </Box>
+    </Stack>
+  );
+
+  const renderCookingTime = (
+    <Stack spacing={1}>
+      <Typography variant="subtitle2">Cooking Time</Typography>
+      <RadioGroup>
+        {options.cookingTime.map((option) => (
+          <FormControlLabel
+            key={option.value}
+            value={option.value}
+            control={
+              <Radio
+                checked={filters.cookingTime === Number(option.value)}
+                onChange={() => onSetFilters({ cookingTime: option.value })}
+              />
+            }
+            label={option.label}
+          />
+        ))}
+      </RadioGroup>
+    </Stack>
+  );
+
+  const renderDifficulty = (
+    <Stack spacing={1}>
+      <Typography variant="subtitle2" sx={{ mb: 2 }}>
+        Difficulty
+      </Typography>
+      <Box>
+        <Rating
+          name="Difficulty Label"
+          value={filters.difficulty}
+          onChange={(event, newValue) => {
+            onSetFilters({ difficulty: newValue });
+          }}
+        />{' '}
+        & easier
+      </Box>
     </Stack>
   );
 
@@ -207,11 +210,11 @@ export function RecipeFilters({
 
         <Scrollbar>
           <Stack spacing={3} sx={{ p: 3 }}>
-            {renderGender}
+            {renderExistingIngredients}
             {renderCategory}
-            {renderColors}
-            {renderPrice}
             {renderRating}
+            {renderCookingTime}
+            {renderDifficulty}
           </Stack>
         </Scrollbar>
       </Drawer>

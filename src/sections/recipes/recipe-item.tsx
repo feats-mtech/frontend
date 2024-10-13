@@ -8,22 +8,29 @@ import { fCurrency } from 'src/utils/format-number';
 
 import { Label } from 'src/components/label';
 import { ColorPreview } from 'src/components/color-utils';
+import Rating from '@mui/material/Rating';
 
 export type RecipeItemProps = {
-  id: string;
+  id: number;
+  creatorId: number;
   name: string;
-  price: number;
-  status: string;
-  coverUrl: string;
-  colors: string[];
-  priceSale: number | null;
+  imageLink: string;
+  description: string;
+  cookingTimeInSec: number;
+  difficultyLevel: number;
+  cuisine: string;
+  rating: number;
+  status: number;
+  createDateTime: Date;
+  updateDateTime: Date;
+  detailUrl: string;
 };
 
 export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
   const renderStatus = (
     <Label
       variant="inverted"
-      color={(recipe.status === 'sale' && 'error') || 'info'}
+      color="info"
       sx={{
         zIndex: 9,
         top: 16,
@@ -32,7 +39,7 @@ export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
         textTransform: 'uppercase',
       }}
     >
-      {recipe.status}
+      {recipe.cuisine.toString()}
     </Label>
   );
 
@@ -40,7 +47,7 @@ export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
     <Box
       component="img"
       alt={recipe.name}
-      src={recipe.coverUrl}
+      src={recipe.imageLink}
       sx={{
         top: 0,
         width: 1,
@@ -51,40 +58,41 @@ export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
     />
   );
 
-  const renderPrice = (
-    <Typography variant="subtitle1">
-      <Typography
-        component="span"
-        variant="body1"
-        sx={{
-          color: 'text.disabled',
-          textDecoration: 'line-through',
-        }}
-      >
-        {recipe.priceSale && fCurrency(recipe.priceSale)}
-      </Typography>
-      &nbsp;
-      {fCurrency(recipe.price)}
-    </Typography>
+  const renderRating = (
+    <Label
+      variant="inverted"
+      // color="info"
+      sx={{
+        zIndex: 9,
+        top: 16,
+        left: 16,
+        position: 'absolute',
+        textTransform: 'uppercase',
+      }}
+    >
+      {recipe.rating} <Rating max={1} readOnly value={1}></Rating>
+    </Label>
   );
-
   return (
     <Card>
       <Box sx={{ pt: '100%', position: 'relative' }}>
-        {recipe.status && renderStatus}
-
+        {renderStatus}
         {renderImg}
+        {renderRating}
       </Box>
 
-      <Stack spacing={2} sx={{ p: 3 }}>
-        <Link color="inherit" underline="hover" variant="subtitle2" noWrap>
+      <Stack spacing={2} sx={{ p: 1 }}>
+        <Typography variant="subtitle2" noWrap>
           {recipe.name}
-        </Link>
-
-        <Box display="flex" alignItems="center" justifyContent="space-between">
-          <ColorPreview colors={recipe.colors} />
-          {renderPrice}
-        </Box>
+        </Typography>
+        <Typography variant="body2">Difficult: {recipe.difficultyLevel}</Typography>
+        <Typography variant="body2">Rating: {recipe.rating}</Typography>
+        <Typography variant="body2">
+          updateDateTime: {recipe.updateDateTime.toUTCString()}
+        </Typography>
+        <Typography variant="body2" noWrap>
+          Description: {recipe.description}
+        </Typography>
       </Stack>
     </Card>
   );
