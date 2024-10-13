@@ -32,6 +32,8 @@ type IngredientTableRowProps = {
   selected: boolean;
   onSelectRow: () => void;
   fetchIngredientsForUser: () => void;
+  setIsSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsError: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export function IngredientTableRow({
@@ -39,6 +41,8 @@ export function IngredientTableRow({
   selected,
   onSelectRow,
   fetchIngredientsForUser,
+  setIsSuccess,
+  setIsError,
 }: IngredientTableRowProps) {
   const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
   const [isOpenEditDialog, handleIsOpenEditDialog] = useState(false);
@@ -48,9 +52,7 @@ export function IngredientTableRow({
     setOpenPopover(event.currentTarget);
   }, []);
 
-  const handleClosePopover = useCallback(() => {
-    setOpenPopover(null);
-  }, []);
+  const handleClosePopover = useCallback(() => setOpenPopover(null), []);
 
   const handleCloseEditDialog = useCallback(() => {
     setOpenPopover(null);
@@ -130,12 +132,16 @@ export function IngredientTableRow({
         open={isOpenEditDialog}
         handleIsOpenEditDialog={handleIsOpenEditDialog}
         fetchIngredientsForUser={fetchIngredientsForUser}
+        setIsSuccess={setIsSuccess}
+        setIsError={setIsError}
       />
       <IngredientDeleteDialog
         selectedIngredient={row}
         open={isOpenDeleteDialog}
         handleIsOpenDeleteDialog={handleIsOpenDeleteDialog}
         fetchIngredientsForUser={fetchIngredientsForUser}
+        setIsSuccess={setIsSuccess}
+        setIsError={setIsError}
       />
     </>
   );

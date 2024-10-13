@@ -27,6 +27,7 @@ import { emptyRows, applyFilter, getComparator, mapToIngredientRowProps } from '
 import type { IngredientRowProps } from '../ingredient-table-row';
 import { getIngredientsByUser } from 'src/dao/ingredientDao';
 import { useTable } from 'src/components/table';
+import { ResponseSnackbar } from '../ingredient-snackbar';
 
 export function InventoryView() {
   const router = useRouter();
@@ -34,6 +35,8 @@ export function InventoryView() {
 
   const [filterName, setFilterName] = useState<string>('');
   const [ingredients, setIngredients] = useState<IngredientRowProps[]>([]);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const fetchIngredientsForUser = useCallback(async () => {
     const ingredients = await getIngredientsByUser(1);
@@ -49,6 +52,11 @@ export function InventoryView() {
     comparator: getComparator(table.order, table.orderBy),
     filterItem: filterName,
   });
+
+  const handleCloseSnackbar = () => {
+    setIsSuccess(false);
+    setIsError(false);
+  };
 
   const notFound = !dataFiltered.length && !!filterName;
 
@@ -117,6 +125,8 @@ export function InventoryView() {
                       selected={table.selected.includes(row.id)}
                       onSelectRow={() => table.onSelectRow(row.id)}
                       fetchIngredientsForUser={fetchIngredientsForUser}
+                      setIsSuccess={setIsSuccess}
+                      setIsError={setIsError}
                     />
                   ))}
 
@@ -141,6 +151,20 @@ export function InventoryView() {
           onRowsPerPageChange={table.onChangeRowsPerPage}
         />
       </Card>
+
+      <ResponseSnackbar
+        isOpen={isSuccess}
+        handleCloseSnackbar={handleCloseSnackbar}
+        severity="success"
+        message="Ingredient deleted successfully!"
+      />
+
+      <ResponseSnackbar
+        isOpen={isError}
+        handleCloseSnackbar={handleCloseSnackbar}
+        severity="error"
+        message="Failed to delete the ingredient. Please try again."
+      />
     </DashboardContent>
   );
 }
