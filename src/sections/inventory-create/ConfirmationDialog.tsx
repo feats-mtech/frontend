@@ -46,7 +46,7 @@ export const ConfirmationDialog = ({
 
   const handleSubmit = async () => {
     setLoading(true);
-    // TODO: replace 1 with userId
+    // TODO: replace 1 with userId to be fetched from useContext
     const result = await createIngredient(ingredient, 1);
 
     if (result.success) {

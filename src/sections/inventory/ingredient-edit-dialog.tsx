@@ -25,6 +25,7 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
 
   const handleSave = async () => {
     setLoading(true);
+    // TODO: replace 1 with userId to be fetched from useContext
     const result = await updateIngredient(ingredientDetails, 1);
 
     if (result.success) {

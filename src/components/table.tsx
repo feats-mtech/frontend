@@ -29,19 +29,14 @@ export function useTable() {
       const newSelected = selected.includes(inputValue)
         ? selected.filter((value) => value !== inputValue)
         : [...selected, inputValue];
-
       setSelected(newSelected);
     },
     [selected],
   );
 
-  const onResetPage = useCallback(() => {
-    setPage(0);
-  }, []);
+  const onResetPage = useCallback(() => setPage(0), []);
 
-  const onChangePage = useCallback((event: unknown, newPage: number) => {
-    setPage(newPage);
-  }, []);
+  const onChangePage = useCallback((event: unknown, newPage: number) => setPage(newPage), []);
 
   const onChangeRowsPerPage = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
