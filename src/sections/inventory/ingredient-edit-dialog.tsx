@@ -14,6 +14,7 @@ import { IngredientRowProps } from './ingredient-table-row';
 import { TextField, Button } from '@mui/material';
 import { useState } from 'react';
 import { updateIngredient } from 'src/dao/ingredientDao';
+import { useUserContext } from 'src/context/UserContext';
 
 interface IngredientEditDialogProps {
   open: boolean;
@@ -33,6 +34,7 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
     setIsSuccess,
     setIsError,
   } = props;
+  const { user } = useUserContext();
   const [ingredientDetails, setIngredientDetails] = useState(selectedIngredient);
 
   const [loading, setLoading] = useState(false);
@@ -41,8 +43,7 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
 
   const handleSave = async () => {
     setLoading(true);
-    // TODO: replace 1 with userId to be fetched from useContext
-    const result = await updateIngredient(ingredientDetails, 1);
+    const result = await updateIngredient(ingredientDetails, user?.id as number);
 
     if (result.success) {
       setIsSuccess(true);

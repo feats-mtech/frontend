@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
-import { Ingredient } from 'src/types/Ingredient';
 import axios, { HttpStatusCode } from 'axios';
+import { Ingredient } from 'src/types/Ingredient';
 import { IngredientRowProps } from 'src/sections/inventory/ingredient-table-row';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;

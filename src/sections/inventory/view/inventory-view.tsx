@@ -28,8 +28,10 @@ import type { IngredientRowProps } from '../ingredient-table-row';
 import { getIngredientsByUser } from 'src/dao/ingredientDao';
 import { useTable } from 'src/components/table';
 import { ResponseSnackbar } from '../ingredient-snackbar';
+import { useUserContext } from 'src/context/UserContext';
 
 export function InventoryView() {
+  const { user } = useUserContext();
   const router = useRouter();
   const table = useTable();
 
@@ -39,7 +41,7 @@ export function InventoryView() {
   const [isError, setIsError] = useState(false);
 
   const fetchIngredientsForUser = useCallback(async () => {
-    const ingredients = await getIngredientsByUser(1);
+    const ingredients = await getIngredientsByUser(user?.id as number);
     setIngredients(mapToIngredientRowProps(ingredients));
   }, []);
 

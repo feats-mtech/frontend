@@ -2,7 +2,6 @@ import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
-import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -11,62 +10,25 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 import { useRouter } from 'src/routes/hooks';
 import { Iconify } from 'src/components/iconify';
+import { useUserContext } from 'src/context/UserContext';
 
 export function SignInView() {
   const router = useRouter();
+  const { loginUser } = useUserContext();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [result, setResult] = useState<boolean | null>(null);
 
-  const handleSignIn = useCallback(() => {
-    router.push('/');
-  }, [router]);
-
-  const renderForm = (
-    <Box display="flex" flexDirection="column" alignItems="flex-end">
-      <TextField
-        fullWidth
-        name="email"
-        label="Email address"
-        defaultValue="hello@gmail.com"
-        InputLabelProps={{ shrink: true }}
-        sx={{ mb: 3 }}
-      />
-
-      <Link variant="body2" color="inherit" sx={{ mb: 1.5 }}>
-        Forgot password?
-      </Link>
-
-      <TextField
-        fullWidth
-        name="password"
-        label="Password"
-        defaultValue="@demo1234"
-        InputLabelProps={{ shrink: true }}
-        type={showPassword ? 'text' : 'password'}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                <Iconify icon={showPassword ? 'solar:eye-bold' : 'solar:eye-closed-bold'} />
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
-        sx={{ mb: 3 }}
-      />
-
-      <LoadingButton
-        fullWidth
-        size="large"
-        type="submit"
-        color="inherit"
-        variant="contained"
-        onClick={handleSignIn}
-      >
-        Sign in
-      </LoadingButton>
-    </Box>
-  );
+  const handleSignIn = useCallback(async () => {
+    const result = await loginUser(username, password);
+    if (result.success) {
+      setResult(true);
+      router.push('/');
+    }
+    setResult(false);
+  }, [router, username, password]);
 
   return (
     <>
@@ -80,27 +42,56 @@ export function SignInView() {
         </Typography>
       </Box>
 
-      {renderForm}
+      <Box display="flex" flexDirection="column" alignItems="flex-end">
+        <TextField
+          fullWidth
+          name="username"
+          label="Username"
+          InputLabelProps={{ shrink: true }}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          sx={{ mb: 3 }}
+        />
 
-      <Divider sx={{ my: 3, '&::before, &::after': { borderTopStyle: 'dashed' } }}>
-        <Typography
-          variant="overline"
-          sx={{ color: 'text.secondary', fontWeight: 'fontWeightMedium' }}
+        <Link variant="body2" color="inherit" sx={{ mb: 1.5 }}>
+          Forgot password?
+        </Link>
+
+        <TextField
+          fullWidth
+          name="password"
+          label="Password"
+          InputLabelProps={{ shrink: true }}
+          type={showPassword ? 'text' : 'password'}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                  <Iconify icon={showPassword ? 'solar:eye-bold' : 'solar:eye-closed-bold'} />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+          onChange={(e) => setPassword(e.target.value)}
+          sx={{ mb: 3 }}
+        />
+
+        {result === false && (
+          <Typography variant="body2" color="error" sx={{ mb: 3, alignSelf: 'center' }}>
+            Invalid username/password. Please try again.
+          </Typography>
+        )}
+
+        <LoadingButton
+          fullWidth
+          size="large"
+          type="submit"
+          color="inherit"
+          variant="contained"
+          onClick={handleSignIn}
         >
-          OR
-        </Typography>
-      </Divider>
-
-      <Box gap={1} display="flex" justifyContent="center">
-        <IconButton color="inherit">
-          <Iconify icon="logos:google-icon" />
-        </IconButton>
-        <IconButton color="inherit">
-          <Iconify icon="eva:github-fill" />
-        </IconButton>
-        <IconButton color="inherit">
-          <Iconify icon="ri:twitter-x-fill" />
-        </IconButton>
+          Sign in
+        </LoadingButton>
       </Box>
     </>
   );

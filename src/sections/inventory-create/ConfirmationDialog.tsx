@@ -13,6 +13,7 @@ import { ResponseSnackbar } from '../inventory/ingredient-snackbar';
 import { Ingredient } from 'src/types/Ingredient';
 
 import { createIngredient } from 'src/dao/ingredientDao';
+import { useUserContext } from 'src/context/UserContext';
 
 interface IngredientDetailRowProps {
   label: string;
@@ -40,14 +41,15 @@ export const ConfirmationDialog = ({
   handleCloseDialog,
   ingredient,
 }: ConfirmationDialogProps) => {
+  const { user } = useUserContext();
+
   const [loading, setLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
 
   const handleSubmit = async () => {
     setLoading(true);
-    // TODO: replace 1 with userId to be fetched from useContext
-    const result = await createIngredient(ingredient, 1);
+    const result = await createIngredient(ingredient, user?.id as number);
 
     if (result.success) {
       setIsSuccess(true);

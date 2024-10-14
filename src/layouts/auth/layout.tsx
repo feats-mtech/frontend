@@ -2,10 +2,7 @@ import React from 'react';
 
 import type { Theme, SxProps, Breakpoint } from '@mui/material/styles';
 
-import Link from '@mui/material/Link';
 import Alert from '@mui/material/Alert';
-
-import { RouterLink } from 'src/routes/components';
 
 import { stylesMode } from 'src/theme/styles';
 
@@ -47,16 +44,6 @@ export function AuthLayout({ sx, children, header }: AuthLayoutProps) {
               </Alert>
             ),
             leftArea: <Logo />,
-            rightArea: (
-              <Link
-                component={RouterLink}
-                href="#"
-                color="inherit"
-                sx={{ typography: 'subtitle2' }}
-              >
-                Need help?
-              </Link>
-            ),
           }}
         />
       }
