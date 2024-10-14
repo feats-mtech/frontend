@@ -30,9 +30,9 @@ export function SignInView() {
     setResult(false);
   }, [router, username, password]);
 
-  // const navigateToRegisterPage = useCallback(() => {
-  //   router.push('/register');
-  // }, [router]);
+  const navigateToRegisterPage = useCallback(() => {
+    router.push('/register');
+  }, [router]);
 
   return (
     <>
@@ -43,7 +43,7 @@ export function SignInView() {
           <Link
             variant="subtitle2"
             sx={{ ml: 0.5, cursor: 'pointer' }}
-            // onClick={navigateToRegisterPage}
+            onClick={navigateToRegisterPage}
           >
             Get started
           </Link>

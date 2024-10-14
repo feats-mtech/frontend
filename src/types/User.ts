@@ -6,3 +6,11 @@ export interface User {
   status: number;
   role: number;
 }
+
+export interface UserFormDetails {
+  username: string;
+  password: string;
+  confirmPassword: string;
+  displayName: string;
+  email: string;
+}
