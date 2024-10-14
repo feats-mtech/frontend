@@ -35,9 +35,10 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
     setIsError,
   } = props;
   const { user } = useAuth();
-  const [ingredientDetails, setIngredientDetails] = useState(selectedIngredient);
+  const [ingredientDetails, setIngredientDetails] =
+    useState<IngredientRowProps>(selectedIngredient);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleClose = () => handleIsOpenEditDialog(false);
 

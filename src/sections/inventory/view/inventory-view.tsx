@@ -37,8 +37,8 @@ export function InventoryView() {
 
   const [filterName, setFilterName] = useState<string>('');
   const [ingredients, setIngredients] = useState<IngredientRowProps[]>([]);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
 
   const fetchIngredientsForUser = useCallback(async () => {
     const ingredients = await getIngredientsByUser(user?.id as number);
