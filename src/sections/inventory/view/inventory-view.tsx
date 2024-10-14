@@ -28,18 +28,20 @@ import type { IngredientRowProps } from '../ingredient-table-row';
 import { getIngredientsByUser } from 'src/dao/ingredientDao';
 import { useTable } from 'src/components/table';
 import { ResponseSnackbar } from '../ingredient-snackbar';
+import { useAuth } from 'src/context/AuthContext';
 
 export function InventoryView() {
+  const { user } = useAuth();
   const router = useRouter();
   const table = useTable();
 
   const [filterName, setFilterName] = useState<string>('');
   const [ingredients, setIngredients] = useState<IngredientRowProps[]>([]);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
 
   const fetchIngredientsForUser = useCallback(async () => {
-    const ingredients = await getIngredientsByUser(1);
+    const ingredients = await getIngredientsByUser(user?.id as number);
     setIngredients(mapToIngredientRowProps(ingredients));
   }, []);
 

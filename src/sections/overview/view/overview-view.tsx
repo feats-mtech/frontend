@@ -6,11 +6,15 @@ import { DashboardContent } from 'src/layouts/dashboard';
 
 import { OrderTimeline } from '../analytics-order-timeline';
 
+import { useAuth } from 'src/context/AuthContext';
+
 export function OverviewView() {
+  const { user } = useAuth();
+
   return (
     <DashboardContent maxWidth="xl">
       <Typography variant="h4" sx={{ mb: { xs: 3, md: 5 } }}>
-        Hi, Welcome back 👋
+        Hi, Welcome back {user?.displayName} 👋
       </Typography>
 
       <Grid>

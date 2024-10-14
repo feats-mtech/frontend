@@ -45,8 +45,8 @@ export function IngredientTableRow({
   setIsError,
 }: IngredientTableRowProps) {
   const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
-  const [isOpenEditDialog, handleIsOpenEditDialog] = useState(false);
-  const [isOpenDeleteDialog, handleIsOpenDeleteDialog] = useState(false);
+  const [isOpenEditDialog, handleIsOpenEditDialog] = useState<boolean>(false);
+  const [isOpenDeleteDialog, handleIsOpenDeleteDialog] = useState<boolean>(false);
 
   const handleOpenPopover = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     setOpenPopover(event.currentTarget);
