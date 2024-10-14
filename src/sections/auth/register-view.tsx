@@ -23,7 +23,6 @@ import { registerUser } from 'src/dao/userDao';
 export function RegisterView() {
   const router = useRouter();
 
-  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [displayName, setDisplayName] = useState<string>('');
@@ -35,6 +34,7 @@ export function RegisterView() {
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
 
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
 
   const handleRegister = useCallback(async () => {
@@ -47,12 +47,11 @@ export function RegisterView() {
     };
 
     // validate email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^(.+)@(.+){2,}\.(.+){2,}$/;
     if (!emailRegex.test(email)) {
       setEmailError('Please enter a valid email address');
       return;
     }
-    setEmailError(null);
 
     // Validate password minimum length
     if (password.length < 7) {
@@ -65,7 +64,6 @@ export function RegisterView() {
       setPasswordError('Passwords do not match');
       return;
     }
-    setPasswordError(null);
 
     setIsLoading(true);
     const result = await registerUser(formDetails);
@@ -77,7 +75,17 @@ export function RegisterView() {
       setIsLoading(false);
       setResult(false);
     }
-  }, [router, username, password]);
+  }, [
+    router,
+    username,
+    password,
+    confirmPassword,
+    displayName,
+    email,
+    emailError,
+    passwordError,
+    setOpenDialog,
+  ]);
 
   const handleNavigateToSignIn = () => router.push('/sign-in');
 
@@ -116,10 +124,13 @@ export function RegisterView() {
           name="email"
           label="Email"
           InputLabelProps={{ shrink: true }}
-          value={email}
           error={!!emailError}
           helperText={emailError}
-          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setEmailError(null);
+          }}
           sx={{ mb: 3 }}
         />
 
@@ -139,7 +150,13 @@ export function RegisterView() {
               </InputAdornment>
             ),
           }}
-          onChange={(e) => setPassword(e.target.value)}
+          error={!!passwordError}
+          helperText={passwordError}
+          value={password}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setPasswordError(null);
+          }}
           sx={{ mb: 3 }}
         />
 
@@ -161,7 +178,11 @@ export function RegisterView() {
           }}
           error={!!passwordError}
           helperText={passwordError}
-          onChange={(e) => setConfirmPassword(e.target.value)}
+          value={confirmPassword}
+          onChange={(e) => {
+            setConfirmPassword(e.target.value);
+            setPasswordError(null);
+          }}
           sx={{ mb: 3 }}
         />
 
