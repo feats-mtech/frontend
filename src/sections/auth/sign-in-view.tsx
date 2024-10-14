@@ -30,6 +30,10 @@ export function SignInView() {
     setResult(false);
   }, [router, username, password]);
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') handleSignIn();
+  };
+
   const navigateToRegisterPage = useCallback(() => {
     router.push('/register');
   }, [router]);
@@ -59,6 +63,7 @@ export function SignInView() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           sx={{ mb: 3 }}
+          onKeyDown={handleKeyDown}
         />
 
         <Link variant="body2" color="inherit" sx={{ mb: 1.5 }}>
@@ -82,6 +87,7 @@ export function SignInView() {
           }}
           onChange={(e) => setPassword(e.target.value)}
           sx={{ mb: 3 }}
+          onKeyDown={handleKeyDown}
         />
 
         {result === false && (
