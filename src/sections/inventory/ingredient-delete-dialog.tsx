@@ -24,7 +24,7 @@ export const IngredientDeleteDialog = (props: IngredientDeleteDialogProps) => {
     setIsError,
   } = props;
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleClose = () => handleIsOpenDeleteDialog(false);
 
