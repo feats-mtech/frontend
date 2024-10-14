@@ -8,6 +8,8 @@ import { varAlpha } from 'src/theme/styles';
 import { AuthLayout } from 'src/layouts/auth';
 import { DashboardLayout } from 'src/layouts/dashboard';
 
+import { useAuth } from 'src/context/AuthContext';
+
 export const HomePage = lazy(() => import('src/pages/home'));
 export const InventoryPage = lazy(() => import('src/pages/inventory'));
 export const InventoryCreatePage = lazy(() => import('src/pages/inventory-create'));
@@ -30,12 +32,13 @@ const renderFallback = (
 );
 
 export function Router() {
+  const { isAuthenticated } = useAuth();
   return useRoutes([
     {
       element: (
         <DashboardLayout>
           <Suspense fallback={renderFallback}>
-            <Outlet />
+            {isAuthenticated ? <Outlet /> : <Navigate to="/sign-in" />}
           </Suspense>
         </DashboardLayout>
       ),

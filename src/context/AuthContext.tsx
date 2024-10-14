@@ -7,6 +7,7 @@ type loginResult =
   | { success: boolean; error: any; data?: undefined };
 
 interface AuthContextProps {
+  isAuthenticated: boolean;
   user: User | null;
   loginUser: (username: string, password: string) => Promise<loginResult>;
   logoutUser: () => void;
@@ -39,8 +40,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logoutUser = () => setUser(null);
 
+  const isAuthenticated = !!user;
+
   return (
-    <AuthContext.Provider value={{ user, loginUser, logoutUser }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ isAuthenticated, user, loginUser, logoutUser }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 
