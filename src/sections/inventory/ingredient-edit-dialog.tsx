@@ -14,7 +14,7 @@ import { IngredientRowProps } from './ingredient-table-row';
 import { TextField, Button } from '@mui/material';
 import { useState } from 'react';
 import { updateIngredient } from 'src/dao/ingredientDao';
-import { useAuth } from 'src/context/UserContext';
+import { useAuth } from 'src/context/AuthContext';
 
 interface IngredientEditDialogProps {
   open: boolean;

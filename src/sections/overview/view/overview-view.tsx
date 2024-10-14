@@ -6,7 +6,7 @@ import { DashboardContent } from 'src/layouts/dashboard';
 
 import { OrderTimeline } from '../analytics-order-timeline';
 
-import { useAuth } from 'src/context/UserContext';
+import { useAuth } from 'src/context/AuthContext';
 
 export function OverviewView() {
   const { user } = useAuth();

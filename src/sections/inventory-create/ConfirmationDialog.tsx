@@ -13,7 +13,7 @@ import { ResponseSnackbar } from '../inventory/ingredient-snackbar';
 import { Ingredient } from 'src/types/Ingredient';
 
 import { createIngredient } from 'src/dao/ingredientDao';
-import { useAuth } from 'src/context/UserContext';
+import { useAuth } from 'src/context/AuthContext';
 
 interface IngredientDetailRowProps {
   label: string;

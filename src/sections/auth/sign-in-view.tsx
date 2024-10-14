@@ -10,7 +10,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 import { useRouter } from 'src/routes/hooks';
 import { Iconify } from 'src/components/iconify';
-import { useAuth } from 'src/context/UserContext';
+import { useAuth } from 'src/context/AuthContext';
 
 export function SignInView() {
   const router = useRouter();
