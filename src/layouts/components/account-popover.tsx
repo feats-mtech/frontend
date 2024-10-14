@@ -15,7 +15,7 @@ import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
 import { useRouter, usePathname } from 'src/routes/hooks';
 
 import { _myAccount } from 'src/_mock';
-import { useUserContext } from 'src/context/UserContext';
+import { useAuth } from 'src/context/UserContext';
 
 export type AccountPopoverProps = IconButtonProps & {
   data?: {
@@ -27,7 +27,7 @@ export type AccountPopoverProps = IconButtonProps & {
 };
 
 export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps) {
-  const { user, logoutUser } = useUserContext();
+  const { user, logoutUser } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 

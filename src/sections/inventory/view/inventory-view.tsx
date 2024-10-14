@@ -28,10 +28,10 @@ import type { IngredientRowProps } from '../ingredient-table-row';
 import { getIngredientsByUser } from 'src/dao/ingredientDao';
 import { useTable } from 'src/components/table';
 import { ResponseSnackbar } from '../ingredient-snackbar';
-import { useUserContext } from 'src/context/UserContext';
+import { useAuth } from 'src/context/UserContext';
 
 export function InventoryView() {
-  const { user } = useUserContext();
+  const { user } = useAuth();
   const router = useRouter();
   const table = useTable();
 

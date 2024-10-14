@@ -6,10 +6,10 @@ import { DashboardContent } from 'src/layouts/dashboard';
 
 import { OrderTimeline } from '../analytics-order-timeline';
 
-import { useUserContext } from 'src/context/UserContext';
+import { useAuth } from 'src/context/UserContext';
 
 export function OverviewView() {
-  const { user } = useUserContext();
+  const { user } = useAuth();
 
   return (
     <DashboardContent maxWidth="xl">

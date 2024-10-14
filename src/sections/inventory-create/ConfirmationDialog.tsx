@@ -13,7 +13,7 @@ import { ResponseSnackbar } from '../inventory/ingredient-snackbar';
 import { Ingredient } from 'src/types/Ingredient';
 
 import { createIngredient } from 'src/dao/ingredientDao';
-import { useUserContext } from 'src/context/UserContext';
+import { useAuth } from 'src/context/UserContext';
 
 interface IngredientDetailRowProps {
   label: string;
@@ -41,7 +41,7 @@ export const ConfirmationDialog = ({
   handleCloseDialog,
   ingredient,
 }: ConfirmationDialogProps) => {
-  const { user } = useUserContext();
+  const { user } = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);

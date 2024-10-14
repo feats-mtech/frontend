@@ -6,19 +6,19 @@ type loginResult =
   | { success: boolean; data: any; error?: undefined }
   | { success: boolean; error: any; data?: undefined };
 
-interface UserContextProps {
+interface AuthContextProps {
   user: User | null;
   loginUser: (username: string, password: string) => Promise<loginResult>;
   logoutUser: () => void;
 }
 
-const UserContext = createContext<UserContextProps | undefined>(undefined);
+const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
-interface UserProviderProps {
+interface AuthProviderProps {
   children: ReactNode;
 }
 
-export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
   const loginUser = async (username: string, password: string): Promise<loginResult> => {
@@ -40,12 +40,12 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const logoutUser = () => setUser(null);
 
   return (
-    <UserContext.Provider value={{ user, loginUser, logoutUser }}>{children}</UserContext.Provider>
+    <AuthContext.Provider value={{ user, loginUser, logoutUser }}>{children}</AuthContext.Provider>
   );
 };
 
-export const useUserContext = () => {
-  const context = useContext(UserContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
   if (!context) {
     throw new Error('useUserContext must be used within a UserProvider');
   }

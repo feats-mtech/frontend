@@ -10,15 +10,15 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 import { useRouter } from 'src/routes/hooks';
 import { Iconify } from 'src/components/iconify';
-import { useUserContext } from 'src/context/UserContext';
+import { useAuth } from 'src/context/UserContext';
 
 export function SignInView() {
   const router = useRouter();
-  const { loginUser } = useUserContext();
+  const { loginUser } = useAuth();
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [result, setResult] = useState<boolean | null>(null);
 
   const handleSignIn = useCallback(async () => {
@@ -30,13 +30,21 @@ export function SignInView() {
     setResult(false);
   }, [router, username, password]);
 
+  // const navigateToRegisterPage = useCallback(() => {
+  //   router.push('/register');
+  // }, [router]);
+
   return (
     <>
       <Box gap={1.5} display="flex" flexDirection="column" alignItems="center" sx={{ mb: 5 }}>
         <Typography variant="h5">Sign in</Typography>
         <Typography variant="body2" color="text.secondary">
           Don’t have an account?
-          <Link variant="subtitle2" sx={{ ml: 0.5 }}>
+          <Link
+            variant="subtitle2"
+            sx={{ ml: 0.5, cursor: 'pointer' }}
+            // onClick={navigateToRegisterPage}
+          >
             Get started
           </Link>
         </Typography>
