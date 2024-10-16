@@ -2,7 +2,7 @@ import axios, { HttpStatusCode } from 'axios';
 import { Ingredient } from 'src/types/Ingredient';
 import { IngredientRowProps } from 'src/sections/inventory/ingredient-table-row';
 
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const backendUrl = window.RUNTIME_CONFIG?.VITE_BACKEND_URL || import.meta.env.VITE_BACKEND_URL;
 
 export const createIngredient = async (ingredient: Ingredient, userId: number) => {
   try {
