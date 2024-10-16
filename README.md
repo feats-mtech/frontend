@@ -80,7 +80,7 @@ Refer to `.github/workflows/build.yml` file for the detailed steps in the CI pip
 The following diagram illustrates the overview of the CI workflow:
 
 ```mermaid
-flowchart TB
+flowchart LR
     A[Build] --> B[Run tests]
     B --> C[Build Docker Containers]
     C --> D[Push Image to DigitalOcean Container Registry]
