@@ -16,6 +16,8 @@ export const InventoryCreatePage = lazy(() => import('src/pages/inventory-create
 export const SignInPage = lazy(() => import('src/pages/sign-in'));
 export const RegisterPage = lazy(() => import('src/pages/register'));
 export const RecipesPage = lazy(() => import('src/pages/recipes'));
+export const RecipeDetailsPage = lazy(() => import('src/pages/recipe-details'));
+export const MyRecipesPage = lazy(() => import('src/pages/my-recipes'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 
 const renderFallback = (
@@ -47,6 +49,8 @@ export function Router() {
         { path: 'inventory', element: <InventoryPage /> },
         { path: 'inventory/new', element: <InventoryCreatePage /> },
         { path: 'recipes', element: <RecipesPage /> },
+        { path: 'recipes/details/:recipeId', element: <RecipeDetailsPage /> },
+        { path: 'my-recipes', element: <MyRecipesPage /> },
       ],
     },
     {

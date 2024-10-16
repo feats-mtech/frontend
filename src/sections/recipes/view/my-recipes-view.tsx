@@ -13,8 +13,9 @@ import { RecipeFilters } from '../recipe-filters';
 import type { FiltersProps } from '../recipe-filters';
 import { Recipe } from 'src/types/Recipe';
 import Grid from '@mui/material/Grid';
-import { getAllPublishedRecipe } from 'src/dao/recipeDao';
-import Button from '@mui/material/Button';
+import { useAuth } from 'src/context/AuthContext';
+import { getAllRecipeByCreatorId } from 'src/dao/recipeDao';
+import { Button } from '@mui/material';
 import { Iconify } from 'src/components/iconify';
 
 const EXISTING_INGREDIENT_OPTIONS = [{ value: 'yes', label: 'Yes' }];
@@ -31,14 +32,14 @@ const RATING_OPTIONS = ['up4Star', 'up3Star', 'up2Star', 'up1Star'];
 
 const COOKING_TIME_OPTIONS = [
   { value: -1, label: 'Any' },
-  { value: 1800, label: 'Within 30mins' },
-  { value: 3600, label: 'Within an hour' },
-  { value: 86400, label: 'Within a day' },
+  { value: 30, label: 'Within 30mins' },
+  { value: 60, label: 'Within an hour' },
+  { value: 2400, label: 'Within a day' },
 ];
 
 const DIFFICULTY_OPTIONS = ['up4Star', 'up3Star', 'up2Star', 'up1Star'];
 
-const defaultFilters = {
+const defaultFilters: FiltersProps = {
   existingIngredients: [],
   categories: [CATEGORY_OPTIONS[0].value],
   rating: null,
@@ -46,10 +47,11 @@ const defaultFilters = {
   difficulty: null,
 };
 
-export function RecipesView() {
+export function MyRecipesView() {
   const router = useRouter();
+  const { user } = useAuth();
   const [allRecipes, setAllRecipe] = useState<Recipe[]>([]);
-  const [displayRecipes, setDisplayRecipes] = useState<Recipe[]>([]);
+  let [displayRecipes, setDisplayRecipes] = useState<Recipe[]>([]);
   const [sortBy, setSortBy] = useState('featured');
 
   const [openFilter, setOpenFilter] = useState(false);
@@ -58,10 +60,13 @@ export function RecipesView() {
 
   useEffect(() => {
     //constructor
-    getRecipeList();
+    getRecipeListById(user?.id);
   }, []);
-  const getRecipeList = useCallback(async () => {
-    const recipesList = await getAllPublishedRecipe();
+  const getRecipeListById = useCallback(async (userId: number = -1) => {
+    if (userId === -1) {
+      return;
+    }
+    const recipesList = await getAllRecipeByCreatorId(userId);
     setRecipe(recipesList);
   }, []);
   const handleOpenFilter = useCallback(() => {
@@ -91,7 +96,6 @@ export function RecipesView() {
     if (categories.length === 0) {
       filters.categories = ['Any'];
     } else if (categories[categories.length - 1] === 'Any') {
-      //the last selected item is any, thus only Any will be selected
       filters.categories = ['Any'];
     } else {
       filters.categories = filters.categories.filter((value) => value !== 'Any');
@@ -107,10 +111,11 @@ export function RecipesView() {
         (filters.difficulty == null || filters.difficulty >= recipe.difficultyLevel) &&
         (filters.rating == null || filters.rating <= recipe.rating),
     );
+
     filteredRecipes.sort((a, b) => {
       switch (sortBy) {
         case 'newest':
-          return a.updateDatetime > b.updateDatetime ? -1 : 1;
+          return a.updateDatetime.getTime() - b.updateDatetime.getTime();
         case 'ratingDesc':
           return b.rating - a.rating;
         case 'difficultDesc':
@@ -126,14 +131,6 @@ export function RecipesView() {
   const canReset = Object.keys(filters).some(
     (key) => filters[key as keyof FiltersProps] !== defaultFilters[key as keyof FiltersProps],
   );
-  // function goToRecipePage(recipeId: string): void {
-  //   const router = useRouter();
-  //   console.log('Navigating to the desired page... for recipe' + recipeId);
-  //   // Implement your logic here to navigate to the desired page
-  //   console.log('Navigating to the desired page...');
-
-  //   const goToRecipePage = useCallback((path: string) => router.push(path), [router]);
-  // }
 
   const goToRecipePage = useCallback(
     (path: number | string) => {
@@ -146,7 +143,7 @@ export function RecipesView() {
   return (
     <DashboardContent>
       <Typography variant="h4" sx={{ mb: 5 }}>
-        Recipes List
+        My Recipes
       </Typography>
 
       <Grid container>
@@ -194,7 +191,6 @@ export function RecipesView() {
         <Grid container spacing={3}>
           {displayRecipes.map((recipe: Recipe) => (
             <Grid
-              item
               key={recipe.id}
               xs={12}
               sm={6}
