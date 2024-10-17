@@ -1,13 +1,14 @@
-import * as React from 'react';
+import { FormEvent, useState } from 'react';
+
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
-import { Iconify } from 'src/components/iconify';
 import { Collapse, Alert, Typography } from '@mui/material';
-import { useState } from 'react';
+
+import { Iconify } from 'src/components/iconify';
 import { RecipeReviewsList } from './recipe-reviews-list';
 import { RecipeReview } from 'src/types/RecipeReview';
 
@@ -17,8 +18,8 @@ interface RecipeCookDialogProps {
 
 export default function RecipeCookDialog(props: RecipeCookDialogProps): JSX.Element {
   const { recipeId } = props;
-  const [open, setOpen] = React.useState(false);
-  const [reviewPostNotification, setReviewPostNotification] = React.useState(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [reviewPostNotification, setReviewPostNotification] = useState<boolean>(false);
   const [recipeReview, setRecipeReview] = useState<RecipeReview[]>([]);
 
   const handleClickOpen = () => {
@@ -46,7 +47,7 @@ export default function RecipeCookDialog(props: RecipeCookDialogProps): JSX.Elem
     setReviewPostNotification(true);
   };
   return (
-    <React.Fragment>
+    <>
       <Typography variant="h3">
         <Button variant="outlined" onClick={handleClickOpen}>
           <Iconify icon="icon-park-twotone:cook" />
@@ -59,7 +60,7 @@ export default function RecipeCookDialog(props: RecipeCookDialogProps): JSX.Elem
         onClose={handleClose}
         PaperProps={{
           component: 'form',
-          onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
+          onSubmit: (event: FormEvent<HTMLFormElement>) => {
             event.preventDefault();
             handleCommentsSubmit();
           },
@@ -102,6 +103,6 @@ export default function RecipeCookDialog(props: RecipeCookDialogProps): JSX.Elem
           <Button type="submit">Confirm</Button>
         </DialogActions>
       </Dialog>
-    </React.Fragment>
+    </>
   );
 }

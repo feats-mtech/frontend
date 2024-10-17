@@ -1,4 +1,5 @@
-import * as React from 'react';
+import { FormEvent, useCallback, useState } from 'react';
+
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -7,12 +8,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
-import { Iconify } from 'src/components/iconify';
 import { Collapse, Alert } from '@mui/material';
-import { useCallback, useState } from 'react';
-import { deleteRecipeById } from 'src/dao/recipeDao';
+
+import { Iconify } from 'src/components/iconify';
 import { ResponseSnackbar } from '../inventory/ingredient-snackbar';
+
 import { useRouter } from 'src/routes/hooks';
+import { deleteRecipeById } from 'src/dao/recipeDao';
 
 const deleteCode = 'DELETE';
 interface RecipeDeleteDialogProps {
@@ -21,7 +23,7 @@ interface RecipeDeleteDialogProps {
 export default function RecipeDeleteDialog(props: RecipeDeleteDialogProps): JSX.Element {
   const router = useRouter();
   const { recipeId } = props;
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [isDeleteFail, setIsDeleteFail] = useState(false);
   const [deleteErrorNotification, setDeleteErrorNotification] = useState<boolean>(false);
 
@@ -77,7 +79,7 @@ export default function RecipeDeleteDialog(props: RecipeDeleteDialogProps): JSX.
           onClose={handleClose}
           PaperProps={{
             component: 'form',
-            onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
+            onSubmit: (event: FormEvent<HTMLFormElement>) => {
               event.preventDefault();
               const formData = new FormData(event.currentTarget);
               const formJson = Object.fromEntries((formData as any).entries());

@@ -1,6 +1,8 @@
-import { Card, Grid } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+
+import { Card, Grid } from '@mui/material';
+
 import { DashboardContent } from 'src/layouts/dashboard';
 import { Recipe } from 'src/types/Recipe';
 import { RecipeCookingStep } from 'src/types/RecipeCookingStep';
@@ -11,9 +13,10 @@ import { RecipeHeader } from '../recipe-details-header';
 import { RecipeDetails } from '../recipe-info';
 import { defaultIngredient, RecipeIngredientsList } from '../recipe-ingredients-list';
 import { RecipeReviewsList } from '../recipe-reviews-list';
-import { getRecipeById, saveRecipeToDb } from 'src/dao/recipeDao';
-import { useAuth } from 'src/context/AuthContext';
 import { ResponseSnackbar } from 'src/sections/inventory/ingredient-snackbar';
+
+import { useAuth } from 'src/context/AuthContext';
+import { getRecipeById, saveRecipeToDb } from 'src/dao/recipeDao';
 
 export const defaultRecipe = {
   id: -1,
