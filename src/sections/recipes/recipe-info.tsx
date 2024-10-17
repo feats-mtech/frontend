@@ -18,6 +18,7 @@ export const RecipeDetails = (props: RecipeDetailsProps) => {
   useEffect(() => {
     setCuisineTypeOptions([..._cuisineType]);
   }, []);
+
   const updateRecipe = (field: string, value: any) => {
     console.log('name is ' + field + ' value is ' + value);
 
@@ -26,15 +27,16 @@ export const RecipeDetails = (props: RecipeDetailsProps) => {
       [field]: value,
     });
   };
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
     const { name, value } = target;
 
     updateRecipe(name, value);
   };
-  const handleOpen = () => {
-    setOpenCuisineAutoComplete(true);
-  };
+
+  const handleOpen = () => setOpenCuisineAutoComplete(true);
+
   const setDifficultyLevel = (
     event: React.SyntheticEvent<Element, Event>,
     value: number | String | null,

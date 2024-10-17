@@ -50,18 +50,17 @@ const defaultFilters: FiltersProps = {
 export function MyRecipesView() {
   const router = useRouter();
   const { user } = useAuth();
+
   const [allRecipes, setAllRecipe] = useState<Recipe[]>([]);
-  let [displayRecipes, setDisplayRecipes] = useState<Recipe[]>([]);
+  const [displayRecipes, setDisplayRecipes] = useState<Recipe[]>([]);
   const [sortBy, setSortBy] = useState('featured');
-
   const [openFilter, setOpenFilter] = useState(false);
-
   const [filters, setFilters] = useState<FiltersProps>(defaultFilters);
 
   useEffect(() => {
-    //constructor
     getRecipeListById(user?.id);
   }, []);
+
   const getRecipeListById = useCallback(async (userId: number = -1) => {
     if (userId === -1) {
       return;
@@ -69,25 +68,19 @@ export function MyRecipesView() {
     const recipesList = await getAllRecipeByCreatorId(userId);
     setRecipe(recipesList);
   }, []);
-  const handleOpenFilter = useCallback(() => {
-    setOpenFilter(true);
-  }, []);
 
-  const handleCloseFilter = useCallback(() => {
-    setOpenFilter(false);
-  }, []);
+  const handleOpenFilter = useCallback(() => setOpenFilter(true), []);
 
-  const handleSort = useCallback((newSort: string) => {
-    setSortBy(newSort);
-  }, []);
+  const handleCloseFilter = useCallback(() => setOpenFilter(false), []);
+
+  const handleSort = useCallback((newSort: string) => setSortBy(newSort), []);
 
   const handleSetFilters = useCallback((updateState: Partial<FiltersProps>) => {
     setFilters((prevValue) => ({ ...prevValue, ...updateState }));
   }, []);
 
-  const setRecipe = (recipeList: Recipe[]) => {
-    setAllRecipe(recipeList);
-  };
+  const setRecipe = (recipeList: Recipe[]) => setAllRecipe(recipeList);
+
   //used to handle change in filters, any additional logic to the filter need to be done...
   useEffect(() => {
     //need to ensure the filter options is maintained,
@@ -128,6 +121,7 @@ export function MyRecipesView() {
     });
     setDisplayRecipes(filteredRecipes);
   }, [filters, sortBy, allRecipes]);
+
   const canReset = Object.keys(filters).some(
     (key) => filters[key as keyof FiltersProps] !== defaultFilters[key as keyof FiltersProps],
   );

@@ -33,13 +33,10 @@ export default function RecipeDeleteDialog(props: RecipeDeleteDialogProps): JSX.
     setOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleClose = () => setOpen(false);
 
-  const handleCloseSnackbar = () => {
-    setIsDeleteFail(false);
-  };
+  const handleCloseSnackbar = () => setIsDeleteFail(false);
+
   const handleDelete = (codeEntered: string) => {
     if (deleteCode === codeEntered) {
       handleClose();
@@ -49,6 +46,7 @@ export default function RecipeDeleteDialog(props: RecipeDeleteDialogProps): JSX.
       setDeleteErrorNotification(true);
     }
   };
+
   const deleteRecipe = async (recipeId: number) => {
     if (!isNaN(+recipeId)) {
       const result = await deleteRecipeById(+recipeId);
@@ -65,9 +63,10 @@ export default function RecipeDeleteDialog(props: RecipeDeleteDialogProps): JSX.
       setIsDeleteFail(true);
     }
   };
+
   return (
     <>
-      <React.Fragment>
+      <>
         <Button variant="outlined" onClick={handleClickOpen}>
           <Iconify icon="solar:trash-bin-trash-bold" />
           Delete Recipe
@@ -129,7 +128,7 @@ export default function RecipeDeleteDialog(props: RecipeDeleteDialogProps): JSX.
             <Button type="submit">Confirm</Button>
           </DialogActions>
         </Dialog>
-      </React.Fragment>
+      </>
 
       <ResponseSnackbar
         isOpen={isDeleteFail}

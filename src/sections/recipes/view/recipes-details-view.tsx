@@ -1,5 +1,5 @@
 import { Card, Grid } from '@mui/material';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { DashboardContent } from 'src/layouts/dashboard';
 import { Recipe } from 'src/types/Recipe';
@@ -13,7 +13,6 @@ import { defaultIngredient, RecipeIngredientsList } from '../recipe-ingredients-
 import { RecipeReviewsList } from '../recipe-reviews-list';
 import { getRecipeById, saveRecipeToDb } from 'src/dao/recipeDao';
 import { useAuth } from 'src/context/AuthContext';
-import { useRouter } from 'src/routes/hooks';
 import { ResponseSnackbar } from 'src/sections/inventory/ingredient-snackbar';
 
 export const defaultRecipe = {
@@ -38,11 +37,11 @@ export const defaultRecipe = {
 
 export function RecipesDetailView() {
   const { user } = useAuth();
-  const [editable, setEditable] = useState(false);
-  const [creation, setCreation] = useState(false);
-  const [ownerMode, setOwnerMode] = useState(false);
-  const [isUpdatedSuccess, setIsUpdatedSuccess] = useState(false);
-  const [isUpdatedFailure, setIsUpdatedFailure] = useState(false);
+  const [editable, setEditable] = useState<boolean>(false);
+  const [creation, setCreation] = useState<boolean>(false);
+  const [ownerMode, setOwnerMode] = useState<boolean>(false);
+  const [isUpdatedSuccess, setIsUpdatedSuccess] = useState<boolean>(false);
+  const [isUpdatedFailure, setIsUpdatedFailure] = useState<boolean>(false);
 
   const { recipeId } = useParams();
   //values for generating the form.
@@ -51,7 +50,7 @@ export function RecipesDetailView() {
   const [recipeCookingSteps, setRecipeCookingSteps] = useState<RecipeCookingStep[]>([]);
   const [recipeReviews, setRecipeReviews] = useState<RecipeReview[]>([]);
 
-  const [resetRecipe, triggerResetRecipe] = useState(false);
+  const [resetRecipe, triggerResetRecipe] = useState<boolean>(false);
 
   const [orginialRecipe, setOrginialRecipe] = useState<Recipe>(defaultRecipe);
   useEffect(() => {
@@ -96,6 +95,7 @@ export function RecipesDetailView() {
       console.log('error, cant find the recipe...');
     }
   };
+
   const saveRecipe = async () => {
     alert('//TODO: enchance the validation');
     if (recipe.name === '') {
@@ -164,10 +164,12 @@ export function RecipesDetailView() {
     setIsUpdatedSuccess(false);
     setIsUpdatedFailure(false);
   };
-  const excuteRecipe = () => {
-    saveRecipe();
-    setIsUpdatedSuccess(true);
-  };
+
+  // const executeRecipe = () => {
+  //   saveRecipe();
+  //   setIsUpdatedSuccess(true);
+  // };
+
   return (
     <DashboardContent>
       <Card>

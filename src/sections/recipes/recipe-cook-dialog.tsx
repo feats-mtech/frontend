@@ -26,9 +26,7 @@ export default function RecipeCookDialog(props: RecipeCookDialogProps): JSX.Elem
     setOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleClose = () => setOpen(false);
 
   const handleCommentsSubmit = () => {
     const temp = recipeReview[0];

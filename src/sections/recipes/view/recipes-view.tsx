@@ -57,13 +57,14 @@ export function RecipesView() {
   const [filters, setFilters] = useState<FiltersProps>(defaultFilters);
 
   useEffect(() => {
-    //constructor
     getRecipeList();
   }, []);
+
   const getRecipeList = useCallback(async () => {
     const recipesList = await getAllPublishedRecipe();
     setRecipe(recipesList);
   }, []);
+
   const handleOpenFilter = useCallback(() => {
     setOpenFilter(true);
   }, []);
@@ -80,9 +81,8 @@ export function RecipesView() {
     setFilters((prevValue) => ({ ...prevValue, ...updateState }));
   }, []);
 
-  const setRecipe = (recipeList: Recipe[]) => {
-    setAllRecipe(recipeList);
-  };
+  const setRecipe = (recipeList: Recipe[]) => setAllRecipe(recipeList);
+
   //used to handle change in filters, any additional logic to the filter need to be done...
   useEffect(() => {
     //need to ensure the filter options is maintained,

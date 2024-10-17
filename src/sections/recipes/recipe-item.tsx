@@ -81,7 +81,7 @@ export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
         textTransform: 'uppercase',
       }}
     >
-      {recipe.rating} <Rating max={1} readOnly value={1}></Rating>
+      {recipe.rating} <Rating max={1} readOnly value={1} />
     </Label>
   );
   return (

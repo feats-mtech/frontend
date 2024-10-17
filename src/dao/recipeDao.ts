@@ -1,5 +1,4 @@
 import axios, { HttpStatusCode } from 'axios';
-import { RecipesView } from 'src/sections/recipes/view';
 import { Recipe } from 'src/types/Recipe';
 import { RecipeCookingStep } from 'src/types/RecipeCookingStep';
 import { RecipeIngredient } from 'src/types/RecipeIngredient';
@@ -26,6 +25,7 @@ interface RecipeProps {
   ingredients?: RecipeIngredient[];
   reviews?: RecipeReview[];
 }
+
 export const getAllPublishedRecipe = async (): Promise<Recipe[]> => {
   try {
     const result = await axios.get(`${backendUrl}/recipe/published`).then((response) => response);
@@ -65,6 +65,7 @@ export const getRecipeById = async (recipeId: number): Promise<Recipe | null> =>
     return null;
   }
 };
+
 export const getAllRecipeByCreatorId = async (creatorId: number): Promise<Recipe[]> => {
   try {
     const recipesList: Recipe[] = [];
