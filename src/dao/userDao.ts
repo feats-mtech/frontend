@@ -1,7 +1,7 @@
 import axios, { HttpStatusCode } from 'axios';
 import { UserFormDetails } from 'src/types/User';
 
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const backendUrl = window.RUNTIME_CONFIG?.VITE_BACKEND_URL || import.meta.env.VITE_BACKEND_URL;
 
 export const login = async (username: string, password: string) => {
   try {
