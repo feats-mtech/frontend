@@ -4,7 +4,7 @@ import { RecipeCookingStep } from 'src/types/RecipeCookingStep';
 import { RecipeIngredient } from 'src/types/RecipeIngredient';
 import { RecipeReview } from 'src/types/RecipeReview';
 
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const backendUrl = window.RUNTIME_CONFIG?.VITE_BACKEND_URL || import.meta.env.VITE_BACKEND_URL;
 
 interface RecipeProps {
   id: number;
