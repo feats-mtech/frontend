@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   Dialog,
   DialogTitle,
@@ -6,7 +8,7 @@ import {
   DialogActions,
   Button,
 } from '@mui/material';
-import { useState } from 'react';
+
 import { ResponseSnackbar } from 'src/sections/inventory/ingredient-snackbar';
 
 interface RecipeRevertDialogProps {

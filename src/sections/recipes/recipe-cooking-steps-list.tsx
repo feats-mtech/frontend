@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+
 import {
   Typography,
   Collapse,
@@ -8,16 +10,13 @@ import {
   Tooltip,
   Box,
 } from '@mui/material';
-import React, { useState } from 'react';
+
 import { Iconify } from 'src/components/iconify';
 import { RecipeCookingStep } from 'src/types/RecipeCookingStep';
 
-export const defaultCookingStep = {
-  id: 0,
-  recipeId: 0,
-  description: '',
-  imageUrl: 'No Image',
-};
+export function generateDefaultCookingStep(): RecipeCookingStep {
+  return { id: 0, recipeId: 0, description: '', imageUrl: 'No Image' };
+}
 interface RecipeCookingStepListProps {
   editable: boolean;
   recipeCookingSteps: RecipeCookingStep[];
@@ -30,7 +29,7 @@ export const RecipeCookingStepsList = (props: RecipeCookingStepListProps) => {
   const [lastCookingStepNotification, setLastCookingStepNotification] = useState<boolean>(false);
   const addCookingStep = () => {
     setLastCookingStepNotification(false);
-    const temp = defaultCookingStep;
+    const temp = generateDefaultCookingStep();
     setRecipeCookingSteps([...(recipeCookingSteps || []), temp]);
   };
   const deleteCookingStep = (index: number) => {

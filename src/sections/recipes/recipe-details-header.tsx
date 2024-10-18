@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 
 import { Typography, Grid, Button } from '@mui/material';
-import { Iconify } from 'src/components/iconify';
+
 import RecipeDeleteDialog from './recipe-delete-dialog';
 import RecipeCookDialog from './recipe-cook-dialog';
-import { Recipe } from 'src/types/Recipe';
 import RecipeRevertDialog from './recipe-revert-dialog';
+
+import { Iconify } from 'src/components/iconify';
+import { Recipe } from 'src/types/Recipe';
 
 export const defaultCookingStep = {
   id: 0,

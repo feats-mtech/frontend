@@ -5,48 +5,26 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { Button } from '@mui/material';
 
-import { DashboardContent } from 'src/layouts/dashboard';
-
 import { RecipeItem } from '../recipe-item';
 import { RecipeSort } from '../recipe-sort';
 import { RecipeFilters } from '../recipe-filters';
-
 import type { FiltersProps } from '../recipe-filters';
+import {
+  DEFAULT_FILTERS,
+  EXISTING_INGREDIENT_OPTIONS,
+  CATEGORY_OPTIONS,
+  RATING_OPTIONS,
+  COOKING_TIME_OPTIONS,
+  DIFFICULTY_OPTIONS,
+} from '../recipes-filter-config';
+
+import { DashboardContent } from 'src/layouts/dashboard';
 import { Recipe } from 'src/types/Recipe';
 import { useAuth } from 'src/context/AuthContext';
 import { Iconify } from 'src/components/iconify';
-
 import { useRouter } from 'src/routes/hooks';
+
 import { getAllRecipeByCreatorId } from 'src/dao/recipeDao';
-
-const EXISTING_INGREDIENT_OPTIONS = [{ value: 'yes', label: 'Yes' }];
-
-const CATEGORY_OPTIONS = [
-  { value: 'Any', label: 'Any' },
-  { value: 'Chinese', label: 'Chinese' },
-  { value: 'Western', label: 'Western' },
-  { value: 'Japanese', label: 'Japanese' },
-  { value: 'Local', label: 'Local' },
-];
-
-const RATING_OPTIONS = ['up4Star', 'up3Star', 'up2Star', 'up1Star'];
-
-const COOKING_TIME_OPTIONS = [
-  { value: -1, label: 'Any' },
-  { value: 30, label: 'Within 30mins' },
-  { value: 60, label: 'Within an hour' },
-  { value: 2400, label: 'Within a day' },
-];
-
-const DIFFICULTY_OPTIONS = ['up4Star', 'up3Star', 'up2Star', 'up1Star'];
-
-const defaultFilters: FiltersProps = {
-  existingIngredients: [],
-  categories: [CATEGORY_OPTIONS[0].value],
-  rating: null,
-  cookingTime: COOKING_TIME_OPTIONS[0].value,
-  difficulty: null,
-};
 
 export function MyRecipesView() {
   const router = useRouter();
@@ -56,7 +34,7 @@ export function MyRecipesView() {
   const [displayRecipes, setDisplayRecipes] = useState<Recipe[]>([]);
   const [sortBy, setSortBy] = useState('featured');
   const [openFilter, setOpenFilter] = useState(false);
-  const [filters, setFilters] = useState<FiltersProps>(defaultFilters);
+  const [filters, setFilters] = useState<FiltersProps>(DEFAULT_FILTERS);
 
   useEffect(() => {
     getRecipeListById(user?.id);
@@ -124,7 +102,7 @@ export function MyRecipesView() {
   }, [filters, sortBy, allRecipes]);
 
   const canReset = Object.keys(filters).some(
-    (key) => filters[key as keyof FiltersProps] !== defaultFilters[key as keyof FiltersProps],
+    (key) => filters[key as keyof FiltersProps] !== DEFAULT_FILTERS[key as keyof FiltersProps],
   );
 
   const goToRecipePage = useCallback(
@@ -158,7 +136,7 @@ export function MyRecipesView() {
                 openFilter={openFilter}
                 onOpenFilter={handleOpenFilter}
                 onCloseFilter={handleCloseFilter}
-                onResetFilter={() => setFilters(defaultFilters)}
+                onResetFilter={() => setFilters(DEFAULT_FILTERS)}
                 options={{
                   existingIngredients: EXISTING_INGREDIENT_OPTIONS,
                   categories: CATEGORY_OPTIONS,

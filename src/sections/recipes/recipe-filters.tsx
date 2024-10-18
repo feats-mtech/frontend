@@ -52,7 +52,7 @@ export function RecipeFilters({
 }: RecipeFiltersProps) {
   const renderExistingIngredients = (
     <Stack spacing={1}>
-      <Typography variant="subtitle2">Existing Ingredients</Typography>
+      <Typography variant="subtitle2">Existing Ingredients //TODO</Typography>
       <FormGroup>
         {options.existingIngredients.map((option) => (
           <FormControlLabel

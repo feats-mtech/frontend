@@ -3,11 +3,10 @@ import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
-
-import { Label } from 'src/components/label';
 import Rating from '@mui/material/Rating';
 import Grid from '@mui/material/Grid';
 
+import { Label } from 'src/components/label';
 export type RecipeItemProps = {
   id: number;
   creatorId: number;

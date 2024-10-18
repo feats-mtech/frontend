@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from 'react';
+
 import {
   Typography,
   Collapse,
@@ -8,19 +10,21 @@ import {
   TextField,
   Tooltip,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+
+import { _uomType, _ingredientType } from './recipes-filter-config';
+
 import { Iconify } from 'src/components/iconify';
 import { RecipeIngredient } from 'src/types/RecipeIngredient';
 
-const _uomType = ['Kg', 'g', 'piece', 'teaspoon', 'ml'];
-export const _ingredientType = ['Apple', 'Banana', 'Orange', 'Pineapple', 'Strawberry'];
-export const defaultIngredient = {
-  id: 0,
-  recipeId: 0,
-  name: '',
-  quantity: 0,
-  uom: '',
-};
+export function generateDefaultIngredient(): RecipeIngredient {
+  return {
+    id: 0,
+    recipeId: 0,
+    name: '',
+    quantity: 0,
+    uom: '',
+  };
+}
 interface RecipeIngredientsListProps {
   recipeIngredients: RecipeIngredient[];
   setRecipeIngredients: React.Dispatch<React.SetStateAction<RecipeIngredient[]>>;
@@ -41,10 +45,12 @@ export const RecipeIngredientsList = (props: RecipeIngredientsListProps) => {
 
   const addIngredient = () => {
     setLastIngredientNotification(false);
-    const temp = defaultIngredient;
+    const temp = generateDefaultIngredient();
     setRecipeIngredients([...(recipeIngredients || []), temp]);
+    recipeIngredients.map((ingredient, index) =>
+      console.log('for ' + index + ': ' + ingredient.name),
+    );
   };
-
   const deleteIngredient = (index: number) => {
     if (recipeIngredients?.length === 1) {
       setLastIngredientNotification(true);
@@ -52,13 +58,14 @@ export const RecipeIngredientsList = (props: RecipeIngredientsListProps) => {
     }
     setRecipeIngredients(recipeIngredients?.filter((_, i) => i !== index));
   };
-
   const updateIngredient = (index: number, field: string, value: any) => {
+    console.log('index:' + index + 'field: ' + field + 'value:', value);
     const temp = recipeIngredients ? [...recipeIngredients] : [];
     const ingredientRecord = temp.find((_, i) => i === index);
     if (!ingredientRecord) {
       return;
     }
+    console.log('ingredientRecord : ' + ingredientRecord.id);
     (ingredientRecord as any)[field] = value;
 
     setRecipeIngredients(temp);

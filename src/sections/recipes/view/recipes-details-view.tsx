@@ -3,40 +3,43 @@ import { useParams } from 'react-router-dom';
 
 import { Card, Grid } from '@mui/material';
 
+import { generateDefaultCookingStep, RecipeCookingStepsList } from '../recipe-cooking-steps-list';
+import { RecipeHeader } from '../recipe-details-header';
+import { RecipeDetails } from '../recipe-info';
+import { generateDefaultIngredient, RecipeIngredientsList } from '../recipe-ingredients-list';
+import { RecipeReviewsList } from '../recipe-reviews-list';
+
 import { DashboardContent } from 'src/layouts/dashboard';
 import { Recipe } from 'src/types/Recipe';
 import { RecipeCookingStep } from 'src/types/RecipeCookingStep';
 import { RecipeIngredient } from 'src/types/RecipeIngredient';
 import { RecipeReview } from 'src/types/RecipeReview';
-import { defaultCookingStep, RecipeCookingStepsList } from '../recipe-cooking-steps-list';
-import { RecipeHeader } from '../recipe-details-header';
-import { RecipeDetails } from '../recipe-info';
-import { defaultIngredient, RecipeIngredientsList } from '../recipe-ingredients-list';
-import { RecipeReviewsList } from '../recipe-reviews-list';
+import { useAuth } from 'src/context/AuthContext';
 import { ResponseSnackbar } from 'src/sections/inventory/ingredient-snackbar';
 
-import { useAuth } from 'src/context/AuthContext';
 import { getRecipeById, saveRecipeToDb } from 'src/dao/recipeDao';
 
-export const defaultRecipe = {
-  id: -1,
-  creatorId: -1,
-  name: '',
-  image: '',
-  description: '',
-  cookingTimeInSec: 0,
-  difficultyLevel: 0,
-  cuisine: '',
-  rating: 0,
-  status: -1,
+export function generateDefaultRecipe(): Recipe {
+  return {
+    id: -1,
+    creatorId: -1,
+    name: '',
+    image: '',
+    description: '',
+    cookingTimeInSec: 0,
+    difficultyLevel: 0,
+    cuisine: '',
+    rating: 0,
+    status: -1,
 
-  createDatetime: new Date(),
-  updateDatetime: new Date(),
+    createDatetime: new Date(),
+    updateDatetime: new Date(),
 
-  recipeCookingSteps: [],
-  recipeIngredients: [],
-  recipeReviews: [],
-};
+    cookingSteps: [],
+    ingredients: [],
+    reviews: [],
+  };
+}
 
 export function RecipesDetailView() {
   const { user } = useAuth();
@@ -48,14 +51,14 @@ export function RecipesDetailView() {
 
   const { recipeId } = useParams();
   //values for generating the form.
-  const [recipe, setRecipe] = useState<Recipe>(defaultRecipe);
+  const [recipe, setRecipe] = useState<Recipe>(generateDefaultRecipe());
   const [recipeIngredients, setRecipeIngredients] = useState<RecipeIngredient[]>([]);
   const [recipeCookingSteps, setRecipeCookingSteps] = useState<RecipeCookingStep[]>([]);
   const [recipeReviews, setRecipeReviews] = useState<RecipeReview[]>([]);
 
   const [resetRecipe, triggerResetRecipe] = useState<boolean>(false);
 
-  const [orginialRecipe, setOrginialRecipe] = useState<Recipe>(defaultRecipe);
+  const [orginialRecipe, setOrginialRecipe] = useState<Recipe>(generateDefaultRecipe());
   useEffect(() => {
     //constructor
     //recipeId = new, then it is a new recipe
@@ -64,7 +67,6 @@ export function RecipesDetailView() {
 
     getRecipe(recipeId);
   }, []);
-
   useEffect(() => {
     if (resetRecipe) {
       setRecipe(orginialRecipe);
@@ -84,12 +86,12 @@ export function RecipesDetailView() {
     if (recipeId === 'new') {
       setCreation(true);
       setEditable(true);
-      setRecipeCookingSteps([defaultCookingStep]);
-      setRecipeIngredients([defaultIngredient]);
+      setRecipeCookingSteps([...[], generateDefaultCookingStep()]);
+      setRecipeIngredients([...[], generateDefaultIngredient()]);
       return;
     } else if (!isNaN(+recipeId)) {
       const recipesDetails = await getRecipeById(+recipeId);
-      setOrginialRecipe(recipesDetails ? recipesDetails : defaultRecipe);
+      setOrginialRecipe(recipesDetails ? recipesDetails : generateDefaultRecipe());
       triggerResetRecipe(true);
 
       setOwnerMode(user ? user.id === recipesDetails?.creatorId : false);

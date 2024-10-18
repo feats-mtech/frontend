@@ -8,8 +8,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import { Collapse, Alert, Typography } from '@mui/material';
 
-import { Iconify } from 'src/components/iconify';
 import { RecipeReviewsList } from './recipe-reviews-list';
+
+import { Iconify } from 'src/components/iconify';
 import { RecipeReview } from 'src/types/RecipeReview';
 
 interface RecipeCookDialogProps {

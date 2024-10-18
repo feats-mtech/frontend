@@ -1,5 +1,7 @@
-import { Typography, Grid, Autocomplete, TextField, Rating, Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+
+import { Typography, Grid, Autocomplete, TextField, Rating, Box } from '@mui/material';
+
 import { Recipe } from 'src/types/Recipe';
 
 interface RecipeDetailsProps {

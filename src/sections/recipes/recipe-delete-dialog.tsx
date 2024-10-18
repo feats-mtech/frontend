@@ -10,12 +10,12 @@ import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import { Collapse, Alert } from '@mui/material';
 
-import { Iconify } from 'src/components/iconify';
 import { ResponseSnackbar } from '../inventory/ingredient-snackbar';
 
+import { Iconify } from 'src/components/iconify';
 import { useRouter } from 'src/routes/hooks';
-import { deleteRecipeById } from 'src/dao/recipeDao';
 
+import { deleteRecipeById } from 'src/dao/recipeDao';
 const deleteCode = 'DELETE';
 interface RecipeDeleteDialogProps {
   recipeId: number;
