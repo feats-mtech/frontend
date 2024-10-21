@@ -90,12 +90,11 @@ const NotificationsPopover: React.FC = () => {
 
   return (
     <>
-      <IconButton color={open ? 'primary' : 'default'} onClick={handleOpenPopover}>
+      <IconButton color={anchorEl ? 'primary' : 'default'} onClick={handleOpenPopover}>
         <Badge badgeContent={unreadCount} color="error">
           <Iconify icon="solar:bell-bing-bold-duotone" width={24} height={24} />
         </Badge>
       </IconButton>
-
       <Popover
         open={open}
         anchorEl={anchorEl}

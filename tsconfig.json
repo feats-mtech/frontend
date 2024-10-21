@@ -26,7 +26,7 @@
     "strictNullChecks": true,
     "noImplicitAny": true,
     "noImplicitThis": true
-   },
+  },
   "include": ["src"],
   "exclude": ["node_modules"],
   "references": [
