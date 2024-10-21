@@ -25,7 +25,13 @@
     "useUnknownInCatchVariables": false,
     "strictNullChecks": true,
     "noImplicitAny": true,
-    "noImplicitThis": true
+    "noImplicitThis": true,
+
+    "types": ["react", "react-dom"],
+    "typeRoots": ["./node_modules/@types"],
+    "paths": {
+      "react": ["./node_modules/@types/react"]
+    }
   },
   "include": ["src"],
   "exclude": ["node_modules"],
