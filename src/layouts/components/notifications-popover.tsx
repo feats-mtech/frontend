@@ -17,6 +17,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import ListItemIcon from '@mui/material/ListItemIcon';
 
 const NotificationsPopover: React.FC = () => {
   const { isAuthenticated, user } = useAuth();
@@ -30,6 +31,14 @@ const NotificationsPopover: React.FC = () => {
     if (isAuthenticated && user) {
       fetchNotifications();
       fetchUnreadCount();
+      const interval = setInterval(() => {
+        fetchUnreadCount();
+        if (anchorEl) {
+          fetchNotifications();
+        }
+      }, 60000);
+
+      return () => clearInterval(interval);
     }
   }, [isAuthenticated, user]);
 
@@ -37,11 +46,15 @@ const NotificationsPopover: React.FC = () => {
     if (!user) return;
     setLoading(true);
     setError(null);
-    const result = await getNotifications(user.id, 5);
-    if (result.success && result.data) {
-      setNotifications(result.data);
-    } else {
-      setError('Failed to load notifications. Please try again later.');
+    try {
+      const result = await getNotifications(user.id, 5);
+      if (result.success && result.data) {
+        setNotifications(result.data);
+      } else {
+        setError('Failed to load notifications');
+      }
+    } catch (err) {
+      setError('Error loading notifications');
     }
     setLoading(false);
   };
@@ -56,25 +69,38 @@ const NotificationsPopover: React.FC = () => {
     }
   };
 
+  const formatTime = (dateTime: string) => {
+    const date = new Date(dateTime);
+    const now = new Date();
+    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
+
+    if (diffInMinutes < 1) return 'Just now';
+    if (diffInMinutes < 60) return `${diffInMinutes} minutes ago`;
+    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)} hours ago`;
+    return date.toLocaleDateString();
+  };
+
   const handleMarkAsRead = async (notificationId: number) => {
     if (!user) return;
-    const result = await markAsRead(notificationId, user.id);
-    if (result.success) {
-      fetchNotifications();
-      fetchUnreadCount();
-    } else {
-      setError('Failed to mark notification as read. Please try again.');
+    try {
+      const result = await markAsRead(notificationId, user.id);
+      if (result.success) {
+        await Promise.all([fetchNotifications(), fetchUnreadCount()]);
+      }
+    } catch (err) {
+      setError('Failed to mark as read');
     }
   };
 
   const handleMarkAllAsRead = async () => {
     if (!user) return;
-    const result = await markAllAsRead(user.id);
-    if (result.success) {
-      fetchNotifications();
-      fetchUnreadCount();
-    } else {
-      setError('Failed to mark all notifications as read. Please try again.');
+    try {
+      const result = await markAllAsRead(user.id);
+      if (result.success) {
+        await Promise.all([fetchNotifications(), fetchUnreadCount()]);
+      }
+    } catch (err) {
+      setError('Failed to mark all as read');
     }
   };
 
@@ -96,7 +122,7 @@ const NotificationsPopover: React.FC = () => {
         </Badge>
       </IconButton>
       <Popover
-        open={open}
+        open={Boolean(anchorEl)}
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
@@ -108,55 +134,103 @@ const NotificationsPopover: React.FC = () => {
           horizontal: 'right',
         }}
       >
-        <Box sx={{ width: 300, maxHeight: 400, overflow: 'auto' }}>
+        <Box sx={{ width: 360, maxHeight: 400, overflow: 'auto' }}>
           <Box
-            sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+            sx={{
+              p: 2,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              borderBottom: 1,
+              borderColor: 'divider',
+            }}
           >
             <Typography variant="h6">Notifications</Typography>
             <Button onClick={handleMarkAllAsRead} disabled={unreadCount === 0} size="small">
               Mark all as read
             </Button>
           </Box>
-          {loading && <Typography sx={{ p: 2 }}>Loading notifications...</Typography>}
-          {error && <Typography sx={{ p: 2, color: 'error.main' }}>{error}</Typography>}
-          {!loading && !error && (
-            <List>
-              {notifications.map((notification) => (
-                <ListItem
-                  key={notification.id}
-                  sx={{
-                    bgcolor: notification.isRead ? 'background.default' : 'action.hover',
-                    '&:hover': {
-                      bgcolor: 'action.hover',
-                    },
-                  }}
-                >
-                  <ListItemText
-                    primary={notification.title}
-                    secondary={
-                      <>
-                        <Typography component="span" variant="body2" color="text.primary">
-                          {notification.content}
-                        </Typography>
-                        <Typography component="p" variant="caption" color="text.secondary">
-                          {new Date(notification.createDateTime).toLocaleString()}
-                        </Typography>
-                        {!notification.isRead && (
-                          <Button
-                            onClick={() => handleMarkAsRead(notification.id)}
-                            size="small"
-                            sx={{ mt: 1 }}
-                          >
-                            Mark as read
-                          </Button>
-                        )}
-                      </>
-                    }
-                  />
-                </ListItem>
-              ))}
-            </List>
+          {loading && (
+            <Box sx={{ p: 2, textAlign: 'center' }}>
+              <Typography>Loading notifications...</Typography>
+            </Box>
           )}
+          {error && (
+            <Box sx={{ p: 2, textAlign: 'center' }}>
+              <Typography color="error">{error}</Typography>
+            </Box>
+          )}
+          {!loading && !error && notifications.length === 0 && (
+            <Box sx={{ p: 3, textAlign: 'center' }}>
+              <Iconify
+                icon="solar:bell-off-bold"
+                style={{
+                  width: 40,
+                  height: 40,
+                  color: 'rgba(145, 158, 171, 0.8)', // 对应 text.secondary 的颜色
+                  marginBottom: 16, // 对应 mb: 2
+                }}
+              />
+              <Typography variant="subtitle1" color="text.secondary">
+                No notifications
+              </Typography>
+            </Box>
+          )}
+
+          <List disablePadding>
+            {notifications.map((notification) => (
+              <ListItem
+                key={notification.id}
+                sx={{
+                  py: 1.5,
+                  px: 2.5,
+                  bgcolor: notification.isRead ? 'transparent' : 'action.hover',
+                  borderBottom: 1,
+                  borderColor: 'divider',
+                }}
+              >
+                <ListItemIcon sx={{ mt: 0.5 }}>
+                  <Iconify icon="mdi:information" color="primary.main" width={24} />
+                </ListItemIcon>
+
+                <ListItemText
+                  primary={notification.title}
+                  secondary={
+                    <Box>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: 'text.primary',
+                          whiteSpace: 'pre-wrap',
+                          mb: 0.5,
+                        }}
+                      >
+                        {notification.content}
+                      </Typography>
+
+                      <Typography variant="caption" sx={{ color: 'text.disabled' }}>
+                        {formatTime(notification.createDateTime)}
+                      </Typography>
+
+                      {!notification.isRead && (
+                        <Button
+                          size="small"
+                          sx={{ mt: 0.5 }}
+                          onClick={() => handleMarkAsRead(notification.id)}
+                        >
+                          Mark as read
+                        </Button>
+                      )}
+                    </Box>
+                  }
+                  primaryTypographyProps={{
+                    variant: 'subtitle2',
+                    sx: { mb: 0.5 },
+                  }}
+                />
+              </ListItem>
+            ))}
+          </List>
         </Box>
       </Popover>
     </>
