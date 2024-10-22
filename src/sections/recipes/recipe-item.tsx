@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -7,6 +9,9 @@ import Rating from '@mui/material/Rating';
 import Grid from '@mui/material/Grid';
 
 import { Label } from 'src/components/label';
+import { fDateTime } from 'src/utils/format-time';
+import { useRouter } from 'src/routes/hooks/use-router';
+
 export type RecipeItemProps = {
   id: number;
   creatorId: number;
@@ -23,6 +28,7 @@ export type RecipeItemProps = {
 };
 
 export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
+  const router = useRouter();
   const getGaugeColor = (value: string) => {
     switch (value) {
       case '1':
@@ -62,9 +68,12 @@ export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
         top: 0,
         width: 1,
         height: 1,
+        ml: 0.5,
+        cursor: 'pointer',
         objectFit: 'cover',
         position: 'absolute',
       }}
+      onClick={() => goToRecipePage(recipe.id)}
     />
   );
 
@@ -82,6 +91,14 @@ export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
     >
       {recipe.rating} <Rating max={1} readOnly value={1} />
     </Label>
+  );
+
+  const goToRecipePage = useCallback(
+    (path: number | string) => {
+      router.push('/recipes/details/' + path);
+    },
+
+    [router],
   );
   return (
     <Card>
@@ -121,12 +138,10 @@ export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
             />
           </Grid>
         </Grid>
-        <Typography variant="body2">Difficult: {recipe.difficultyLevel}</Typography>
-        <Typography variant="body2">
-          updateDateTime: {recipe.updateDatetime.toUTCString()}
-        </Typography>
-        <Typography variant="body2" noWrap>
-          Description: {recipe.description}
+        <Typography variant="body1">{recipe.description}</Typography>
+
+        <Typography variant="caption" textAlign={'right'}>
+          Last Updated: {fDateTime(recipe.updateDatetime)}
         </Typography>
       </Stack>
     </Card>

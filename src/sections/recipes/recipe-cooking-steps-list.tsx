@@ -90,7 +90,7 @@ export const RecipeCookingStepsList = (props: RecipeCookingStepListProps) => {
                   {index + 1}
                 </Typography>
               </Grid>
-              <Grid item sm={2}>
+              {/* <Grid item sm={2}>
                 <Box
                   component="img"
                   alt={cookingStep.imageUrl}
@@ -102,15 +102,15 @@ export const RecipeCookingStepsList = (props: RecipeCookingStepListProps) => {
                     borderBlockWidth: 1,
                   }}
                 />
-              </Grid>
-              <Grid item sm={8}>
+              </Grid> */}
+              <Grid item sm={10}>
                 <TextField
                   fullWidth={true}
                   id="outlined-textarea"
                   label="Step Description"
                   placeholder="Cooking Step Description"
                   multiline
-                  rows={5}
+                  rows={3}
                   name="description"
                   disabled={!editable}
                   value={cookingStep ? cookingStep.description : ''}

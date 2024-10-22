@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+
 import { RecipeItem } from '../recipe-item';
 import { RecipeSort } from '../recipe-sort';
 import { RecipeFilters } from '../recipe-filters';
@@ -28,11 +29,12 @@ export function RecipesView() {
   const router = useRouter();
   const [allRecipes, setAllRecipe] = useState<Recipe[]>([]);
   const [displayRecipes, setDisplayRecipes] = useState<Recipe[]>([]);
-  const [sortBy, setSortBy] = useState('featured');
+  const [sortBy, setSortBy] = useState('Newest');
 
   const [openFilter, setOpenFilter] = useState(false);
 
   const [filters, setFilters] = useState<FiltersProps>(DEFAULT_FILTERS);
+  const [isDeletedSuccess, setIsDeletedSuccess] = useState<boolean>(false);
 
   useEffect(() => {
     getRecipeList();
@@ -85,10 +87,11 @@ export function RecipesView() {
         (filters.difficulty == null || filters.difficulty >= recipe.difficultyLevel) &&
         (filters.rating == null || filters.rating <= recipe.rating),
     );
+
     filteredRecipes.sort((a, b) => {
-      switch (sortBy) {
+      switch (sortBy.toLowerCase()) {
         case 'newest':
-          return a.updateDatetime > b.updateDatetime ? -1 : 1;
+          return b.updateDatetime.getTime() - a.updateDatetime.getTime();
         case 'ratingDesc':
           return b.rating - a.rating;
         case 'difficultDesc':
@@ -121,6 +124,9 @@ export function RecipesView() {
     [router],
   );
 
+  const handleCloseSnackbar = () => {
+    setIsDeletedSuccess(false);
+  };
   return (
     <DashboardContent>
       <Typography variant="h4" sx={{ mb: 5 }}>
@@ -171,15 +177,7 @@ export function RecipesView() {
       {displayRecipes.length !== 0 ? (
         <Grid container spacing={3}>
           {displayRecipes.map((recipe: Recipe) => (
-            <Grid
-              item
-              key={recipe.id}
-              xs={12}
-              sm={6}
-              md={3}
-              padding={1}
-              onClick={() => goToRecipePage(recipe.id)}
-            >
+            <Grid item key={recipe.id} xs={12} sm={8} md={4} padding={1}>
               <RecipeItem recipe={recipe} />
             </Grid>
           ))}

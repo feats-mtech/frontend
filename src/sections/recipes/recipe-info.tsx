@@ -14,7 +14,6 @@ export const _cuisineType = ['Chinese', 'Western', 'Japanese', 'Local', 'Others'
 export const RecipeDetails = (props: RecipeDetailsProps) => {
   const { recipe, setRecipe, editable } = props;
 
-  const [openCuisineAutoComplete, setOpenCuisineAutoComplete] = useState(false);
   const [cuisineTypeOptions, setCuisineTypeOptions] = useState<readonly string[]>([]);
 
   useEffect(() => {
@@ -22,8 +21,9 @@ export const RecipeDetails = (props: RecipeDetailsProps) => {
   }, []);
 
   const updateRecipe = (field: string, value: any) => {
-    console.log('name is ' + field + ' value is ' + value);
-
+    // if (field === 'cookingTimeInSec') {
+    //   value = value * 60;
+    // }
     setRecipe({
       ...recipe,
       [field]: value,
@@ -36,8 +36,6 @@ export const RecipeDetails = (props: RecipeDetailsProps) => {
 
     updateRecipe(name, value);
   };
-
-  const handleOpen = () => setOpenCuisineAutoComplete(true);
 
   const setDifficultyLevel = (
     event: React.SyntheticEvent<Element, Event>,
@@ -66,6 +64,16 @@ export const RecipeDetails = (props: RecipeDetailsProps) => {
             padding: 1,
           }}
         />
+        {editable && (
+          <TextField
+            id="outlined-required"
+            label="Image URL"
+            fullWidth={true}
+            name="image"
+            value={recipe ? recipe.image : ''}
+            onChange={handleChange}
+          />
+        )}
       </Grid>
       <Grid item xs={7} sm={8}>
         <Grid container spacing={2} alignItems={'center'}>
@@ -123,6 +131,21 @@ export const RecipeDetails = (props: RecipeDetailsProps) => {
               disabled={!editable}
               rows={4}
               value={recipe ? recipe.description : ''}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={2}>
+            <Typography variant="subtitle1">Cooking Duration (in mins)</Typography>
+          </Grid>
+          <Grid item xs={10}>
+            <TextField
+              required
+              type="number"
+              disabled={!editable}
+              placeholder={'e.g. 60'}
+              label="Quantity"
+              name="cookingTimeInSec"
+              value={recipe ? recipe.cookingTimeInSec : 0}
               onChange={handleChange}
             />
           </Grid>

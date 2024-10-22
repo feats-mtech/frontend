@@ -55,7 +55,7 @@ export const RecipeReviewsList = (props: RecipeReviewsListProps) => {
               {recipeReviews?.map((review: RecipeReview, index) => (
                 <Grid key={review.id} xs={12} paddingBottom={2}>
                   <Grid container spacing={1}>
-                    <Grid xs={10}>
+                    <Grid item xs={10}>
                       <Typography variant="h6">
                         {review.creatorId + '//TODO : need to pull the creator name instead'}
                       </Typography>

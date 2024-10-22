@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useContext } from 'react';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -29,10 +29,9 @@ import { getAllRecipeByCreatorId } from 'src/dao/recipeDao';
 export function MyRecipesView() {
   const router = useRouter();
   const { user } = useAuth();
-
   const [allRecipes, setAllRecipe] = useState<Recipe[]>([]);
   const [displayRecipes, setDisplayRecipes] = useState<Recipe[]>([]);
-  const [sortBy, setSortBy] = useState('featured');
+  const [sortBy, setSortBy] = useState('Newest');
   const [openFilter, setOpenFilter] = useState(false);
   const [filters, setFilters] = useState<FiltersProps>(DEFAULT_FILTERS);
 
@@ -83,11 +82,10 @@ export function MyRecipesView() {
         (filters.difficulty == null || filters.difficulty >= recipe.difficultyLevel) &&
         (filters.rating == null || filters.rating <= recipe.rating),
     );
-
     filteredRecipes.sort((a, b) => {
-      switch (sortBy) {
+      switch (sortBy.toLowerCase()) {
         case 'newest':
-          return a.updateDatetime.getTime() - b.updateDatetime.getTime();
+          return b.updateDatetime.getTime() - a.updateDatetime.getTime();
         case 'ratingDesc':
           return b.rating - a.rating;
         case 'difficultDesc':
@@ -163,14 +161,7 @@ export function MyRecipesView() {
       {displayRecipes.length !== 0 ? (
         <Grid container spacing={3}>
           {displayRecipes.map((recipe: Recipe) => (
-            <Grid
-              key={recipe.id}
-              xs={12}
-              sm={6}
-              md={3}
-              padding={1}
-              onClick={() => goToRecipePage(recipe.id)}
-            >
+            <Grid key={recipe.id} xs={12} sm={8} md={4} padding={1}>
               <RecipeItem recipe={recipe} />
             </Grid>
           ))}

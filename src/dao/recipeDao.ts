@@ -4,7 +4,13 @@ import { RecipeCookingStep } from 'src/types/RecipeCookingStep';
 import { RecipeIngredient } from 'src/types/RecipeIngredient';
 import { RecipeReview } from 'src/types/RecipeReview';
 
-const backendUrl = window.RUNTIME_CONFIG?.VITE_BACKEND_URL || import.meta.env.VITE_BACKEND_URL;
+const backendAddress =
+  window.RUNTIME_CONFIG?.VITE_BACKEND_RECIPE_URL || import.meta.env.VITE_BACKEND_RECIPE_URL;
+
+const backendPort =
+  window.RUNTIME_CONFIG?.VITE_BACKEND_RECIPE_PORT || import.meta.env.VITE_BACKEND_RECIPE_PORT;
+
+const backendUrl = `${backendAddress}:${backendPort}`;
 
 interface RecipeProps {
   id: number;
@@ -31,7 +37,7 @@ export const getAllPublishedRecipe = async (): Promise<Recipe[]> => {
     const result = await axios.get(`${backendUrl}/recipe/published`).then((response) => response);
 
     const recipesList: Recipe[] = [];
-    if (result.status === HttpStatusCode.Ok) {
+    if (checkStatus(result.status)) {
       result.data.map((item: RecipeProps) => {
         const temp: Recipe = {
           ...item,
@@ -51,7 +57,7 @@ export const getAllPublishedRecipe = async (): Promise<Recipe[]> => {
 export const getRecipeById = async (recipeId: number): Promise<Recipe | null> => {
   try {
     const result = await axios.get(`${backendUrl}/recipe/${recipeId}`).then((response) => response);
-    if (result.status === HttpStatusCode.Ok) {
+    if (checkStatus(result.status)) {
       const temp: Recipe = {
         ...result.data,
         createDatetime: new Date(result.data.createDatetime),
@@ -72,7 +78,7 @@ export const getAllRecipeByCreatorId = async (creatorId: number): Promise<Recipe
     const result = await axios
       .get(`${backendUrl}/recipe/creator/${creatorId}`)
       .then((response) => response);
-    if (result.status === HttpStatusCode.Ok) {
+    if (checkStatus(result.status)) {
       result.data.map((item: RecipeProps) => {
         const temp: Recipe = {
           ...item,
@@ -94,34 +100,60 @@ export const deleteRecipeById = async (recipeId: number) => {
     const result = await axios
       .delete(`${backendUrl}/recipe/${recipeId}`)
       .then((response) => response);
-    return { success: result.status === HttpStatusCode.Ok, data: result.data };
+    return { success: checkStatus(result.status), data: result.data };
   } catch (error) {
     return { success: false, error: error.message };
   }
 };
 
-export const saveRecipeToDb = async (recipe: Recipe) => {
+export const updateRecipeToDb = async (recipe: Recipe) => {
   try {
-    const result = await axios
-      .put(`${backendUrl}/recipe/${recipe.id}`, {
-        id: recipe.id,
-        creatorId: recipe.creatorId,
-        name: recipe.name,
-        image: recipe.image,
-        description: recipe.description,
-        cookingTimeInSec: recipe.cookingTimeInSec,
-        difficultyLevel: recipe.difficultyLevel,
-        rating: recipe.rating,
-        status: recipe.status,
-        createDatetime: recipe.createDatetime,
-        updateDatetime: recipe.updateDatetime,
-        ingredients: recipe.ingredients,
-        cookingSteps: recipe.cookingSteps,
-        cuisine: recipe.cuisine,
-      })
-      .then((response) => response);
-    return { success: result.status === HttpStatusCode.Ok, data: result.data };
+    var result;
+    if (recipe.id === -1) {
+      result = await axios
+        .post(`${backendUrl}/recipe`, {
+          creatorId: recipe.creatorId,
+          name: recipe.name,
+          image: recipe.image,
+          description: recipe.description,
+          cookingTimeInSec: recipe.cookingTimeInSec,
+          difficultyLevel: recipe.difficultyLevel,
+          rating: recipe.rating,
+          status: recipe.status,
+          createDatetime: recipe.createDatetime,
+          updateDatetime: recipe.updateDatetime,
+          ingredients: recipe.ingredients,
+          cookingSteps: recipe.cookingSteps,
+          cuisine: recipe.cuisine,
+        })
+        .then((response) => response);
+    } else {
+      result = await axios
+        .put(`${backendUrl}/recipe/${recipe.id}`, {
+          id: recipe.id,
+          creatorId: recipe.creatorId,
+          name: recipe.name,
+          image: recipe.image,
+          description: recipe.description,
+          cookingTimeInSec: recipe.cookingTimeInSec,
+          difficultyLevel: recipe.difficultyLevel,
+          rating: recipe.rating,
+          status: recipe.status,
+          createDatetime: recipe.createDatetime,
+          updateDatetime: recipe.updateDatetime,
+          ingredients: recipe.ingredients,
+          cookingSteps: recipe.cookingSteps,
+          cuisine: recipe.cuisine,
+        })
+        .then((response) => response);
+    }
+
+    return { success: checkStatus(result.status), data: result.data };
   } catch (error) {
     return { success: false, error: error.message };
   }
+};
+
+const checkStatus = (code: number): boolean => {
+  return code >= 200 && code < 300;
 };

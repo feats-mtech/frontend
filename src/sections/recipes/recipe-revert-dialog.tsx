@@ -14,7 +14,7 @@ import { ResponseSnackbar } from 'src/sections/inventory/ingredient-snackbar';
 interface RecipeRevertDialogProps {
   openDialog: boolean;
   handleCloseDialog: () => void;
-  triggerResetRecipe: React.Dispatch<React.SetStateAction<boolean>>;
+  triggerResetRecipe: () => void;
 }
 
 export default function RecipeRevertDialog(props: RecipeRevertDialogProps): JSX.Element {
@@ -27,7 +27,7 @@ export default function RecipeRevertDialog(props: RecipeRevertDialogProps): JSX.
     setLoading(true);
 
     setIsSuccess(true);
-    triggerResetRecipe(true);
+    triggerResetRecipe();
     setLoading(false);
     handleCloseDialog();
   };

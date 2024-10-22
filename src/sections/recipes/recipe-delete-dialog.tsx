@@ -16,6 +16,7 @@ import { Iconify } from 'src/components/iconify';
 import { useRouter } from 'src/routes/hooks';
 
 import { deleteRecipeById } from 'src/dao/recipeDao';
+
 const deleteCode = 'DELETE';
 interface RecipeDeleteDialogProps {
   recipeId: number;
@@ -26,8 +27,10 @@ export default function RecipeDeleteDialog(props: RecipeDeleteDialogProps): JSX.
   const [open, setOpen] = useState(false);
   const [isDeleteFail, setIsDeleteFail] = useState(false);
   const [deleteErrorNotification, setDeleteErrorNotification] = useState<boolean>(false);
+  const [openRecipeDeletedSuccessfulDialog, setOpenRecipeDeletedSuccessfulDialog] =
+    useState<boolean>(false);
 
-  const goToMyRecipePage = useCallback(() => {
+  const handleNavigateToMyRecipe = useCallback(() => {
     router.push('/my-recipes');
   }, [router]);
   const handleClickOpen = () => {
@@ -54,8 +57,7 @@ export default function RecipeDeleteDialog(props: RecipeDeleteDialogProps): JSX.
       const result = await deleteRecipeById(+recipeId);
 
       if (result.success) {
-        alert('TODO: delete success but how to display a message while changing page?');
-        goToMyRecipePage();
+        setOpenRecipeDeletedSuccessfulDialog(true);
       } else {
         setIsDeleteFail(true);
       }
@@ -132,6 +134,17 @@ export default function RecipeDeleteDialog(props: RecipeDeleteDialogProps): JSX.
         </Dialog>
       </>
 
+      <Dialog open={openRecipeDeletedSuccessfulDialog} onClose={handleNavigateToMyRecipe}>
+        <DialogTitle>Success</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Your recipe had been successfully created!</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleNavigateToMyRecipe} color="primary">
+            Back to My Recipe List
+          </Button>
+        </DialogActions>
+      </Dialog>
       <ResponseSnackbar
         isOpen={isDeleteFail}
         handleCloseSnackbar={handleCloseSnackbar}

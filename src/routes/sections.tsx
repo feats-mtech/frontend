@@ -49,7 +49,7 @@ export function Router() {
         { path: 'inventory', element: <InventoryPage /> },
         { path: 'inventory/new', element: <InventoryCreatePage /> },
         { path: 'recipes', element: <RecipesPage /> },
-        { path: 'recipes/details/:recipeId', element: <RecipeDetailsPage /> },
+        { path: 'recipes/details/:inputRecipeId', element: <RecipeDetailsPage /> },
         { path: 'my-recipes', element: <MyRecipesPage /> },
       ],
     },

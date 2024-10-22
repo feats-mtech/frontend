@@ -21,7 +21,7 @@ interface RecipeCookingStepListProps {
   creation: boolean;
   ownerMode: boolean;
   recipe: Recipe;
-  triggerResetRecipe: React.Dispatch<React.SetStateAction<boolean>>;
+  triggerResetRecipe: () => void;
   saveRecipe: () => void;
 }
 
@@ -29,7 +29,6 @@ export const RecipeHeader = (props: RecipeCookingStepListProps) => {
   const { editable, setEditable, creation, ownerMode, recipe, triggerResetRecipe, saveRecipe } =
     props;
 
-  const handleOpenRevertDialog = () => setRevertDialogOption(true);
   const handleCloseRevertDialog = () => setRevertDialogOption(false);
   const [openRevertDialogOption, setRevertDialogOption] = useState(false);
   const setEditableToTrue = () => {
@@ -51,27 +50,36 @@ export const RecipeHeader = (props: RecipeCookingStepListProps) => {
             {creation ? 'Recipe Creation' : <div>Recipes Details for {recipe && recipe.name}</div>}
           </Typography>
         </Grid>
-        {ownerMode && (
+        {creation ? (
           <Grid item xs={12}>
-            {!editable ? (
-              <Button variant="outlined" onClick={setEditableToTrue}>
-                <Iconify icon="solar:pen-bold" />
-                Edit Recipe
-              </Button>
-            ) : (
-              <>
-                <Button variant="outlined" onClick={saveRecipe}>
-                  <Iconify icon="material-symbols:save" />
-                  Save Changes
-                </Button>
-                <Button variant="outlined" onClick={openRevertDialog}>
-                  <Iconify icon="grommet-icons:revert" />
-                  Discard Changes
-                </Button>
-              </>
-            )}
-            <RecipeDeleteDialog recipeId={recipe.id} />
+            <Button variant="outlined" onClick={saveRecipe}>
+              <Iconify icon="solar:pen-bold" />
+              Create Recipe
+            </Button>
           </Grid>
+        ) : (
+          ownerMode && (
+            <Grid item xs={12}>
+              {!editable ? (
+                <Button variant="outlined" onClick={setEditableToTrue}>
+                  <Iconify icon="solar:pen-bold" />
+                  Edit Recipe
+                </Button>
+              ) : (
+                <>
+                  <Button variant="outlined" onClick={saveRecipe}>
+                    <Iconify icon="material-symbols:save" />
+                    Save Changes
+                  </Button>
+                  <Button variant="outlined" onClick={openRevertDialog}>
+                    <Iconify icon="grommet-icons:revert" />
+                    Discard Changes
+                  </Button>
+                </>
+              )}
+              <RecipeDeleteDialog recipeId={recipe.id} />
+            </Grid>
+          )
         )}
         {!ownerMode && !creation && (
           <Grid item xs={12}>
