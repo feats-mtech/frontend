@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from 'src/context/AuthContext';
-import { Notification, getNotifications, getUnreadCount, markAsRead, markAllAsRead } from 'src/dao/notificationDao';
+import { Icon as Iconify } from '@iconify/react';
+import {
+  Notification,
+  getNotifications,
+  getUnreadCount,
+  markAsRead,
+  markAllAsRead,
+} from 'src/dao/notificationDao';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import Badge from '@mui/material/Badge';
@@ -10,7 +17,6 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 
 const NotificationsPopover: React.FC = () => {
   const { isAuthenticated, user } = useAuth();
@@ -35,7 +41,6 @@ const NotificationsPopover: React.FC = () => {
     if (result.success && result.data) {
       setNotifications(result.data);
     } else {
-      console.error('Error fetching notifications:', result.error);
       setError('Failed to load notifications. Please try again later.');
     }
     setLoading(false);
@@ -47,7 +52,6 @@ const NotificationsPopover: React.FC = () => {
     if (result.success && result.data) {
       setUnreadCount(result.data);
     } else {
-      console.error('Error fetching unread count:', result.error);
       setUnreadCount(0);
     }
   };
@@ -59,7 +63,6 @@ const NotificationsPopover: React.FC = () => {
       fetchNotifications();
       fetchUnreadCount();
     } else {
-      console.error('Error marking notification as read:', result.error);
       setError('Failed to mark notification as read. Please try again.');
     }
   };
@@ -71,12 +74,11 @@ const NotificationsPopover: React.FC = () => {
       fetchNotifications();
       fetchUnreadCount();
     } else {
-      console.error('Error marking all notifications as read:', result.error);
       setError('Failed to mark all notifications as read. Please try again.');
     }
   };
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleOpenPopover = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -88,11 +90,12 @@ const NotificationsPopover: React.FC = () => {
 
   return (
     <>
-      <IconButton onClick={handleClick} color="inherit">
+      <IconButton color={open ? 'primary' : 'default'} onClick={handleOpenPopover}>
         <Badge badgeContent={unreadCount} color="error">
-          <NotificationsIcon />
+          <Iconify icon="solar:bell-bing-bold-duotone" width={24} height={24} />
         </Badge>
       </IconButton>
+
       <Popover
         open={open}
         anchorEl={anchorEl}
@@ -107,7 +110,9 @@ const NotificationsPopover: React.FC = () => {
         }}
       >
         <Box sx={{ width: 300, maxHeight: 400, overflow: 'auto' }}>
-          <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box
+            sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+          >
             <Typography variant="h6">Notifications</Typography>
             <Button onClick={handleMarkAllAsRead} disabled={unreadCount === 0} size="small">
               Mark all as read
@@ -118,9 +123,9 @@ const NotificationsPopover: React.FC = () => {
           {!loading && !error && (
             <List>
               {notifications.map((notification) => (
-                <ListItem 
+                <ListItem
                   key={notification.id}
-                  sx={{ 
+                  sx={{
                     bgcolor: notification.isRead ? 'background.default' : 'action.hover',
                     '&:hover': {
                       bgcolor: 'action.hover',
@@ -138,7 +143,7 @@ const NotificationsPopover: React.FC = () => {
                           {new Date(notification.createDateTime).toLocaleString()}
                         </Typography>
                         {!notification.isRead && (
-                          <Button 
+                          <Button
                             onClick={() => handleMarkAsRead(notification.id)}
                             size="small"
                             sx={{ mt: 1 }}
