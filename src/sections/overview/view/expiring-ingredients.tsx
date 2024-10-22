@@ -18,7 +18,7 @@ interface ExpiringIngredientsProps {
   ingredients: IngredientRowProps[];
 }
 
-const ExpiringIngredients = ({ ingredients }: ExpiringIngredientsProps) => {
+const OverviewContent = ({ ingredients }: ExpiringIngredientsProps) => {
   const [filteredIngredients, setFilteredIngredients] = useState(ingredients);
 
   useEffect(() => {
@@ -39,6 +39,7 @@ const ExpiringIngredients = ({ ingredients }: ExpiringIngredientsProps) => {
       <Grid item xs={12} sm={6} md={3}>
         <WidgetSummary
           title="Recipes"
+          // TODO: replace with recipes instead of ingredients
           total={ingredients.length}
           color="secondary"
           icon={<img alt="icon" src="/assets/icons/homepage/ic-recipe.svg" />}
@@ -117,4 +118,4 @@ const ExpiringIngredients = ({ ingredients }: ExpiringIngredientsProps) => {
   );
 };
 
-export default ExpiringIngredients;
+export default OverviewContent;
