@@ -154,6 +154,4 @@ export const updateRecipeToDb = async (recipe: Recipe) => {
   }
 };
 
-const checkStatus = (code: number): boolean => {
-  return code >= 200 && code < 300;
-};
+const checkStatus = (code: number): boolean => code >= 200 && code < 300;

@@ -127,7 +127,6 @@ export function RecipesDetailView() {
 
   const saveRecipe = async () => {
     let save: boolean = true;
-    console.log('//TODO: enhance the validation');
     if (recipe.name === '') {
       alert('Recipe name cannot be empty');
       return;

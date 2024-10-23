@@ -34,7 +34,6 @@ export function RecipesView() {
   const [openFilter, setOpenFilter] = useState(false);
 
   const [filters, setFilters] = useState<FiltersProps>(DEFAULT_FILTERS);
-  const [isDeletedSuccess, setIsDeletedSuccess] = useState<boolean>(false);
 
   useEffect(() => {
     getRecipeList();
@@ -107,14 +106,6 @@ export function RecipesView() {
   const canReset = Object.keys(filters).some(
     (key) => filters[key as keyof FiltersProps] !== DEFAULT_FILTERS[key as keyof FiltersProps],
   );
-  // function goToRecipePage(recipeId: string): void {
-  //   const router = useRouter();
-  //   console.log('Navigating to the desired page... for recipe' + recipeId);
-  //   // Implement your logic here to navigate to the desired page
-  //   console.log('Navigating to the desired page...');
-
-  //   const goToRecipePage = useCallback((path: string) => router.push(path), [router]);
-  // }
 
   const goToRecipePage = useCallback(
     (path: number | string) => {
@@ -124,9 +115,6 @@ export function RecipesView() {
     [router],
   );
 
-  const handleCloseSnackbar = () => {
-    setIsDeletedSuccess(false);
-  };
   return (
     <DashboardContent>
       <Typography variant="h4" sx={{ mb: 5 }}>

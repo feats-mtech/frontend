@@ -47,9 +47,6 @@ export const RecipeIngredientsList = (props: RecipeIngredientsListProps) => {
     setLastIngredientNotification(false);
     const temp = generateDefaultIngredient();
     setRecipeIngredients([...(recipeIngredients || []), temp]);
-    recipeIngredients.map((ingredient, index) =>
-      console.log('for ' + index + ': ' + ingredient.name),
-    );
   };
   const deleteIngredient = (index: number) => {
     if (recipeIngredients?.length === 1) {
@@ -59,13 +56,11 @@ export const RecipeIngredientsList = (props: RecipeIngredientsListProps) => {
     setRecipeIngredients(recipeIngredients?.filter((_, i) => i !== index));
   };
   const updateIngredient = (index: number, field: string, value: any) => {
-    console.log('index:' + index + 'field: ' + field + 'value:', value);
     const temp = recipeIngredients ? [...recipeIngredients] : [];
     const ingredientRecord = temp.find((_, i) => i === index);
     if (!ingredientRecord) {
       return;
     }
-    console.log('ingredientRecord : ' + ingredientRecord.id);
     (ingredientRecord as any)[field] = value;
 
     setRecipeIngredients(temp);

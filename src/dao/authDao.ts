@@ -11,7 +11,6 @@ const backendPort =
 const backendUrl = `${backendAddress}:${backendPort}`;
 
 export const login = async (username: string, password: string) => {
-  console.log('calling' + backendUrl);
   try {
     const result = await axios
       .post(`${backendUrl}/authenticate/login`, {
