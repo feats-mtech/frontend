@@ -21,8 +21,8 @@ export const navData = [
     icon: icon('ic-recipes'),
   },
   {
-    title: 'Expiring',
-    path: '/expiring',
-    icon: icon('ic-expiring'),
+    title: 'My Recipes',
+    path: '/my-recipes',
+    icon: icon('ic-allRecipes'),
   },
 ];

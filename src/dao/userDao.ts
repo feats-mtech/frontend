@@ -1,21 +1,13 @@
 import axios, { HttpStatusCode } from 'axios';
 import { UserFormDetails } from 'src/types/User';
 
-const backendUrl = window.RUNTIME_CONFIG?.VITE_BACKEND_URL || import.meta.env.VITE_BACKEND_URL;
+const backendAddress =
+  window.RUNTIME_CONFIG?.VITE_BACKEND_USER_URL || import.meta.env.VITE_BACKEND_USER_URL;
 
-export const login = async (username: string, password: string) => {
-  try {
-    const result = await axios
-      .post(`${backendUrl}/user/login`, {
-        name: username,
-        password,
-      })
-      .then((response) => response);
-    return { success: result.status === HttpStatusCode.Ok, data: result.data };
-  } catch (error) {
-    return { success: false, error: error.message };
-  }
-};
+const backendPort =
+  window.RUNTIME_CONFIG?.VITE_BACKEND_USER_PORT || import.meta.env.VITE_BACKEND_USER_PORT;
+
+const backendUrl = `${backendAddress}:${backendPort}`;
 
 export const registerUser = async (userFormDetails: UserFormDetails) => {
   try {

@@ -3,58 +3,55 @@ import { useState, useCallback, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
+import { Button } from '@mui/material';
 
 import { RecipeItem } from '../recipe-item';
 import { RecipeSort } from '../recipe-sort';
 import { RecipeFilters } from '../recipe-filters';
 import type { FiltersProps } from '../recipe-filters';
 import {
-  CATEGORY_OPTIONS,
-  COOKING_TIME_OPTIONS,
   DEFAULT_FILTERS,
-  DIFFICULTY_OPTIONS,
   EXISTING_INGREDIENT_OPTIONS,
+  CATEGORY_OPTIONS,
   RATING_OPTIONS,
+  COOKING_TIME_OPTIONS,
+  DIFFICULTY_OPTIONS,
 } from '../recipes-filter-config';
 
-import { useRouter } from 'src/routes/hooks';
 import { DashboardContent } from 'src/layouts/dashboard';
 import { Recipe } from 'src/types/Recipe';
+import { useAuth } from 'src/context/AuthContext';
 import { Iconify } from 'src/components/iconify';
+import { useRouter } from 'src/routes/hooks';
 
-import { getAllPublishedRecipe } from 'src/dao/recipeDao';
+import { getAllRecipeByCreatorId } from 'src/dao/recipeDao';
 
-export function RecipesView() {
+export function MyRecipesView() {
   const router = useRouter();
+  const { user } = useAuth();
   const [allRecipes, setAllRecipe] = useState<Recipe[]>([]);
   const [displayRecipes, setDisplayRecipes] = useState<Recipe[]>([]);
   const [sortBy, setSortBy] = useState('Newest');
-
   const [openFilter, setOpenFilter] = useState(false);
-
   const [filters, setFilters] = useState<FiltersProps>(DEFAULT_FILTERS);
 
   useEffect(() => {
-    getRecipeList();
+    getRecipeListById(user?.id);
   }, []);
 
-  const getRecipeList = useCallback(async () => {
-    const recipesList = await getAllPublishedRecipe();
+  const getRecipeListById = useCallback(async (userId: number = -1) => {
+    if (userId === -1) {
+      return;
+    }
+    const recipesList = await getAllRecipeByCreatorId(userId);
     setRecipe(recipesList);
   }, []);
 
-  const handleOpenFilter = useCallback(() => {
-    setOpenFilter(true);
-  }, []);
+  const handleOpenFilter = useCallback(() => setOpenFilter(true), []);
 
-  const handleCloseFilter = useCallback(() => {
-    setOpenFilter(false);
-  }, []);
+  const handleCloseFilter = useCallback(() => setOpenFilter(false), []);
 
-  const handleSort = useCallback((newSort: string) => {
-    setSortBy(newSort);
-  }, []);
+  const handleSort = useCallback((newSort: string) => setSortBy(newSort), []);
 
   const handleSetFilters = useCallback((updateState: Partial<FiltersProps>) => {
     setFilters((prevValue) => ({ ...prevValue, ...updateState }));
@@ -70,7 +67,6 @@ export function RecipesView() {
     if (categories.length === 0) {
       filters.categories = ['Any'];
     } else if (categories[categories.length - 1] === 'Any') {
-      //the last selected item is any, thus only Any will be selected
       filters.categories = ['Any'];
     } else {
       filters.categories = filters.categories.filter((value) => value !== 'Any');
@@ -86,7 +82,6 @@ export function RecipesView() {
         (filters.difficulty == null || filters.difficulty >= recipe.difficultyLevel) &&
         (filters.rating == null || filters.rating <= recipe.rating),
     );
-
     filteredRecipes.sort((a, b) => {
       switch (sortBy.toLowerCase()) {
         case 'newest':
@@ -103,6 +98,7 @@ export function RecipesView() {
     });
     setDisplayRecipes(filteredRecipes);
   }, [filters, sortBy, allRecipes]);
+
   const canReset = Object.keys(filters).some(
     (key) => filters[key as keyof FiltersProps] !== DEFAULT_FILTERS[key as keyof FiltersProps],
   );
@@ -118,7 +114,7 @@ export function RecipesView() {
   return (
     <DashboardContent>
       <Typography variant="h4" sx={{ mb: 5 }}>
-        Recipes List
+        My Recipes
       </Typography>
 
       <Grid container>
@@ -165,7 +161,7 @@ export function RecipesView() {
       {displayRecipes.length !== 0 ? (
         <Grid container spacing={3}>
           {displayRecipes.map((recipe: Recipe) => (
-            <Grid item key={recipe.id} xs={12} sm={8} md={4} padding={1}>
+            <Grid key={recipe.id} xs={12} sm={8} md={4} padding={1}>
               <RecipeItem recipe={recipe} />
             </Grid>
           ))}

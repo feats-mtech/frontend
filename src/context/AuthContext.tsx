@@ -1,5 +1,6 @@
 import { ReactNode, createContext, useState, useContext } from 'react';
-import { login } from 'src/dao/userDao';
+import { login } from 'src/dao/authDao';
+
 import { User } from 'src/types/User';
 
 type loginResult =
