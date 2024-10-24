@@ -26,6 +26,17 @@ export const formatStr = {
   },
 };
 
+export const formatTime = (dateTime: string) => {
+  const date = new Date(dateTime);
+  const now = new Date();
+  const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
+
+  if (diffInMinutes < 1) return 'Just now';
+  if (diffInMinutes < 60) return `${diffInMinutes} minutes ago`;
+  if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)} hours ago`;
+  return date.toLocaleDateString();
+};
+
 export function today(format?: string) {
   return dayjs(new Date()).startOf('day').format(format);
 }
