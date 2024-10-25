@@ -15,6 +15,11 @@ import { _uomType, _ingredientType } from './recipes-filter-config';
 
 import { Iconify } from 'src/components/iconify';
 import { RecipeIngredient } from 'src/types/RecipeIngredient';
+import {
+  getIngredientNameHelperText,
+  getIngredientQuantityTest,
+  getIngredientUOMHelperText,
+} from './recipe-helper-util';
 
 export function generateDefaultIngredient(): RecipeIngredient {
   return {
@@ -29,10 +34,12 @@ interface RecipeIngredientsListProps {
   recipeIngredients: RecipeIngredient[];
   setRecipeIngredients: React.Dispatch<React.SetStateAction<RecipeIngredient[]>>;
   editable: boolean;
+
+  highlightHelperText: boolean;
 }
 
 export const RecipeIngredientsList = (props: RecipeIngredientsListProps) => {
-  const { recipeIngredients, setRecipeIngredients, editable } = props;
+  const { recipeIngredients, setRecipeIngredients, editable, highlightHelperText } = props;
 
   const [lastIngredientNotification, setLastIngredientNotification] = useState<boolean>(false);
   const [uomOptions, setUomOptions] = useState<readonly String[]>([]);
@@ -112,6 +119,9 @@ export const RecipeIngredientsList = (props: RecipeIngredientsListProps) => {
                   onInputChange={(event, value) => updateIngredient(index, 'name', value)}
                   renderInput={(params) => <TextField {...params} label="Ingredient Name" />}
                 />
+                <Typography variant="caption" color={'var(--palette-error-main)'}>
+                  {getIngredientNameHelperText(highlightHelperText, ingredient.name)}
+                </Typography>
               </Grid>
               <Grid item sm={1}>
                 <TextField
@@ -120,6 +130,8 @@ export const RecipeIngredientsList = (props: RecipeIngredientsListProps) => {
                   value={ingredient ? ingredient.quantity : 0}
                   onChange={(event) => updateIngredient(index, 'quantity', event.target.value)}
                   type="number"
+                  error={!!getIngredientQuantityTest(highlightHelperText, ingredient.quantity)}
+                  helperText={getIngredientQuantityTest(highlightHelperText, ingredient.quantity)}
                 />
               </Grid>
               <Grid item sm={2}>
@@ -127,12 +139,22 @@ export const RecipeIngredientsList = (props: RecipeIngredientsListProps) => {
                   fullWidth={true}
                   disableClearable
                   disabled={!editable}
-                  value={ingredient ? ingredient.uom : 'pcs'}
+                  // value={ingredient ? ingredient.uom : 'pcs'}
+                  value={
+                    ingredient
+                      ? ingredient.uom === ''
+                        ? ingredient.uom
+                        : uomOptions[0]
+                      : uomOptions[0]
+                  }
                   options={uomOptions}
                   freeSolo
                   onInputChange={(event, value) => updateIngredient(index, 'uom', value)}
                   renderInput={(params) => <TextField {...params} label="Unit Of Measurement" />}
                 />
+                <Typography variant="caption" color={'var(--palette-error-main)'}>
+                  {getIngredientUOMHelperText(highlightHelperText, ingredient.uom)}
+                </Typography>
               </Grid>
               <Grid item sm={1} alignContent={'center'}>
                 {editable && (

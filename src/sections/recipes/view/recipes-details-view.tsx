@@ -28,6 +28,17 @@ import { useAuth } from 'src/context/AuthContext';
 import { ResponseSnackbar } from 'src/sections/inventory/ingredient-snackbar';
 
 import { getRecipeById, updateRecipeToDb } from 'src/dao/recipeDao';
+import { set } from 'date-fns';
+import {
+  getCookingStepHelperText,
+  getCuisineHelperText,
+  getDescriptionHelperText,
+  getDifficultyLevelHelperText,
+  getIngredientNameHelperText,
+  getIngredientQuantityTest,
+  getIngredientUOMHelperText,
+  getTitleHelperText,
+} from '../recipe-helper-util';
 
 export function generateDefaultRecipe(): Recipe {
   return {
@@ -59,6 +70,7 @@ export function RecipesDetailView() {
   const [ownerMode, setOwnerMode] = useState<boolean>(false);
   const [isUpdatedSuccess, setIsUpdatedSuccess] = useState<boolean>(false);
   const [isUpdatedFailure, setIsUpdatedFailure] = useState<boolean>(false);
+  const [highlightHelperText, setHighlightHelperText] = useState<boolean>(false);
   const [openRecipeCreatedSuccessfulDialog, setOpenRecipeCreatedSuccessfulDialog] =
     useState<boolean>(false);
 
@@ -126,54 +138,41 @@ export function RecipesDetailView() {
   };
 
   const saveRecipe = async () => {
+    setHighlightHelperText(true);
     let save: boolean = true;
-    if (recipe.name === '') {
-      alert('Recipe name cannot be empty');
-      return;
+    if (getTitleHelperText(true, recipe.name)) {
+      save = false;
     }
-    if (recipe.difficultyLevel === 0) {
-      alert('Difficulty level cannot be empty');
-      return;
+    if (getDifficultyLevelHelperText(true, recipe.difficultyLevel)) {
+      save = false;
     }
-    if (recipe.cuisine === '') {
-      alert('Cuisine cannot be empty');
-      return;
+    if (getCuisineHelperText(true, recipe.cuisine)) {
+      save = false;
     }
-    if (recipe.description === '') {
-      alert('Description cannot be empty');
-      return;
+    if (getDescriptionHelperText(true, recipe.description)) {
+      save = false;
     }
     if (recipeIngredients.length === 0) {
-      alert('Ingredients cannot be empty');
-      return;
+      save = false;
     } else {
       recipeIngredients.forEach((ingredient) => {
-        if (ingredient.name === '') {
-          alert('Ingredient name cannot be empty');
+        if (getIngredientNameHelperText(true, ingredient.name)) {
           save = false;
-          return;
         }
-        if (ingredient.quantity <= 0) {
-          alert('Ingredient quantity need to be positive');
+        if (getIngredientQuantityTest(true, ingredient.quantity)) {
           save = false;
-          return;
         }
-        if (ingredient.uom === '') {
-          alert('Ingredient uom cannot be empty');
+        if (getIngredientUOMHelperText(true, ingredient.uom)) {
           save = false;
-          return;
         }
       });
     }
     if (recipeCookingSteps.length === 0) {
-      alert('Cooking steps cannot be empty');
-      return;
+      save == false;
     } else {
       recipeCookingSteps.forEach((step) => {
-        if (step.description === '') {
-          alert('Step description cannot be empty');
+        if (getCookingStepHelperText(true, step.description)) {
           save = false;
-          return;
         }
       });
     }
@@ -233,13 +232,19 @@ export function RecipesDetailView() {
             />
           </Grid>
           <Grid item xs={12} sm={12}>
-            <RecipeDetails recipe={recipe} setRecipe={setRecipe} editable={editable} />
+            <RecipeDetails
+              recipe={recipe}
+              setRecipe={setRecipe}
+              editable={editable}
+              highlightHelperText={highlightHelperText}
+            />
           </Grid>
           <Grid item xs={12}>
             <RecipeIngredientsList
               recipeIngredients={recipeIngredients}
               setRecipeIngredients={setRecipeIngredients}
               editable={editable}
+              highlightHelperText={highlightHelperText}
             />
           </Grid>
           <Grid item xs={12}>
@@ -247,6 +252,7 @@ export function RecipesDetailView() {
               editable={editable}
               recipeCookingSteps={recipeCookingSteps}
               setRecipeCookingSteps={setRecipeCookingSteps}
+              highlightHelperText={highlightHelperText}
             />
           </Grid>
           {!creation && (
