@@ -14,11 +14,31 @@ import { useEffect, useState } from 'react';
 import { TextField } from '@mui/material';
 import { addDays, isBefore } from 'date-fns';
 
-interface ExpiringIngredientsProps {
+interface OverviewContentProps {
   ingredients: IngredientRowProps[];
+  recipes: RecipeRowProps[];
 }
 
-const OverviewContent = ({ ingredients }: ExpiringIngredientsProps) => {
+export type RecipeRowProps = {
+  id: number;
+  creatorId: number;
+  name: string;
+  image: string;
+  description: string;
+  cookingTimeInSec: number;
+  difficultyLevel: number;
+  cuisine: string;
+  rating: number;
+  status: number;
+
+  createDatetime: Date;
+  updateDatetime: Date;
+};
+interface ExpiringRecipesProps {
+  recipes: RecipeRowProps[];
+}
+
+const OverviewContent = ({ ingredients, recipes }: OverviewContentProps) => {
   const [filteredIngredients, setFilteredIngredients] = useState(ingredients);
 
   useEffect(() => {
@@ -40,10 +60,10 @@ const OverviewContent = ({ ingredients }: ExpiringIngredientsProps) => {
         <WidgetSummary
           title="Recipes"
           // TODO: replace with recipes instead of ingredients
-          total={ingredients.length}
+          total={recipes.length}
           color="secondary"
           icon={<img alt="icon" src="/assets/icons/homepage/ic-recipe.svg" />}
-          route="recipes"
+          route="my-recipes"
         />
       </Grid>
 

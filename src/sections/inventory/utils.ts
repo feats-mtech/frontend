@@ -1,5 +1,7 @@
 import { Ingredient } from 'src/types/Ingredient';
 import type { IngredientRowProps } from './ingredient-table-row';
+import { Recipe } from 'src/types/Recipe';
+import { RecipeRowProps } from '../overview/view/expiring-ingredients';
 
 export const visuallyHidden = {
   border: 0,
@@ -78,5 +80,22 @@ export const mapToIngredientRowProps = (ingredients: Ingredient[]): IngredientRo
     consumeBy: ingredient.expiryDate,
     expiryDate: ingredient.expiryDate,
     avatarUrl: `/assets/images/avatar/avatar-${(ingredient.id ?? 0) + 1}.webp`,
+  }));
+};
+export const mapToRecipeRowProps = (recipes: Recipe[]): RecipeRowProps[] => {
+  return recipes.map((recipe) => ({
+    id: recipe.id,
+    creatorId: recipe.creatorId,
+    name: recipe.name,
+    image: recipe.image,
+    description: recipe.description,
+    cookingTimeInSec: recipe.cookingTimeInSec,
+    difficultyLevel: recipe.difficultyLevel,
+    cuisine: recipe.cuisine,
+    rating: recipe.rating,
+    status: recipe.status,
+    createDatetime: recipe.createDatetime,
+    updateDatetime: recipe.updateDatetime,
+    avatarUrl: `/assets/images/avatar/avatar-${(recipe.name ?? 0) + 1}.webp`,
   }));
 };
