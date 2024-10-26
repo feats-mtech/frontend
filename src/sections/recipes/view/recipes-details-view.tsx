@@ -28,7 +28,6 @@ import { useAuth } from 'src/context/AuthContext';
 import { ResponseSnackbar } from 'src/sections/inventory/ingredient-snackbar';
 
 import { getRecipeById, updateRecipeToDb } from 'src/dao/recipeDao';
-import { set } from 'date-fns';
 import {
   getCookingStepHelperText,
   getCuisineHelperText,
@@ -115,7 +114,6 @@ export function RecipesDetailView() {
 
   const getRecipe = async (recipeId: string = '') => {
     if (recipeId === '') {
-      //TODO: error, cant find the recipe...
       return;
     }
     if (recipeId === 'new') {
@@ -139,64 +137,46 @@ export function RecipesDetailView() {
 
   const saveRecipe = async () => {
     setHighlightHelperText(true);
-    let save: boolean = true;
-    if (getTitleHelperText(true, recipe.name)) {
-      save = false;
-    }
-    if (getDifficultyLevelHelperText(true, recipe.difficultyLevel)) {
-      save = false;
-    }
-    if (getCuisineHelperText(true, recipe.cuisine)) {
-      save = false;
-    }
-    if (getDescriptionHelperText(true, recipe.description)) {
-      save = false;
-    }
-    if (recipeIngredients.length === 0) {
-      save = false;
-    } else {
-      recipeIngredients.forEach((ingredient) => {
-        if (getIngredientNameHelperText(true, ingredient.name)) {
-          save = false;
-        }
-        if (getIngredientQuantityTest(true, ingredient.quantity)) {
-          save = false;
-        }
-        if (getIngredientUOMHelperText(true, ingredient.uom)) {
-          save = false;
-        }
-      });
-    }
-    if (recipeCookingSteps.length === 0) {
-      save == false;
-    } else {
-      recipeCookingSteps.forEach((step) => {
-        if (getCookingStepHelperText(true, step.description)) {
-          save = false;
-        }
-      });
-    }
-    if (!save) {
-      return;
-    }
+
+    const recipeFields = [
+      getTitleHelperText(true, recipe.name),
+      getDifficultyLevelHelperText(true, recipe.difficultyLevel),
+      getCuisineHelperText(true, recipe.cuisine),
+      getDescriptionHelperText(true, recipe.description),
+    ];
+
+    const isIngredientsValid =
+      recipeIngredients.length > 0 &&
+      recipeIngredients.every(
+        (ingredient) =>
+          !getIngredientNameHelperText(true, ingredient.name) &&
+          !getIngredientQuantityTest(true, ingredient.quantity) &&
+          !getIngredientUOMHelperText(true, ingredient.uom),
+      );
+
+    const isStepsValid =
+      recipeCookingSteps.length > 0 &&
+      recipeCookingSteps.every((step) => !getCookingStepHelperText(true, step.description));
+
+    const enableSave = recipeFields.every((field) => !field) && isIngredientsValid && isStepsValid;
+    if (!enableSave) return;
+
     const combineItem = {
       ...recipe,
-      creatorId: user ? user.id : -1,
+      creatorId: user?.id ?? -1,
       cookingSteps: recipeCookingSteps,
       ingredients: recipeIngredients,
     };
-    const result = updateRecipeToDb(combineItem);
-    if (await result) {
-      if ((await result).success) {
-        setOpenRecipeCreatedSuccessfulDialog(true);
-        // setOrginialRecipe((await result).data);
-        // setIsUpdatedSuccess(true);
-        // setOwnerMode(true);
-        // setCreation(false);
-        // triggerResetRecipe(true);
-      } else {
-        setIsUpdatedFailure(true);
-      }
+
+    const result = await updateRecipeToDb(combineItem);
+    if (result?.success) {
+      setOpenRecipeCreatedSuccessfulDialog(true);
+      // Uncomment these as needed
+      // setOriginalRecipe(result.data);
+      // setIsUpdatedSuccess(true);
+      // setOwnerMode(true);
+      // setCreation(false);
+      // triggerResetRecipe(true);
     } else {
       setIsUpdatedFailure(true);
     }

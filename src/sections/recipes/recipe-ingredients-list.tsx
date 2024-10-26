@@ -140,13 +140,7 @@ export const RecipeIngredientsList = (props: RecipeIngredientsListProps) => {
                   disableClearable
                   disabled={!editable}
                   // value={ingredient ? ingredient.uom : 'pcs'}
-                  value={
-                    ingredient
-                      ? ingredient.uom === ''
-                        ? ingredient.uom
-                        : uomOptions[0]
-                      : uomOptions[0]
-                  }
+                  value={ingredient?.uom || uomOptions[0]}
                   options={uomOptions}
                   freeSolo
                   onInputChange={(event, value) => updateIngredient(index, 'uom', value)}

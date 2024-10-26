@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { Typography, Grid, TextField, Rating } from '@mui/material';
 
 import { RecipeReview } from 'src/types/RecipeReview';
+import { useAuth } from 'src/context/AuthContext';
 
 export const defaultRecipeReview = {
   id: -1,
@@ -22,13 +23,14 @@ interface RecipeReviewsListProps {
 
 export const RecipeReviewsList = (props: RecipeReviewsListProps) => {
   const { creation, recipeReviews, setRecipeReview, recipeId } = props;
+  const { user } = useAuth();
 
   useEffect(() => {
     //constructor
     if (creation) {
       const temp = defaultRecipeReview;
       temp.recipeId = recipeId;
-      temp.creatorId = 1; //TODO : need to pull the creator id from the user
+      temp.creatorId = user ? user.id : -1;
       setRecipeReview([...[], temp]);
     }
   }, []);

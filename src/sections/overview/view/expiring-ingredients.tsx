@@ -34,9 +34,6 @@ export type RecipeRowProps = {
   createDatetime: Date;
   updateDatetime: Date;
 };
-interface ExpiringRecipesProps {
-  recipes: RecipeRowProps[];
-}
 
 const OverviewContent = ({ ingredients, recipes }: OverviewContentProps) => {
   const [filteredIngredients, setFilteredIngredients] = useState(ingredients);
@@ -59,7 +56,6 @@ const OverviewContent = ({ ingredients, recipes }: OverviewContentProps) => {
       <Grid item xs={12} sm={6} md={3}>
         <WidgetSummary
           title="Recipes"
-          // TODO: replace with recipes instead of ingredients
           total={recipes.length}
           color="secondary"
           icon={<img alt="icon" src="/assets/icons/homepage/ic-recipe.svg" />}

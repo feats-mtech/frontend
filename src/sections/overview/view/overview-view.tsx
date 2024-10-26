@@ -29,7 +29,6 @@ export function OverviewView() {
   }, []);
 
   useEffect(() => {
-    // TODO: also fetch recipes
     fetchIngredientsForUser();
     fetchRecipesForUser();
   }, [fetchIngredientsForUser]);
@@ -42,7 +41,6 @@ export function OverviewView() {
 
       <Grid>
         <Grid xs={12} md={6} lg={4}>
-          {/* TODO: need to pass in recipes */}
           <OverviewContent ingredients={ingredients} recipes={recipes} />
         </Grid>
       </Grid>
