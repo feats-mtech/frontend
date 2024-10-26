@@ -43,6 +43,7 @@ export const RecipeReviewsList = (props: RecipeReviewsListProps) => {
 
     setRecipeReview(temp);
   };
+
   return (
     <div>
       <div>
@@ -55,10 +56,11 @@ export const RecipeReviewsList = (props: RecipeReviewsListProps) => {
               {recipeReviews?.map((review: RecipeReview, index) => (
                 <Grid key={review.id} xs={12} paddingBottom={2}>
                   <Grid container spacing={1}>
-                    <Grid item xs={10}>
-                      <Typography variant="h6">
-                        {review.creatorId + '//TODO : need to pull the creator name instead'}
-                      </Typography>
+                    <Grid item xs={9}>
+                      {/* TODO : need to pull the creator name instead */}
+                      {/* <Typography variant="h6">
+                        {review.creatorId + ''}
+                      </Typography> */}
                     </Grid>
                     <Grid xs={2}>
                       <Rating
