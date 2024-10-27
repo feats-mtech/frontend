@@ -1,15 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import {
-  Typography,
-  Grid,
-  Autocomplete,
-  TextField,
-  Rating,
-  Box,
-  FormHelperText,
-  colors,
-} from '@mui/material';
+import { Typography, Grid, Autocomplete, TextField, Rating, Box } from '@mui/material';
 
 import { Recipe } from 'src/types/Recipe';
 import {
@@ -124,7 +115,7 @@ export const RecipeDetails = (props: RecipeDetailsProps) => {
               value={recipe ? recipe.difficultyLevel : 0}
               onChange={setDifficultyLevel}
             />
-            <br></br>
+            <br />
             <Typography variant="caption" color={'var(--palette-error-main)'}>
               {getDifficultyLevelHelperText(highlightHelperText, recipe.difficultyLevel)}
             </Typography>

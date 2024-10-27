@@ -306,6 +306,3 @@ export function RecipesDetailView() {
     </DashboardContent>
   );
 }
-function wait(arg0: number) {
-  throw new Error('Function not implemented.');
-}

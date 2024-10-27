@@ -1,15 +1,6 @@
 import React, { useState } from 'react';
 
-import {
-  Typography,
-  Collapse,
-  Alert,
-  IconButton,
-  Grid,
-  TextField,
-  Tooltip,
-  Box,
-} from '@mui/material';
+import { Typography, Collapse, Alert, IconButton, Grid, TextField, Tooltip } from '@mui/material';
 
 import { Iconify } from 'src/components/iconify';
 import { RecipeCookingStep } from 'src/types/RecipeCookingStep';
@@ -18,6 +9,7 @@ import { getCookingStepHelperText } from './recipe-helper-util';
 export function generateDefaultCookingStep(): RecipeCookingStep {
   return { id: 0, recipeId: 0, description: '', imageUrl: 'No Image' };
 }
+
 interface RecipeCookingStepListProps {
   editable: boolean;
   recipeCookingSteps: RecipeCookingStep[];

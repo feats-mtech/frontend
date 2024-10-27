@@ -41,7 +41,7 @@ export default function RecipeRevertDialog(props: RecipeRevertDialogProps): JSX.
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>Revert Changes?</DialogTitle>
         <DialogContent>
-          <DialogContentText></DialogContentText>
+          <DialogContentText />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog} color="secondary">
