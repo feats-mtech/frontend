@@ -32,21 +32,24 @@ export default function RecipeCookDialog(props: RecipeCookDialogProps): JSX.Elem
 
   const handleCommentsSubmit = () => {
     const temp = recipeReview[0];
+    setReviewPostNotification(true);
     if (temp.rating === 0 && temp.comments === '') {
       //user decide not to submit...
       return;
-    } else if (temp.rating > 0 && temp.comments !== '') {
-      alert(
-        'TODO: send a review to backend with the info of rating of ' +
-          temp.rating +
-          ', comments of  ' +
-          temp.comments,
-      );
-      setOpen(false);
-      return;
     }
-    setReviewPostNotification(true);
+    //disable review related code.
+    // if (temp.rating > 0 && temp.comments !== '') {
+    //   alert(
+    //     'TODO: send a review to backend with the info of rating of ' +
+    //       temp.rating +
+    //       ', comments of  ' +
+    //       temp.comments,
+    //   );
+    //   setOpen(false);
+    //   return;
+    // }
   };
+
   return (
     <>
       <Typography variant="h3">
@@ -69,15 +72,15 @@ export default function RecipeCookDialog(props: RecipeCookDialogProps): JSX.Elem
       >
         <DialogTitle>Post Cook Review</DialogTitle>
         <DialogContent>
-          we hope you find the recipe useful. If so, please leave a review.
+          We hope you find the recipe useful! If so, please leave a review.
         </DialogContent>
-        <DialogTitle>Post a Review?</DialogTitle>
+        {/* <DialogTitle>Post a Review?</DialogTitle>
         <RecipeReviewsList
           creation={true}
           recipeReviews={recipeReview}
           setRecipeReview={setRecipeReview}
           recipeId={recipeId}
-        />
+        /> */}
 
         <Collapse in={reviewPostNotification}>
           <Alert
@@ -96,7 +99,7 @@ export default function RecipeCookDialog(props: RecipeCookDialogProps): JSX.Elem
             }
             sx={{ mb: 2 }}
           >
-            Please enter both a rating and a comments.
+            Please enter both a rating and comments.
           </Alert>
         </Collapse>
         <DialogActions>

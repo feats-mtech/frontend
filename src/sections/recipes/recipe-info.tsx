@@ -3,16 +3,25 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Autocomplete, TextField, Rating, Box } from '@mui/material';
 
 import { Recipe } from 'src/types/Recipe';
+import {
+  getImageHelperText,
+  getTitleHelperText,
+  getDifficultyLevelHelperText,
+  getCuisineHelperText,
+  getDescriptionHelperText,
+  getCookingTimeInSecHelperText,
+} from './recipe-helper-util';
 
 interface RecipeDetailsProps {
   recipe: Recipe;
   setRecipe: React.Dispatch<React.SetStateAction<Recipe>>;
   editable: boolean;
+  highlightHelperText: boolean;
 }
 
 export const _cuisineType = ['Chinese', 'Western', 'Japanese', 'Local', 'Others'];
 export const RecipeDetails = (props: RecipeDetailsProps) => {
-  const { recipe, setRecipe, editable } = props;
+  const { recipe, setRecipe, editable, highlightHelperText } = props;
 
   const [cuisineTypeOptions, setCuisineTypeOptions] = useState<readonly string[]>([]);
 
@@ -30,8 +39,8 @@ export const RecipeDetails = (props: RecipeDetailsProps) => {
     });
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const target = event.target as HTMLInputElement;
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const target = event.target;
     const { name, value } = target;
 
     updateRecipe(name, value);
@@ -72,6 +81,8 @@ export const RecipeDetails = (props: RecipeDetailsProps) => {
             name="image"
             value={recipe ? recipe.image : ''}
             onChange={handleChange}
+            error={!!getImageHelperText(highlightHelperText, recipe.image)}
+            helperText={getImageHelperText(highlightHelperText, recipe.image)}
           />
         )}
       </Grid>
@@ -90,18 +101,24 @@ export const RecipeDetails = (props: RecipeDetailsProps) => {
               fullWidth={true}
               name="name"
               onChange={handleChange}
+              error={!!getTitleHelperText(highlightHelperText, recipe.name)}
+              helperText={getTitleHelperText(highlightHelperText, recipe.name)}
             />
           </Grid>
           <Grid item xs={2}>
             <Typography variant="subtitle1">Difficulty </Typography>
           </Grid>
-          <Grid item xs={10}>
+          <Grid item xs={10} color={'var(--palette-error-main)'}>
             <Rating
               disabled={!editable}
               name="difficultyLevel"
               value={recipe ? recipe.difficultyLevel : 0}
               onChange={setDifficultyLevel}
             />
+            <br />
+            <Typography variant="caption" color={'var(--palette-error-main)'}>
+              {getDifficultyLevelHelperText(highlightHelperText, recipe.difficultyLevel)}
+            </Typography>
           </Grid>
           <Grid item xs={2}>
             <Typography variant="subtitle1">Cuisine </Typography>
@@ -116,6 +133,10 @@ export const RecipeDetails = (props: RecipeDetailsProps) => {
               onChange={(event, value, reason, details) => setCuisine(value)}
               renderInput={(params) => <TextField {...params} label="Cuisine" />}
             />
+
+            <Typography variant="caption" color={'var(--palette-error-main)'}>
+              {getCuisineHelperText(highlightHelperText, recipe.cuisine)}
+            </Typography>
           </Grid>
           <Grid item xs={2}>
             <Typography variant="subtitle1">Description </Typography>
@@ -132,6 +153,8 @@ export const RecipeDetails = (props: RecipeDetailsProps) => {
               rows={4}
               value={recipe ? recipe.description : ''}
               onChange={handleChange}
+              error={!!getDescriptionHelperText(highlightHelperText, recipe.description)}
+              helperText={getDescriptionHelperText(highlightHelperText, recipe.description)}
             />
           </Grid>
           <Grid item xs={2}>
@@ -147,6 +170,11 @@ export const RecipeDetails = (props: RecipeDetailsProps) => {
               name="cookingTimeInSec"
               value={recipe ? recipe.cookingTimeInSec : 0}
               onChange={handleChange}
+              error={!!getCookingTimeInSecHelperText(highlightHelperText, recipe.cookingTimeInSec)}
+              helperText={getCookingTimeInSecHelperText(
+                highlightHelperText,
+                recipe.cookingTimeInSec,
+              )}
             />
           </Grid>
         </Grid>

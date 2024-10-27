@@ -1,30 +1,24 @@
 import React, { useState } from 'react';
 
-import {
-  Typography,
-  Collapse,
-  Alert,
-  IconButton,
-  Grid,
-  TextField,
-  Tooltip,
-  Box,
-} from '@mui/material';
+import { Typography, Collapse, Alert, IconButton, Grid, TextField, Tooltip } from '@mui/material';
 
 import { Iconify } from 'src/components/iconify';
 import { RecipeCookingStep } from 'src/types/RecipeCookingStep';
+import { getCookingStepHelperText } from './recipe-helper-util';
 
 export function generateDefaultCookingStep(): RecipeCookingStep {
   return { id: 0, recipeId: 0, description: '', imageUrl: 'No Image' };
 }
+
 interface RecipeCookingStepListProps {
   editable: boolean;
   recipeCookingSteps: RecipeCookingStep[];
   setRecipeCookingSteps: React.Dispatch<React.SetStateAction<RecipeCookingStep[]>>;
+  highlightHelperText: boolean;
 }
 
 export const RecipeCookingStepsList = (props: RecipeCookingStepListProps) => {
-  const { editable, recipeCookingSteps, setRecipeCookingSteps } = props;
+  const { editable, recipeCookingSteps, setRecipeCookingSteps, highlightHelperText } = props;
 
   const [lastCookingStepNotification, setLastCookingStepNotification] = useState<boolean>(false);
   const addCookingStep = () => {
@@ -117,6 +111,11 @@ export const RecipeCookingStepsList = (props: RecipeCookingStepListProps) => {
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                     setRecipeCookingStepsDetails(index, 'description', event.target.value)
                   }
+                  error={!!getCookingStepHelperText(highlightHelperText, cookingStep.description)}
+                  helperText={getCookingStepHelperText(
+                    highlightHelperText,
+                    cookingStep.description,
+                  )}
                 />
               </Grid>
 

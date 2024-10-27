@@ -52,9 +52,9 @@ export function RecipeFilters({
 }: RecipeFiltersProps) {
   const renderExistingIngredients = (
     <Stack spacing={1}>
-      <Typography variant="subtitle2">Existing Ingredients //TODO</Typography>
+      {/* <Typography variant="subtitle2">Existing Ingredients //TODO</Typography> */}
       <FormGroup>
-        {options.existingIngredients.map((option) => (
+        {/* {options.existingIngredients.map((option) => (
           <FormControlLabel
             key={option.value}
             control={
@@ -71,7 +71,7 @@ export function RecipeFilters({
             }
             label={option.label}
           />
-        ))}
+        ))} */}
       </FormGroup>
     </Stack>
   );
