@@ -16,6 +16,7 @@ import {
   DIFFICULTY_OPTIONS,
   EXISTING_INGREDIENT_OPTIONS,
   RATING_OPTIONS,
+  VALID_FILTER_CATEGORY,
 } from '../recipes-filter-config';
 
 import { useRouter } from 'src/routes/hooks';
@@ -81,7 +82,10 @@ export function RecipesView() {
   useEffect(() => {
     const filteredRecipes = allRecipes.filter(
       (recipe) =>
-        (filters.categories.includes('Any') || filters.categories.includes(recipe.cuisine)) &&
+        (filters.categories.includes('Any') ||
+          filters.categories.includes(recipe.cuisine) ||
+          (filters.categories.includes('Others') &&
+            !VALID_FILTER_CATEGORY.includes(recipe.cuisine))) &&
         (filters.cookingTime == -1 || filters.cookingTime >= recipe.cookingTimeInSec) &&
         (filters.difficulty == null || filters.difficulty >= recipe.difficultyLevel) &&
         (filters.rating == null || filters.rating <= recipe.rating),

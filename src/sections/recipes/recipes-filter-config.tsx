@@ -6,8 +6,12 @@ export const CATEGORY_OPTIONS = [
   { value: 'Western', label: 'Western' },
   { value: 'Japanese', label: 'Japanese' },
   { value: 'Local', label: 'Local' },
+  { value: 'Others', label: 'Others' },
 ];
 
+export const VALID_FILTER_CATEGORY = CATEGORY_OPTIONS.filter(
+  (category) => category.value !== 'Any' && category.value !== 'Others',
+).map((option) => option.value);
 export const RATING_OPTIONS = ['up4Star', 'up3Star', 'up2Star', 'up1Star'];
 
 export const COOKING_TIME_OPTIONS = [
