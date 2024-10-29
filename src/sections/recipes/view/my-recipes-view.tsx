@@ -16,6 +16,7 @@ import {
   RATING_OPTIONS,
   COOKING_TIME_OPTIONS,
   DIFFICULTY_OPTIONS,
+  VALID_FILTER_CATEGORY,
 } from '../recipes-filter-config';
 
 import { DashboardContent } from 'src/layouts/dashboard';
@@ -77,7 +78,10 @@ export function MyRecipesView() {
   useEffect(() => {
     const filteredRecipes = allRecipes.filter(
       (recipe) =>
-        (filters.categories.includes('Any') || filters.categories.includes(recipe.cuisine)) &&
+        (filters.categories.includes('Any') ||
+          filters.categories.includes(recipe.cuisine) ||
+          (filters.categories.includes('Others') &&
+            !VALID_FILTER_CATEGORY.includes(recipe.cuisine))) &&
         (filters.cookingTime == -1 || filters.cookingTime >= recipe.cookingTimeInSec) &&
         (filters.difficulty == null || filters.difficulty >= recipe.difficultyLevel) &&
         (filters.rating == null || filters.rating <= recipe.rating),
