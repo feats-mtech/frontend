@@ -1,8 +1,14 @@
 import axios from 'axios';
 
-const backendUrl =
+const backendAddress =
   window.RUNTIME_CONFIG?.VITE_BACKEND_NOTIFICATION_URL ||
   import.meta.env.VITE_BACKEND_NOTIFICATION_URL;
+
+const backendPort =
+  window.RUNTIME_CONFIG?.VITE_BACKEND_NOTIFICATION_PORT ||
+  import.meta.env.VITE_BACKEND_NOTIFICATION_PORT;
+
+const backendUrl = `${backendAddress}:${backendPort}`;
 
 export interface Notification {
   id: number;
