@@ -3,6 +3,7 @@ import { Recipe } from 'src/types/Recipe';
 import { RecipeCookingStep } from 'src/types/RecipeCookingStep';
 import { RecipeIngredient } from 'src/types/RecipeIngredient';
 import { RecipeReview } from 'src/types/RecipeReview';
+import { checkStatus } from './webCallUtils';
 
 const backendAddress =
   window.RUNTIME_CONFIG?.VITE_BACKEND_RECIPE_URL || import.meta.env.VITE_BACKEND_RECIPE_URL;
@@ -56,14 +57,16 @@ export const getAllPublishedRecipe = async (): Promise<Recipe[]> => {
 
 export const getRecipeById = async (recipeId: number): Promise<Recipe | null> => {
   try {
-    const result = await axios.get(`${backendUrl}/recipe/${recipeId}`).then((response) => response);
+    const result = await axios
+      .get(`${backendUrl}/recipe/${recipeId}/with-reviews`)
+      .then((response) => response);
     if (checkStatus(result.status)) {
       const temp: Recipe = {
-        ...result.data,
+        ...result.data.recipe,
         createDatetime: new Date(result.data.createDatetime),
         updateDatetime: new Date(result.data.updateDatetime),
       };
-
+      temp.reviews = result.data.reviews;
       return temp;
     }
     return null;
@@ -153,5 +156,3 @@ export const updateRecipeToDb = async (recipe: Recipe) => {
     return { success: false, error: error.message };
   }
 };
-
-const checkStatus = (code: number): boolean => code >= 200 && code < 300;
