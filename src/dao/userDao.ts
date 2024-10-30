@@ -36,3 +36,11 @@ export const getAllUsers = async () => {
     return { success: false, error: error.message };
   }
 };
+
+export const banUser = async (userId: number) => {
+  // TODO: API call to be implemented
+};
+
+export const unbanUser = async (userId: number) => {
+  // TODO: API call to be implemented
+};
