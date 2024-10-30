@@ -86,9 +86,7 @@ export function RecipesDetailView() {
     //recipeId = new, then it is a new recipe
     // = number and can get recipe from backend == display in form..read only
     // = number and cant get recipe just error the whole page...
-
-    getRecipe(inputRecipeId);
-    triggerResetRecipe();
+    getRecipeFromServer();
   }, []);
   useEffect(() => {
     loadFromOrginalRecipe();
@@ -99,6 +97,11 @@ export function RecipesDetailView() {
       setEditable(true);
     }
   }, [creation, editable]);
+
+  const getRecipeFromServer = () => {
+    getRecipe(inputRecipeId);
+    triggerResetRecipe();
+  };
 
   const triggerResetRecipe = () => {
     setEditable(false);
@@ -209,6 +212,7 @@ export function RecipesDetailView() {
               recipe={recipe}
               triggerResetRecipe={triggerResetRecipe}
               saveRecipe={saveRecipe}
+              getRecipeFromServer={getRecipeFromServer}
             />
           </Grid>
           <Grid item xs={12} sm={12}>

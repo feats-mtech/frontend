@@ -23,11 +23,21 @@ interface RecipeCookingStepListProps {
   recipe: Recipe;
   triggerResetRecipe: () => void;
   saveRecipe: () => void;
+
+  getRecipeFromServer: () => void;
 }
 
 export const RecipeHeader = (props: RecipeCookingStepListProps) => {
-  const { editable, setEditable, creation, ownerMode, recipe, triggerResetRecipe, saveRecipe } =
-    props;
+  const {
+    editable,
+    setEditable,
+    creation,
+    ownerMode,
+    recipe,
+    triggerResetRecipe,
+    saveRecipe,
+    getRecipeFromServer,
+  } = props;
 
   const handleCloseRevertDialog = () => setRevertDialogOption(false);
   const [openRevertDialogOption, setRevertDialogOption] = useState(false);
@@ -83,7 +93,7 @@ export const RecipeHeader = (props: RecipeCookingStepListProps) => {
         )}
         {!ownerMode && !creation && (
           <Grid item xs={12}>
-            <RecipeCookDialog recipeId={recipe.id} />
+            <RecipeCookDialog recipeId={recipe.id} getRecipeFromServer={getRecipeFromServer} />
           </Grid>
         )}
       </Grid>

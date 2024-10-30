@@ -24,6 +24,8 @@ declare global {
       VITE_BACKEND_USER_PORT?: string;
       VITE_BACKEND_NOTIFICATION_URL?: string;
       VITE_BACKEND_NOTIFICATION_PORT?: string;
+      VITE_BACKEND_REVIEW_URL?: string;
+      VITE_BACKEND_REVIEW_PORT?: string;
     };
   }
 }

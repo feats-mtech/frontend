@@ -4,6 +4,7 @@ import { Typography, Grid, TextField, Rating } from '@mui/material';
 
 import { RecipeReview } from 'src/types/RecipeReview';
 import { useAuth } from 'src/context/AuthContext';
+import { fDateTime } from 'src/utils/format-time';
 
 export const defaultRecipeReview = {
   id: -1,
@@ -75,7 +76,7 @@ export const RecipeReviewsList = (props: RecipeReviewsListProps) => {
                       />
                     </Grid>
                     <Grid xs={2}>
-                      <Typography variant="body2">{review.updateDatetime.toUTCString()}</Typography>
+                      <Typography variant="body2">{fDateTime(review.updateDatetime)}</Typography>
                     </Grid>
                     <Grid xs={10}>
                       <TextField

@@ -12,42 +12,50 @@ import { RecipeReviewsList } from './recipe-reviews-list';
 
 import { Iconify } from 'src/components/iconify';
 import { RecipeReview } from 'src/types/RecipeReview';
+import { submitReviews } from 'src/dao/reviewDao';
 
 interface RecipeCookDialogProps {
   recipeId: number;
+  getRecipeFromServer: () => void;
 }
 
 export default function RecipeCookDialog(props: RecipeCookDialogProps): JSX.Element {
-  const { recipeId } = props;
+  const { recipeId, getRecipeFromServer } = props;
   const [open, setOpen] = useState<boolean>(false);
-  const [reviewPostNotification, setReviewPostNotification] = useState<boolean>(false);
+  const [reviewEntryFailNotification, setReviewEntryFailNotification] = useState<boolean>(false);
+  const [reviewPostFailNotification, setReviewPostFailNotification] = useState<boolean>(false);
+
   const [recipeReview, setRecipeReview] = useState<RecipeReview[]>([]);
 
   const handleClickOpen = () => {
-    setReviewPostNotification(false);
+    setReviewEntryFailNotification(false);
+    setReviewPostFailNotification(false);
     setOpen(true);
   };
 
   const handleClose = () => setOpen(false);
 
-  const handleCommentsSubmit = () => {
+  const handleCommentsSubmit = async () => {
+    setReviewEntryFailNotification(false);
+    setReviewPostFailNotification(false);
     const temp = recipeReview[0];
-    setReviewPostNotification(true);
-    if (temp.rating === 0 && temp.comments === '') {
+    if ((temp.rating === 0 || temp.rating === null) && temp.comments === '') {
       //user decide not to submit...
+      setOpen(false);
       return;
     }
     //disable review related code.
-    // if (temp.rating > 0 && temp.comments !== '') {
-    //   alert(
-    //     'TODO: send a review to backend with the info of rating of ' +
-    //       temp.rating +
-    //       ', comments of  ' +
-    //       temp.comments,
-    //   );
-    //   setOpen(false);
-    //   return;
-    // }
+    if (temp.rating > 0 && temp.comments !== '') {
+      const result = await submitReviews(temp);
+      if (result) {
+        setOpen(false);
+        getRecipeFromServer();
+      } else {
+        setReviewPostFailNotification(true);
+      }
+      return;
+    }
+    setReviewEntryFailNotification(true);
   };
 
   return (
@@ -74,15 +82,15 @@ export default function RecipeCookDialog(props: RecipeCookDialogProps): JSX.Elem
         <DialogContent>
           We hope you find the recipe useful! If so, please leave a review.
         </DialogContent>
-        {/* <DialogTitle>Post a Review?</DialogTitle>
+        <DialogTitle>Post a Review?</DialogTitle>
         <RecipeReviewsList
           creation={true}
           recipeReviews={recipeReview}
           setRecipeReview={setRecipeReview}
           recipeId={recipeId}
-        /> */}
+        />
 
-        <Collapse in={reviewPostNotification}>
+        <Collapse in={reviewPostFailNotification}>
           <Alert
             severity="error"
             action={
@@ -91,7 +99,27 @@ export default function RecipeCookDialog(props: RecipeCookDialogProps): JSX.Elem
                 color="inherit"
                 size="small"
                 onClick={() => {
-                  setReviewPostNotification(false);
+                  setReviewPostFailNotification(false);
+                }}
+              >
+                <Iconify icon="material-symbols:close" />
+              </IconButton>
+            }
+            sx={{ mb: 2 }}
+          >
+            Review functionality disabled. Please try again later.
+          </Alert>
+        </Collapse>
+        <Collapse in={reviewEntryFailNotification}>
+          <Alert
+            severity="error"
+            action={
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  setReviewEntryFailNotification(false);
                 }}
               >
                 <Iconify icon="material-symbols:close" />
