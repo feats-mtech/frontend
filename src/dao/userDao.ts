@@ -27,3 +27,12 @@ export const registerUser = async (userFormDetails: UserFormDetails) => {
     return { success: false, error: error.message };
   }
 };
+
+export const getAllUsers = async () => {
+  try {
+    const result = await axios.get(`${backendUrl}/user/getAll`).then((response) => response);
+    return result.status ? result.data : [];
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};

@@ -18,6 +18,7 @@ export const RegisterPage = lazy(() => import('src/pages/register'));
 export const RecipesPage = lazy(() => import('src/pages/recipes'));
 export const RecipeDetailsPage = lazy(() => import('src/pages/recipe-details'));
 export const MyRecipesPage = lazy(() => import('src/pages/my-recipes'));
+export const AdminPage = lazy(() => import('src/pages/admin'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 
 const renderFallback = (
@@ -51,6 +52,7 @@ export function Router() {
         { path: 'recipes', element: <RecipesPage /> },
         { path: 'recipes/details/:inputRecipeId', element: <RecipeDetailsPage /> },
         { path: 'my-recipes', element: <MyRecipesPage /> },
+        { path: 'admin', element: <AdminPage /> },
       ],
     },
     {
