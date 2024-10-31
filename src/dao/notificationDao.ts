@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Notification } from 'src/types/Notification';
 
 const backendAddress =
   window.RUNTIME_CONFIG?.VITE_BACKEND_NOTIFICATION_URL ||
