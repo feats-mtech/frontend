@@ -10,16 +10,6 @@ const backendPort =
 
 const backendUrl = `${backendAddress}:${backendPort}`;
 
-export interface Notification {
-  id: number;
-  userId: number;
-  title: string;
-  content: string;
-  type: 'INFO' | 'WARNING' | 'ERROR';
-  isRead: boolean;
-  createDateTime: string;
-}
-
 export const getNotifications = async (userId: number, limit: number = 5) => {
   try {
     const response = await axios.get(`${backendUrl}/notification/${userId}`, {

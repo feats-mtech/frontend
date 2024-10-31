@@ -1,4 +1,4 @@
-import axios, { HttpStatusCode } from 'axios';
+import axios from 'axios';
 import { Recipe } from 'src/types/Recipe';
 import { RecipeCookingStep } from 'src/types/RecipeCookingStep';
 import { RecipeIngredient } from 'src/types/RecipeIngredient';
