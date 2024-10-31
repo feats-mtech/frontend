@@ -22,7 +22,7 @@ export interface Notification {
 
 export const getNotifications = async (userId: number, limit: number = 5) => {
   try {
-    const response = await axios.get(`${backendUrl}/notification/${userId}`, {
+    const response = await axios.get(`${backendUrl}/notification/get/${userId}`, {
       params: { limit },
     });
     return { success: true, data: response.data as Notification[] };
@@ -33,20 +33,8 @@ export const getNotifications = async (userId: number, limit: number = 5) => {
 
 export const getUnreadCount = async (userId: number) => {
   try {
-    const response = await axios.get(`${backendUrl}/notification/${userId}/unread-count`);
+    const response = await axios.get(`${backendUrl}/notification/unread-count/${userId}`);
     return { success: true, data: response.data as number };
-  } catch (error) {
-    return { success: false, error: error.message };
-  }
-};
-
-export const createNotification = async (
-  userId: number,
-  notification: Omit<Notification, 'id' | 'userId' | 'createDateTime' | 'isRead'>,
-) => {
-  try {
-    const response = await axios.post(`${backendUrl}/notification/${userId}/create`, notification);
-    return { success: true, data: response.data };
   } catch (error) {
     return { success: false, error: error.message };
   }
@@ -54,9 +42,7 @@ export const createNotification = async (
 
 export const markAsRead = async (notificationId: number, userId: number) => {
   try {
-    await axios.put(`${backendUrl}/notification/${notificationId}/mark-read`, null, {
-      params: { userId },
-    });
+    await axios.get(`${backendUrl}/notification/mark-read/${userId}/${notificationId}`);
     return { success: true };
   } catch (error) {
     return { success: false, error: error.message };
@@ -65,7 +51,7 @@ export const markAsRead = async (notificationId: number, userId: number) => {
 
 export const markAllAsRead = async (userId: number) => {
   try {
-    await axios.put(`${backendUrl}/notification/${userId}/mark-all-read`);
+    await axios.get(`${backendUrl}/notification/mark-all-read/${userId}`);
     return { success: true };
   } catch (error) {
     return { success: false, error: error.message };
