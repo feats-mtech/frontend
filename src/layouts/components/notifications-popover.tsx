@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from 'src/context/AuthContext';
+
 import { Icon as Iconify } from '@iconify/react';
-import {
-  Notification,
-  getNotifications,
-  getUnreadCount,
-  markAsRead,
-  markAllAsRead,
-} from 'src/dao/notificationDao';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import Badge from '@mui/material/Badge';
@@ -18,7 +12,15 @@ import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
+
 import { formatTime } from 'src/utils/format-time';
+import { Notification } from 'src/types/Notification';
+import {
+  getNotifications,
+  getUnreadCount,
+  markAsRead,
+  markAllAsRead,
+} from 'src/dao/notificationDao';
 
 const NotificationsPopover: React.FC = () => {
   const { isAuthenticated, user } = useAuth();
