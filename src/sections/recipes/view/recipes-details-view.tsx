@@ -47,7 +47,7 @@ export function generateDefaultRecipe(): Recipe {
     name: '',
     image: '',
     description: '',
-    cookingTimeInSec: 0,
+    cookingTimeInMin: 0,
     difficultyLevel: 0,
     cuisine: '',
     rating: 0,

@@ -19,7 +19,7 @@ interface RecipeProps {
   name: string;
   image: string;
   description: string;
-  cookingTimeInSec: number;
+  cookingTimeInMin: number;
   difficultyLevel: number;
   cuisine: string;
   rating: number;
@@ -120,7 +120,7 @@ export const updateRecipeToDb = async (recipe: Recipe) => {
           name: recipe.name,
           image: recipe.image,
           description: recipe.description,
-          cookingTimeInSec: recipe.cookingTimeInSec,
+          cookingTimeInMin: recipe.cookingTimeInMin,
           difficultyLevel: recipe.difficultyLevel,
           rating: recipe.rating,
           status: recipe.status,
@@ -139,7 +139,7 @@ export const updateRecipeToDb = async (recipe: Recipe) => {
           name: recipe.name,
           image: recipe.image,
           description: recipe.description,
-          cookingTimeInSec: recipe.cookingTimeInSec,
+          cookingTimeInMin: recipe.cookingTimeInMin,
           difficultyLevel: recipe.difficultyLevel,
           rating: recipe.rating,
           status: recipe.status,

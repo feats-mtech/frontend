@@ -89,7 +89,7 @@ export const mapToRecipeRowProps = (recipes: Recipe[]): RecipeRowProps[] => {
     name: recipe.name,
     image: recipe.image,
     description: recipe.description,
-    cookingTimeInSec: recipe.cookingTimeInSec,
+    cookingTimeInMin: recipe.cookingTimeInMin,
     difficultyLevel: recipe.difficultyLevel,
     cuisine: recipe.cuisine,
     rating: recipe.rating,

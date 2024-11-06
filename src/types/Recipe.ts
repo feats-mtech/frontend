@@ -8,7 +8,7 @@ export interface Recipe {
   name: string;
   image: string;
   description: string;
-  cookingTimeInSec: number;
+  cookingTimeInMin: number;
   difficultyLevel: number;
   cuisine: string;
   rating: number;

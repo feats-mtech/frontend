@@ -85,7 +85,7 @@ export function MyRecipesView() {
           filters.categories.includes(recipe.cuisine) ||
           (filters.categories.includes('Others') &&
             !VALID_FILTER_CATEGORY.includes(recipe.cuisine))) &&
-        (filters.cookingTime == -1 || filters.cookingTime >= recipe.cookingTimeInSec) &&
+        (filters.cookingTime == -1 || filters.cookingTime >= recipe.cookingTimeInMin) &&
         (filters.difficulty == null || filters.difficulty >= recipe.difficultyLevel) &&
         (filters.rating == null || filters.rating <= recipe.rating),
     );
