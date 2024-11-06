@@ -26,12 +26,14 @@ import { Iconify } from 'src/components/iconify';
 import { useRouter } from 'src/routes/hooks';
 
 import { getAllRecipeByCreatorId } from 'src/dao/recipeDao';
+import { set } from 'date-fns';
 
 export function MyRecipesView() {
   const router = useRouter();
   const { user } = useAuth();
   const [allRecipes, setAllRecipe] = useState<Recipe[]>([]);
-  const [displayRecipes, setDisplayRecipes] = useState<Recipe[]>([]);
+  const [displayPublishedRecipes, setDisplayPublishedRecipes] = useState<Recipe[]>([]);
+  const [displayDraftRecipes, setDisplayDraftRecipes] = useState<Recipe[]>([]);
   const [sortBy, setSortBy] = useState('Newest');
   const [openFilter, setOpenFilter] = useState(false);
   const [filters, setFilters] = useState<FiltersProps>(DEFAULT_FILTERS);
@@ -46,6 +48,7 @@ export function MyRecipesView() {
     }
     const recipesList = await getAllRecipeByCreatorId(userId);
     setRecipe(recipesList);
+    recipesList.forEach((recipe) => {});
   }, []);
 
   const handleOpenFilter = useCallback(() => setOpenFilter(true), []);
@@ -82,7 +85,7 @@ export function MyRecipesView() {
           filters.categories.includes(recipe.cuisine) ||
           (filters.categories.includes('Others') &&
             !VALID_FILTER_CATEGORY.includes(recipe.cuisine))) &&
-        (filters.cookingTime == -1 || filters.cookingTime >= recipe.cookingTimeInSec) &&
+        (filters.cookingTime == -1 || filters.cookingTime >= recipe.cookingTimeInMin) &&
         (filters.difficulty == null || filters.difficulty >= recipe.difficultyLevel) &&
         (filters.rating == null || filters.rating <= recipe.rating),
     );
@@ -100,7 +103,10 @@ export function MyRecipesView() {
           return 0;
       }
     });
-    setDisplayRecipes(filteredRecipes);
+    //setDisplayPublishedRecipes(filteredRecipes);
+
+    setDisplayDraftRecipes(filteredRecipes.filter((recipe) => recipe.status === 0));
+    setDisplayPublishedRecipes(filteredRecipes.filter((recipe) => recipe.status === 1));
   }, [filters, sortBy, allRecipes]);
 
   const canReset = Object.keys(filters).some(
@@ -162,19 +168,47 @@ export function MyRecipesView() {
         </Grid>
       </Grid>
 
-      {displayRecipes.length !== 0 ? (
-        <Grid container spacing={3}>
-          {displayRecipes.map((recipe: Recipe) => (
-            <Grid key={recipe.id} xs={12} sm={8} md={4} padding={1}>
-              <RecipeItem recipe={recipe} />
-            </Grid>
-          ))}
-        </Grid>
-      ) : (
+      <Grid container spacing={3}>
         <Grid item xs={12}>
-          <Typography variant="h6">No recipes found</Typography>
+          <Typography variant="h5">Draft recipes</Typography>
         </Grid>
-      )}
+        {displayDraftRecipes.length !== 0 ? (
+          <Grid container xs={12}>
+            {displayDraftRecipes.map((recipe: Recipe) => (
+              <Grid item key={recipe.id} xs={12} sm={8} md={4} padding={1}>
+                <RecipeItem recipe={recipe} />
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <Grid item xs={12}>
+            <Typography variant="h6" textAlign="center">
+              No Draft recipes found
+            </Typography>
+          </Grid>
+        )}
+      </Grid>
+
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Typography variant="h5">Published recipes</Typography>
+        </Grid>
+        {displayPublishedRecipes.length !== 0 ? (
+          <Grid container xs={12}>
+            {displayPublishedRecipes.map((recipe: Recipe) => (
+              <Grid item key={recipe.id} xs={12} sm={8} md={4} padding={1}>
+                <RecipeItem recipe={recipe} />
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <Grid item xs={12}>
+            <Typography variant="h6" textAlign="center">
+              No Published recipes found
+            </Typography>
+          </Grid>
+        )}
+      </Grid>
 
       {/* <Pagination count={10} color="primary" sx={{ mt: 8, mx: 'auto' }} /> */}
     </DashboardContent>

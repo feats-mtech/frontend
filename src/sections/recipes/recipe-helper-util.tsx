@@ -33,7 +33,7 @@ export const getDescriptionHelperText = (display: boolean, description: string):
   return description?.length > 0 ? '' : 'Description is required';
 };
 
-export const getCookingTimeInSecHelperText = (display: boolean, cookingtime: number): string => {
+export const getCookingTimeInMinHelperText = (display: boolean, cookingtime: number): string => {
   if (!display) {
     return '';
   }

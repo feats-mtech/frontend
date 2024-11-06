@@ -8,11 +8,12 @@ export interface Recipe {
   name: string;
   image: string;
   description: string;
-  cookingTimeInSec: number;
+  cookingTimeInMin: number;
   difficultyLevel: number;
   cuisine: string;
   rating: number;
   status: number;
+  draftRecipe: Recipe | null;
 
   createDatetime: Date;
   updateDatetime: Date;

@@ -11,6 +11,7 @@ import Grid from '@mui/material/Grid';
 import { Label } from 'src/components/label';
 import { fDateTime } from 'src/utils/format-time';
 import { useRouter } from 'src/routes/hooks/use-router';
+import { fNumber } from 'src/utils/format-number';
 
 export type RecipeItemProps = {
   id: number;
@@ -18,11 +19,12 @@ export type RecipeItemProps = {
   name: string;
   image: string;
   description: string;
-  cookingTimeInSec: number;
+  cookingTimeInMin: number;
   difficultyLevel: number;
   cuisine: string;
   rating: number;
   status: number;
+  draftRecipe: RecipeItemProps | null;
   createDatetime: Date;
   updateDatetime: Date;
 };
@@ -43,7 +45,7 @@ export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
         return '#f52810';
     }
   };
-  const renderStatus = (
+  const renderCuisine = (
     <Label
       variant="inverted"
       color="info"
@@ -89,7 +91,22 @@ export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
         textTransform: 'uppercase',
       }}
     >
-      {recipe.rating} <Rating max={1} readOnly value={1} />
+      {fNumber(recipe.rating)} <Rating max={1} readOnly value={1} />
+    </Label>
+  );
+  const renderDraftStatus = recipe.draftRecipe && (
+    <Label
+      variant="inverted"
+      color="secondary"
+      sx={{
+        zIndex: 9,
+        bottom: 16,
+        right: 16,
+        position: 'absolute',
+        textTransform: 'uppercase',
+      }}
+    >
+      Unpublished Changes
     </Label>
   );
 
@@ -103,9 +120,10 @@ export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
   return (
     <Card>
       <Box sx={{ pt: '100%', position: 'relative' }}>
-        {renderStatus}
+        {renderCuisine}
         {renderImg}
         {renderRating}
+        {renderDraftStatus}
       </Box>
 
       <Stack spacing={2} sx={{ p: 2 }}>

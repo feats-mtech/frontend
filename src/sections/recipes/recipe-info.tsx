@@ -9,7 +9,7 @@ import {
   getDifficultyLevelHelperText,
   getCuisineHelperText,
   getDescriptionHelperText,
-  getCookingTimeInSecHelperText,
+  getCookingTimeInMinHelperText,
 } from './recipe-helper-util';
 
 interface RecipeDetailsProps {
@@ -30,9 +30,6 @@ export const RecipeDetails = (props: RecipeDetailsProps) => {
   }, []);
 
   const updateRecipe = (field: string, value: any) => {
-    // if (field === 'cookingTimeInSec') {
-    //   value = value * 60;
-    // }
     setRecipe({
       ...recipe,
       [field]: value,
@@ -166,14 +163,14 @@ export const RecipeDetails = (props: RecipeDetailsProps) => {
               type="number"
               disabled={!editable}
               placeholder={'e.g. 60'}
-              label="Quantity"
-              name="cookingTimeInSec"
-              value={recipe ? recipe.cookingTimeInSec : 0}
+              label="Duration"
+              name="cookingTimeInMin"
+              value={recipe ? recipe.cookingTimeInMin : 0}
               onChange={handleChange}
-              error={!!getCookingTimeInSecHelperText(highlightHelperText, recipe.cookingTimeInSec)}
-              helperText={getCookingTimeInSecHelperText(
+              error={!!getCookingTimeInMinHelperText(highlightHelperText, recipe.cookingTimeInMin)}
+              helperText={getCookingTimeInMinHelperText(
                 highlightHelperText,
-                recipe.cookingTimeInSec,
+                recipe.cookingTimeInMin,
               )}
             />
           </Grid>

@@ -21,12 +21,12 @@ interface RecipeCookingStepListProps {
   creation: boolean;
   ownerMode: boolean;
   recipe: Recipe;
+  setRecipe: React.Dispatch<React.SetStateAction<Recipe>>;
   triggerResetRecipe: () => void;
-  saveRecipe: () => void;
+  saveRecipe: (status: number) => void;
 
   getRecipeFromServer: () => void;
 }
-
 export const RecipeHeader = (props: RecipeCookingStepListProps) => {
   const {
     editable,
@@ -34,11 +34,27 @@ export const RecipeHeader = (props: RecipeCookingStepListProps) => {
     creation,
     ownerMode,
     recipe,
+    setRecipe,
     triggerResetRecipe,
     saveRecipe,
+
     getRecipeFromServer,
   } = props;
 
+  const saveDraftRecipe = () => {
+    setRecipe({
+      ...recipe,
+      status: 0,
+    });
+    saveRecipe(0);
+  };
+  const savePublishedRecipe = () => {
+    setRecipe({
+      ...recipe,
+      status: 1,
+    });
+    saveRecipe(1);
+  };
   const handleCloseRevertDialog = () => setRevertDialogOption(false);
   const [openRevertDialogOption, setRevertDialogOption] = useState(false);
   const setEditableToTrue = () => {
@@ -62,9 +78,13 @@ export const RecipeHeader = (props: RecipeCookingStepListProps) => {
         </Grid>
         {creation ? (
           <Grid item xs={12}>
-            <Button variant="outlined" onClick={saveRecipe}>
-              <Iconify icon="solar:pen-bold" />
-              Create Recipe
+            <Button variant="outlined" onClick={saveDraftRecipe}>
+              <Iconify icon="material-symbols:save" />
+              Save Recipe
+            </Button>
+            <Button variant="outlined" onClick={savePublishedRecipe}>
+              <Iconify icon="material-symbols:publish" />
+              Publish Recipe
             </Button>
           </Grid>
         ) : (
@@ -77,9 +97,13 @@ export const RecipeHeader = (props: RecipeCookingStepListProps) => {
                 </Button>
               ) : (
                 <>
-                  <Button variant="outlined" onClick={saveRecipe}>
+                  <Button variant="outlined" onClick={saveDraftRecipe}>
                     <Iconify icon="material-symbols:save" />
                     Save Changes
+                  </Button>
+                  <Button variant="outlined" onClick={savePublishedRecipe}>
+                    <Iconify icon="material-symbols:publish" />
+                    Publish Changes
                   </Button>
                   <Button variant="outlined" onClick={openRevertDialog}>
                     <Iconify icon="grommet-icons:revert" />
