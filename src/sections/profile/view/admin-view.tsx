@@ -13,25 +13,32 @@ import {
 } from '@mui/material';
 
 import { DashboardContent } from 'src/layouts/dashboard';
-import { getAllUsers } from 'src/dao/userDao';
+import { banUser, getAllUsers, unbanUser } from 'src/dao/userDao';
 import { User } from 'src/types/User';
+import { useAuth } from 'src/context/AuthContext';
 
 export function AdminView() {
   const [users, setUsers] = useState<User[]>([]);
+  const { user } = useAuth();
 
   const fetchAllUsers = useCallback(async () => {
     const users = await getAllUsers();
     setUsers(users);
   }, []);
 
+  const handleBanUnbanUser = async (userId: number, userStatus: number) => {
+    // userStatus: 0 = banned, 1 = active
+    if (userStatus === 0) {
+      await unbanUser(userId);
+    } else {
+      await banUser(userId);
+    }
+    fetchAllUsers();
+  };
+
   useEffect(() => {
     fetchAllUsers();
   }, [fetchAllUsers]);
-
-  // TODO: remove or undefined type when implemented in backend
-  const handleBanUnbanUser = async (userId: number, isBanned: boolean | undefined) => {
-    // TODO: call ban or unban from dao
-  };
 
   return (
     <DashboardContent maxWidth="xl">
@@ -49,22 +56,24 @@ export function AdminView() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell>{user.id}</TableCell>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    color={user.isBanned ? 'secondary' : 'primary'}
-                    onClick={() => handleBanUnbanUser(user.id, user.isBanned)}
-                  >
-                    {user.isBanned ? 'Unban' : 'Ban'}
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+            {users
+              .filter((u) => u.id !== user?.id && u.role !== 1)
+              .map((user) => (
+                <TableRow key={user.id}>
+                  <TableCell>{user.id}</TableCell>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      color={user.status === 0 ? 'error' : 'primary'}
+                      onClick={() => handleBanUnbanUser(user.id, user.status)}
+                    >
+                      {user.status === 0 ? 'Unban' : 'Ban'}
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
