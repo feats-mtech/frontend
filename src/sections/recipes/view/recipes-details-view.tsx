@@ -33,6 +33,7 @@ import {
   getCuisineHelperText,
   getDescriptionHelperText,
   getDifficultyLevelHelperText,
+  getImageHelperText,
   getIngredientNameHelperText,
   getIngredientQuantityTest,
   getIngredientUOMHelperText,
@@ -51,6 +52,7 @@ export function generateDefaultRecipe(): Recipe {
     cuisine: '',
     rating: 0,
     status: 1,
+    draftRecipe: null,
 
     createDatetime: new Date(),
     updateDatetime: new Date(),
@@ -109,10 +111,17 @@ export function RecipesDetailView() {
   };
 
   const loadFromOrginalRecipe = () => {
-    setRecipe(orginialRecipe);
-    setRecipeCookingSteps(orginialRecipe.cookingSteps || []);
-    setRecipeIngredients(orginialRecipe.ingredients || []);
-    setRecipeReviews(orginialRecipe.reviews || []);
+    if (orginialRecipe.draftRecipe == null) {
+      setRecipe(orginialRecipe);
+      setRecipeCookingSteps(orginialRecipe.cookingSteps || []);
+      setRecipeIngredients(orginialRecipe.ingredients || []);
+      setRecipeReviews(orginialRecipe.reviews || []);
+    } else {
+      setRecipe(orginialRecipe.draftRecipe);
+      setRecipeCookingSteps(orginialRecipe.draftRecipe.cookingSteps || []);
+      setRecipeIngredients(orginialRecipe.draftRecipe.ingredients || []);
+      setRecipeReviews(orginialRecipe.draftRecipe.reviews || []);
+    }
   };
 
   const getRecipe = async (recipeId: string = '') => {
@@ -138,10 +147,11 @@ export function RecipesDetailView() {
     }
   };
 
-  const saveRecipe = async () => {
+  const saveRecipe = async (status: number = 0) => {
     setHighlightHelperText(true);
 
     const recipeFields = [
+      getImageHelperText(true, recipe.image),
       getTitleHelperText(true, recipe.name),
       getDifficultyLevelHelperText(true, recipe.difficultyLevel),
       getCuisineHelperText(true, recipe.cuisine),
@@ -166,6 +176,7 @@ export function RecipesDetailView() {
 
     const combineItem = {
       ...recipe,
+      status: status,
       creatorId: user?.id ?? -1,
       cookingSteps: recipeCookingSteps,
       ingredients: recipeIngredients,
@@ -210,6 +221,7 @@ export function RecipesDetailView() {
               creation={creation}
               ownerMode={ownerMode}
               recipe={recipe}
+              setRecipe={setRecipe}
               triggerResetRecipe={triggerResetRecipe}
               saveRecipe={saveRecipe}
               getRecipeFromServer={getRecipeFromServer}
@@ -267,7 +279,9 @@ export function RecipesDetailView() {
       <Dialog open={openRecipeCreatedSuccessfulDialog} onClose={handleNavigateToMyRecipe}>
         <DialogTitle>Success</DialogTitle>
         <DialogContent>
-          <DialogContentText>Your recipe had been successfully created!</DialogContentText>
+          <DialogContentText>
+            Your recipe had been successfully {recipe.status === 0 ? 'saved' : 'published'}!
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleNavigateToMyRecipe} color="primary">

@@ -24,6 +24,7 @@ interface RecipeProps {
   cuisine: string;
   rating: number;
   status: number;
+  draftRecipe: Recipe | null;
 
   createDatetime: string;
   updateDatetime: string;

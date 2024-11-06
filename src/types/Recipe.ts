@@ -13,6 +13,7 @@ export interface Recipe {
   cuisine: string;
   rating: number;
   status: number;
+  draftRecipe: Recipe | null;
 
   createDatetime: Date;
   updateDatetime: Date;
