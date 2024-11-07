@@ -11,13 +11,15 @@ import { mapToIngredientRowProps, mapToRecipeRowProps } from 'src/sections/inven
 import { useAuth } from 'src/context/AuthContext';
 
 import { getIngredientsByUser } from 'src/dao/ingredientDao';
-import { getAllRecipeByCreatorId } from 'src/dao/recipeDao';
+import { getAllRecipeByCreatorId, getRecommendedRecipeByCreatorId } from 'src/dao/recipeDao';
+import RecommendRecipeContent from './recommendRecipe';
 
 export function OverviewView() {
   const { user } = useAuth();
 
   const [ingredients, setIngredients] = useState<IngredientRowProps[]>([]);
   const [recipes, setRecipes] = useState<RecipeRowProps[]>([]);
+  const [recommendedRecipe, setRecommendedRecipes] = useState<RecipeRowProps[]>([]);
 
   const fetchIngredientsForUser = useCallback(async () => {
     const ingredients = await getIngredientsByUser(user?.id as number);
@@ -27,10 +29,15 @@ export function OverviewView() {
     const recipes = await getAllRecipeByCreatorId(user?.id as number);
     setRecipes(mapToRecipeRowProps(recipes));
   }, []);
+  const fetchRecommendedRecipesForUser = useCallback(async () => {
+    const recipes = await getRecommendedRecipeByCreatorId(user?.id as number);
+    setRecommendedRecipes(mapToRecipeRowProps(recipes));
+  }, []);
 
   useEffect(() => {
     fetchIngredientsForUser();
     fetchRecipesForUser();
+    fetchRecommendedRecipesForUser();
   }, [fetchIngredientsForUser]);
 
   return (
@@ -42,6 +49,9 @@ export function OverviewView() {
       <Grid>
         <Grid xs={12} md={6} lg={4}>
           <OverviewContent ingredients={ingredients} recipes={recipes} />
+        </Grid>
+        <Grid xs={12} md={6} lg={4}>
+          <RecommendRecipeContent recommendedRecipe={recommendedRecipe} />
         </Grid>
       </Grid>
     </DashboardContent>

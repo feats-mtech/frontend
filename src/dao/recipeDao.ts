@@ -157,3 +157,26 @@ export const updateRecipeToDb = async (recipe: Recipe) => {
     return { success: false, error: error.message };
   }
 };
+
+export const getRecommendedRecipeByCreatorId = async (creatorId: number): Promise<Recipe[]> => {
+  try {
+    const recipesList: Recipe[] = [];
+    const result = await axios
+      .get(`${backendUrl}/recipe/recommend?isByRating=false&isDesc=true`)
+      .then((response) => response);
+    if (checkStatus(result.status)) {
+      result.data.map((item: RecipeProps) => {
+        const temp: Recipe = {
+          ...item,
+          createDatetime: new Date(item.createDatetime),
+          updateDatetime: new Date(item.updateDatetime),
+        };
+
+        recipesList.push(temp);
+      });
+    }
+    return recipesList;
+  } catch (error) {
+    return [];
+  }
+};
