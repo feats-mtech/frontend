@@ -19,6 +19,7 @@ import { LayoutSection } from '../core/layout-section';
 import { HeaderSection } from '../core/header-section';
 import { AccountPopover } from '../components/account-popover';
 import { NotificationsPopover } from '../components/notifications-popover';
+import { useAuth } from 'src/context/AuthContext';
 
 export type DashboardLayoutProps = {
   sx?: SxProps<Theme>;
@@ -32,8 +33,30 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
   const theme = useTheme();
 
   const [navOpen, setNavOpen] = useState(false);
+  const { user } = useAuth();
 
   const layoutQuery: Breakpoint = 'lg';
+
+  const accountData = [
+    {
+      label: 'Home',
+      href: '/',
+      icon: <Iconify width={22} icon="solar:home-angle-bold-duotone" />,
+    },
+    {
+      label: 'Profile',
+      href: '#',
+      icon: <Iconify width={22} icon="solar:shield-keyhole-bold-duotone" />,
+    },
+  ];
+
+  if (user?.role === 1) {
+    accountData.push({
+      label: 'Admin',
+      href: '/admin',
+      icon: <Iconify width={22} icon="solar:settings-bold-duotone" />,
+    });
+  }
 
   return (
     <LayoutSection
@@ -74,25 +97,7 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
               <Box gap={1} display="flex" alignItems="center">
                 <Searchbar />
                 <NotificationsPopover />
-                <AccountPopover
-                  data={[
-                    {
-                      label: 'Home',
-                      href: '/',
-                      icon: <Iconify width={22} icon="solar:home-angle-bold-duotone" />,
-                    },
-                    {
-                      label: 'Profile',
-                      href: '#',
-                      icon: <Iconify width={22} icon="solar:shield-keyhole-bold-duotone" />,
-                    },
-                    // {
-                    //   label: 'Settings',
-                    //   href: '#',
-                    //   icon: <Iconify width={22} icon="solar:settings-bold-duotone" />,
-                    // },
-                  ]}
-                />
+                <AccountPopover data={accountData.filter(Boolean)} />
               </Box>
             ),
           }}

@@ -18,8 +18,12 @@ export const login = async (username: string, password: string) => {
         password,
       })
       .then((response) => response);
-    return { success: result.status === HttpStatusCode.Ok, data: result.data };
+    return {
+      success: result.status === HttpStatusCode.Ok,
+      data: result.data,
+      statusCode: result.status,
+    };
   } catch (error) {
-    return { success: false, error: error.message };
+    return { success: false, error: error.message, statusCode: error.status };
   }
 };
