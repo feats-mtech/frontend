@@ -5,6 +5,7 @@ export interface User {
   email: string;
   status: number;
   role: number;
+  isBanned?: boolean; // TODO: remove optional when implemented in backend
 }
 
 export interface UserFormDetails {

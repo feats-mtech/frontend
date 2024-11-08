@@ -20,6 +20,7 @@ export function SignInView() {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [result, setResult] = useState<boolean | null>(null);
+  const [statusCode, setStatusCode] = useState<number | null>(null);
 
   const handleSignIn = useCallback(async () => {
     const result = await loginUser(username, password);
@@ -27,6 +28,7 @@ export function SignInView() {
       setResult(true);
       router.push('/');
     }
+    setStatusCode(result.statusCode);
     setResult(false);
   }, [router, username, password]);
 
@@ -93,6 +95,12 @@ export function SignInView() {
         {result === false && (
           <Typography variant="body2" color="error" sx={{ mb: 3, alignSelf: 'center' }}>
             Invalid username/password. Please try again.
+          </Typography>
+        )}
+
+        {result === false && statusCode === 403 && (
+          <Typography variant="body2" color="error" sx={{ mb: 3, alignSelf: 'center' }}>
+            Your account has been banned. Please contact the administrator.
           </Typography>
         )}
 

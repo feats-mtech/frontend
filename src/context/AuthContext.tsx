@@ -4,8 +4,8 @@ import { login } from 'src/dao/authDao';
 import { User } from 'src/types/User';
 
 type loginResult =
-  | { success: boolean; data: any; error?: undefined }
-  | { success: boolean; error: any; data?: undefined };
+  | { success: boolean; data: any; statusCode: number; error?: undefined }
+  | { success: boolean; error: any; statusCode: number; data?: undefined };
 
 interface AuthContextProps {
   isAuthenticated: boolean;

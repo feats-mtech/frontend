@@ -49,57 +49,53 @@ export const RecipeReviewsList = (props: RecipeReviewsListProps) => {
 
   return (
     <div>
-      <div>
-        {!creation && <Typography variant="subtitle1">Reviews </Typography>}
-        {recipeReviews?.length === 0 ? (
-          <Typography variant="body2">No Reviews </Typography>
-        ) : (
-          <div>
-            <Grid container padding={2}>
-              {recipeReviews?.map((review: RecipeReview, index) => (
-                <Grid key={review.id} xs={12} paddingBottom={2}>
-                  <Grid container spacing={1}>
-                    <Grid item xs={9}>
-                      {/* TODO : need to pull the creator name instead */}
-                      {/* <Typography variant="h6">
+      {!creation && <Typography variant="subtitle1">Reviews </Typography>}
+      {recipeReviews?.length === 0 ? (
+        <Typography variant="body2">No Reviews </Typography>
+      ) : (
+        <Grid container padding={2}>
+          {recipeReviews?.map((review: RecipeReview, index) => (
+            <Grid key={review.id} xs={12} paddingBottom={2}>
+              <Grid container spacing={1}>
+                <Grid item xs={9}>
+                  {/* TODO : need to pull the creator name instead */}
+                  {/* <Typography variant="h6">
                         {review.creatorId + ''}
                       </Typography> */}
-                    </Grid>
-                    <Grid xs={2}>
-                      <Rating
-                        disabled={!creation}
-                        name="Difficulty Label"
-                        value={review ? review.rating : 0}
-                        onChange={(event, newValue) => {
-                          setReviewDetails(index, 'rating', newValue);
-                        }}
-                      />
-                    </Grid>
-                    <Grid xs={2}>
-                      <Typography variant="body2">{fDateTime(review.updateDatetime)}</Typography>
-                    </Grid>
-                    <Grid xs={10}>
-                      <TextField
-                        fullWidth={true}
-                        id="outlined-textarea"
-                        label="Comments"
-                        placeholder="Comments"
-                        multiline
-                        rows={5}
-                        disabled={!creation}
-                        value={review ? review.comments : ''}
-                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                          setReviewDetails(index, 'comments', event.target.value);
-                        }}
-                      />
-                    </Grid>
-                  </Grid>
                 </Grid>
-              ))}
+                <Grid xs={2}>
+                  <Rating
+                    disabled={!creation}
+                    name="Difficulty Label"
+                    value={review ? review.rating : 0}
+                    onChange={(event, newValue) => {
+                      setReviewDetails(index, 'rating', newValue);
+                    }}
+                  />
+                </Grid>
+                <Grid xs={2}>
+                  <Typography variant="body2">{fDateTime(review.updateDatetime)}</Typography>
+                </Grid>
+                <Grid xs={10}>
+                  <TextField
+                    fullWidth={true}
+                    id="outlined-textarea"
+                    label="Comments"
+                    placeholder="Comments"
+                    multiline
+                    rows={5}
+                    disabled={!creation}
+                    value={review ? review.comments : ''}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      setReviewDetails(index, 'comments', event.target.value);
+                    }}
+                  />
+                </Grid>
+              </Grid>
             </Grid>
-          </div>
-        )}
-      </div>
+          ))}
+        </Grid>
+      )}
     </div>
   );
 };

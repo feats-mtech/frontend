@@ -27,3 +27,32 @@ export const registerUser = async (userFormDetails: UserFormDetails) => {
     return { success: false, error: error.message };
   }
 };
+
+export const getAllUsers = async () => {
+  try {
+    const result = await axios.get(`${backendUrl}/user/getAll`).then((response) => response);
+    return result.status ? result.data : [];
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
+
+export const banUser = async (userId: number) => {
+  try {
+    const result = await axios.put(`${backendUrl}/user/${userId}/ban`).then((response) => response);
+    return result.status ? result.data : [];
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
+
+export const unbanUser = async (userId: number) => {
+  try {
+    const result = await axios
+      .put(`${backendUrl}/user/${userId}/unban`)
+      .then((response) => response);
+    return result.status ? result.data : [];
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};

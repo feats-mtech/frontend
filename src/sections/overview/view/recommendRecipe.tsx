@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-
 import { Grid, IconButton, ImageList, ImageListItem, ImageListItemBar } from '@mui/material';
 
 import { useRouter } from 'src/routes/hooks/use-router';

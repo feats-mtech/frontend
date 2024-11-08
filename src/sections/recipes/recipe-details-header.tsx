@@ -57,12 +57,9 @@ export const RecipeHeader = (props: RecipeCookingStepListProps) => {
   };
   const handleCloseRevertDialog = () => setRevertDialogOption(false);
   const [openRevertDialogOption, setRevertDialogOption] = useState(false);
-  const setEditableToTrue = () => {
-    setEditable(true);
-  };
-  const openRevertDialog = () => {
-    setRevertDialogOption(true);
-  };
+  const setEditableToTrue = () => setEditable(true);
+  const openRevertDialog = () => setRevertDialogOption(true);
+
   return (
     <>
       <RecipeRevertDialog
@@ -89,7 +86,7 @@ export const RecipeHeader = (props: RecipeCookingStepListProps) => {
           </Grid>
         ) : (
           ownerMode && (
-            <Grid item xs={12}>
+            <Grid item xs={12} style={{ paddingBottom: '16px' }}>
               {!editable ? (
                 <Button variant="outlined" onClick={setEditableToTrue}>
                   <Iconify icon="solar:pen-bold" />
