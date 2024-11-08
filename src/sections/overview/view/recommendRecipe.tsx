@@ -1,7 +1,8 @@
 import { useCallback } from 'react';
-import { Grid, IconButton, ImageList, ImageListItem, ImageListItemBar } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 
 import { useRouter } from 'src/routes/hooks/use-router';
+import Carousel from 'react-material-ui-carousel';
 
 interface RecommendRecipeContentProps {
   recommendedRecipe: RecipeRowProps[];
@@ -33,35 +34,32 @@ const RecommendRecipeContent = ({ recommendedRecipe }: RecommendRecipeContentPro
     [router],
   );
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
-        <h2>Recommend Recipes</h2>
-      </Grid>
-      <Grid item xs={12} sm={6} md={3}>
-        <ImageList sx={{ width: 500, height: 450 }}>
-          {recommendedRecipe.map((item) => (
-            <ImageListItem key={item.image} onClick={() => goToRecipePage(item.id)}>
+    <>
+      <h2>Recommend Recipes</h2>
+      <Carousel>
+        {recommendedRecipe.map((item, i) => (
+          <Grid container key={i}>
+            <Grid item xs={12} md={6} lg={4}>
               <img
-                srcSet={`${item.image}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                src={`${item.image}?w=248&fit=crop&auto=format`}
+                srcSet={`${item.image}`}
+                src={`${item.image}`}
+                width={350}
+                height={350}
                 alt={item.name}
                 loading="lazy"
               />
-              <ImageListItemBar
-                title={item.name}
-                subtitle={item.description}
-                actionIcon={
-                  <IconButton
-                    sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                    aria-label={`info about ${item.name}`}
-                  ></IconButton>
-                }
-              />
-            </ImageListItem>
-          ))}
-        </ImageList>
-      </Grid>
-    </Grid>
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <Button className="CheckButton" onClick={() => goToRecipePage(item.id)}>
+                Check it out!
+              </Button>
+              <h2>{item.name}</h2>
+              <p>{item.description}</p>
+            </Grid>
+          </Grid>
+        ))}
+      </Carousel>
+    </>
   );
 };
 
