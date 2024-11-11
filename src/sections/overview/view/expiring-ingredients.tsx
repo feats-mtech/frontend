@@ -126,7 +126,7 @@ const OverviewContent = ({ ingredients, recipes }: OverviewContentProps) => {
                   <TableCell>{ingredient.expiryDate}</TableCell>
                 </TableRow>
               ))}
-              {filteredIngredients.values.length === 0 && (
+              {filteredIngredients.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={4} align="center">
                     no records found
