@@ -111,7 +111,7 @@ export function RecipesDetailView() {
   };
 
   const loadFromOrginalRecipe = () => {
-    if (orginialRecipe.draftRecipe == null) {
+    if (orginialRecipe.draftRecipe == null || !ownerMode) {
       setRecipe(orginialRecipe);
       setRecipeCookingSteps(orginialRecipe.cookingSteps || []);
       setRecipeIngredients(orginialRecipe.ingredients || []);

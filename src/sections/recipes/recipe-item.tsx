@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -12,6 +12,7 @@ import { Label } from 'src/components/label';
 import { fDateTime } from 'src/utils/format-time';
 import { useRouter } from 'src/routes/hooks/use-router';
 import { fNumber } from 'src/utils/format-number';
+import { useAuth } from 'src/context/AuthContext';
 
 export type RecipeItemProps = {
   id: number;
@@ -31,6 +32,12 @@ export type RecipeItemProps = {
 
 export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
   const router = useRouter();
+  const [ownerMode, setOwnerMode] = useState<boolean>(false);
+
+  const { user } = useAuth();
+  useEffect(() => {
+    setOwnerMode(user ? user.id === recipe?.creatorId : false);
+  }, []);
   const getGaugeColor = (value: string) => {
     switch (value) {
       case '1':
@@ -94,7 +101,7 @@ export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
       {fNumber(recipe.rating)} <Rating max={1} readOnly value={1} />
     </Label>
   );
-  const renderDraftStatus = recipe.draftRecipe && (
+  const renderDraftStatus = recipe.draftRecipe && ownerMode && (
     <Label
       variant="inverted"
       color="secondary"

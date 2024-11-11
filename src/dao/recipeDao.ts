@@ -162,7 +162,7 @@ export const getRecommendedRecipeByCreatorId = async (creatorId: number): Promis
   try {
     const recipesList: Recipe[] = [];
     const result = await axios
-      .get(`${backendUrl}/recipe/recommend?isByRating=false&isDesc=true`)
+      .get(`${backendUrl}/recipe/recommend?isByRating=false&isDesc=true&userId=${creatorId}`)
       .then((response) => response);
     if (checkStatus(result.status)) {
       result.data.map((item: RecipeProps) => {
