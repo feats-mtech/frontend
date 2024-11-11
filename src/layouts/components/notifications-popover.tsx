@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from 'src/context/AuthContext';
 
 import { Icon as Iconify } from '@iconify/react';
@@ -22,6 +22,9 @@ import {
   markAllAsRead,
 } from 'src/dao/notificationDao';
 
+import NotificationWebSocketService from 'src/services/NotificationWebSocketService';
+
+
 const NotificationsPopover: React.FC = () => {
   const { isAuthenticated, user } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -30,20 +33,59 @@ const NotificationsPopover: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const [useWebSocket, setUseWebSocket] = useState(false);
+  const [webSocketService, setWebSocketService] = useState<NotificationWebSocketService | null>(null);
+
+
   useEffect(() => {
     if (isAuthenticated) {
-      fetchNotifications();
-      fetchUnreadCount();
-      const interval = setInterval(() => {
+      if (useWebSocket) {
+        connectWebSocket();
+      } else {
+        fetchNotifications();
         fetchUnreadCount();
-        if (anchorEl) {
-          fetchNotifications();
-        }
-      }, 60000);
+        const interval = setInterval(() => {
+          fetchUnreadCount();
+          if (anchorEl) {
+            fetchNotifications();
+          }
+        }, 60000);
 
-      return () => clearInterval(interval);
+        return () => clearInterval(interval);
+      }
     }
-  }, [isAuthenticated, user]);
+  }, [isAuthenticated, user, useWebSocket]);
+
+  // WebSocket 连接相关逻辑
+  useEffect(() => {
+    if (isAuthenticated && useWebSocket) {
+      connectWebSocket();
+      return () => disconnectWebSocket();
+    }
+  }, [isAuthenticated, user, useWebSocket]);
+
+  const connectWebSocket = useCallback(() => {
+    if (user) {
+      const service = new NotificationWebSocketService(
+        (notification: Notification) => {
+          setNotifications((prev) => [...prev, notification]);
+          setUnreadCount((prev) => prev + 1);
+        },
+        (unreadCount: number) => {
+          setUnreadCount(unreadCount);
+        }
+      );
+      service.connect(user.id);
+      setWebSocketService(service);
+    }
+  }, [user]);
+
+  const disconnectWebSocket = useCallback(() => {
+    if (webSocketService) {
+      webSocketService.disconnect();
+      setWebSocketService(null);
+    }
+  }, [webSocketService]);
 
   const fetchNotifications = async () => {
     if (!user) return;
@@ -77,7 +119,11 @@ const NotificationsPopover: React.FC = () => {
     try {
       const result = await markAsRead(notificationId, user.id);
       if (result.success) {
-        await Promise.all([fetchNotifications(), fetchUnreadCount()]);
+        if (webSocketService) {
+          webSocketService.sendMarkAsReadMessage(notificationId);
+        } else {
+          await Promise.all([fetchNotifications(), fetchUnreadCount()]);
+        }
       }
     } catch (err) {
       setError('Failed to mark as read');
@@ -89,7 +135,11 @@ const NotificationsPopover: React.FC = () => {
     try {
       const result = await markAllAsRead(user.id);
       if (result.success) {
-        await Promise.all([fetchNotifications(), fetchUnreadCount()]);
+        if (webSocketService) {
+          webSocketService.sendMarkAllAsReadMessage();
+        } else {
+          await Promise.all([fetchNotifications(), fetchUnreadCount()]);
+        }
       }
     } catch (err) {
       setError('Failed to mark all as read');
@@ -98,6 +148,10 @@ const NotificationsPopover: React.FC = () => {
 
   const handleOpenPopover = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleToggleWebSocket = () => {
+    setUseWebSocket((prevState) => !prevState);
   };
 
   const handleClose = () => {
@@ -136,9 +190,19 @@ const NotificationsPopover: React.FC = () => {
             }}
           >
             <Typography variant="h6">Notifications</Typography>
-            <Button onClick={handleMarkAllAsRead} disabled={unreadCount === 0} size="small">
-              Mark all as read
-            </Button>
+            <Box>
+              <Button
+                onClick={handleToggleWebSocket}
+                variant={useWebSocket ? 'contained' : 'outlined'}
+                size="small"
+                sx={{ mr: 2 }}
+              >
+                {useWebSocket ? 'Use WebSocket' : 'Use Polling'}
+              </Button>
+              <Button onClick={handleMarkAllAsRead} disabled={unreadCount === 0} size="small">
+                Mark all as read
+              </Button>
+            </Box>
           </Box>
           {loading && (
             <Box sx={{ p: 2, textAlign: 'center' }}>
