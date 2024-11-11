@@ -1,0 +1,34 @@
+{
+  "preset": "ts-jest",
+  "testEnvironment": "node",
+  "moduleDirectories": ["node_modules", "<rootDir>"],
+  "globals": {
+    "window": {
+      "location": {}
+    }
+  },
+  "transform": {
+    "^.+\\.tsx?$": [
+      "ts-jest",
+      {
+        "diagnostics": {
+          "ignoreCodes": [1343]
+        },
+        "astTransformers": {
+          "before": [
+            {
+              "path": "node_modules/ts-jest-mock-import-meta",
+              "options": {
+                "metaObjectReplacement": {
+                  "env": {
+                    "VITE_API_PATH": "http://localhost:3001"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
