@@ -26,7 +26,6 @@ import { Iconify } from 'src/components/iconify';
 import { useRouter } from 'src/routes/hooks';
 
 import { getAllRecipeByCreatorId } from 'src/dao/recipeDao';
-import { set } from 'date-fns';
 
 export function MyRecipesView() {
   const router = useRouter();
@@ -48,7 +47,6 @@ export function MyRecipesView() {
     }
     const recipesList = await getAllRecipeByCreatorId(userId);
     setRecipe(recipesList);
-    recipesList.forEach((recipe) => {});
   }, []);
 
   const handleOpenFilter = useCallback(() => setOpenFilter(true), []);
