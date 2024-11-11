@@ -5,21 +5,24 @@ export const mockIngredients: Ingredient[] = [
     id: 1,
     name: 'apple',
     uom: 'kg',
-    expiryDate: '2024-11-31',
+    // 2 days from now
+    expiryDate: new Date(new Date().setDate(new Date().getDate() + 2)).toISOString(),
     quantity: 5,
   },
   {
     id: 2,
     name: 'orange',
     uom: 'kg',
-    expiryDate: '2024-11-31',
+    // 4 days from now
+    expiryDate: new Date(new Date().setDate(new Date().getDate() + 4)).toISOString(),
     quantity: 1,
   },
   {
     id: 3,
     name: 'papaya',
     uom: 'kg',
-    expiryDate: '2024-11-31',
+    // 3 months from now
+    expiryDate: new Date(new Date().setMonth(new Date().getMonth() + 3)).toISOString(),
     quantity: 3,
   },
 ];
