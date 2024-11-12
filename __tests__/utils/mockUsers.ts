@@ -1,7 +1,7 @@
 // Constants for user status and roles
 export const USER_STATUS = {
   ACTIVE: 1,
-  BANNED: 2,
+  BANNED: 0,
 } as const;
 
 export const USER_ROLES = {

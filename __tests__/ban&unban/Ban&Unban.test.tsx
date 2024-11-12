@@ -4,13 +4,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { AdminView } from '../../src/sections/profile/view/admin-view';
 import * as userDao from '../../src/dao/userDao';
 import { AuthProvider } from '../../src/context/AuthContext';
-import { mockCurrentUser, USER_ROLES } from '../utils/mockUsers';
-
-// Define user status according to the component's implementation
-const USER_STATUS = {
-  BANNED: 0,
-  ACTIVE: 1,
-} as const;
+import { mockCurrentUser, USER_ROLES, USER_STATUS } from '../utils/mockUsers';
 
 // Mock the required modules
 jest.mock('src/dao/userDao');
