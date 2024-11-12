@@ -30,6 +30,15 @@ export const mockUsers = [
   },
   {
     id: 3,
+    name: 'active.user',
+    displayName: 'Active User',
+    email: 'active@example.com',
+    status: USER_STATUS.ACTIVE,
+    role: USER_ROLES.USER,
+    isBanned: false,
+  },
+  {
+    id: 4,
     name: 'banned.user',
     displayName: 'Banned User',
     email: 'banned@example.com',

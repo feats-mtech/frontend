@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from '../../src/context/AuthContext';
 import { SignInView } from '../../src/sections/auth/sign-in-view';
 import { login } from '../../src/dao/authDao';
+import { mockUsers, mockCurrentUser } from '../utils/mockUsers';
 
 // Mock authDao
 jest.mock('src/dao/authDao', () => ({
@@ -77,30 +78,21 @@ describe('SignInView', () => {
   });
 
   it('handles successful login', async () => {
-    const mockUser = {
-      name: 'testuser',
-      id: 1,
-      displayName: 'Test User',
-      email: 'test@example.com',
-      status: 'active',
-      role: 'user',
-    };
-
     (login as jest.Mock).mockResolvedValueOnce({
       success: true,
-      data: mockUser,
+      data: mockCurrentUser,
       statusCode: 200,
     });
 
     const { usernameInput, passwordInput, signInButton } = setup();
 
-    await userEvent.type(usernameInput, 'testuser');
+    await userEvent.type(usernameInput, mockCurrentUser.name);
     await userEvent.type(passwordInput, 'password123');
 
     fireEvent.click(signInButton);
 
     await waitFor(() => {
-      expect(login).toHaveBeenCalledWith('testuser', 'password123');
+      expect(login).toHaveBeenCalledWith(mockCurrentUser.name, 'password123');
       expect(mockNavigate).toHaveBeenCalledWith('/');
     });
   });
@@ -114,7 +106,7 @@ describe('SignInView', () => {
 
     const { usernameInput, passwordInput, signInButton } = setup();
 
-    await userEvent.type(usernameInput, 'testuser');
+    await userEvent.type(usernameInput, 'wronguser');
     await userEvent.type(passwordInput, 'wrongpassword');
 
     fireEvent.click(signInButton);
@@ -133,7 +125,7 @@ describe('SignInView', () => {
 
     const { usernameInput, passwordInput, signInButton } = setup();
 
-    await userEvent.type(usernameInput, 'banneduser');
+    await userEvent.type(usernameInput, mockUsers[3].name);
     await userEvent.type(passwordInput, 'password123');
 
     fireEvent.click(signInButton);
@@ -144,57 +136,39 @@ describe('SignInView', () => {
   });
 
   it('handles login with Enter key on username field', async () => {
-    const mockUser = {
-      name: 'testuser',
-      id: 1,
-      displayName: 'Test User',
-      email: 'test@example.com',
-      status: 'active',
-      role: 'user',
-    };
-
     (login as jest.Mock).mockResolvedValueOnce({
       success: true,
-      data: mockUser,
+      data: mockCurrentUser,
       statusCode: 200,
     });
 
     const { usernameInput, passwordInput } = setup();
 
-    await userEvent.type(usernameInput, 'testuser');
+    await userEvent.type(usernameInput, mockCurrentUser.name);
     await userEvent.type(passwordInput, 'password123');
     fireEvent.keyDown(usernameInput, { key: 'Enter' });
 
     await waitFor(() => {
-      expect(login).toHaveBeenCalledWith('testuser', 'password123');
+      expect(login).toHaveBeenCalledWith(mockCurrentUser.name, 'password123');
       expect(mockNavigate).toHaveBeenCalledWith('/');
     });
   });
 
   it('handles login with Enter key on password field', async () => {
-    const mockUser = {
-      name: 'testuser',
-      id: 1,
-      displayName: 'Test User',
-      email: 'test@example.com',
-      status: 'active',
-      role: 'user',
-    };
-
     (login as jest.Mock).mockResolvedValueOnce({
       success: true,
-      data: mockUser,
+      data: mockCurrentUser,
       statusCode: 200,
     });
 
     const { usernameInput, passwordInput } = setup();
 
-    await userEvent.type(usernameInput, 'testuser');
+    await userEvent.type(usernameInput, mockCurrentUser.name);
     await userEvent.type(passwordInput, 'password123');
     fireEvent.keyDown(passwordInput, { key: 'Enter' });
 
     await waitFor(() => {
-      expect(login).toHaveBeenCalledWith('testuser', 'password123');
+      expect(login).toHaveBeenCalledWith(mockCurrentUser.name, 'password123');
       expect(mockNavigate).toHaveBeenCalledWith('/');
     });
   });
