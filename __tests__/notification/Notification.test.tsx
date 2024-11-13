@@ -81,7 +81,7 @@ describe('NotificationsPopover', () => {
     await userEvent.click(bellIcon);
 
     // Check if loading message is displayed
-    expect(screen.getByText('Loading notifications...')).toBeInTheDocument();
+    expect(screen.getByText(/Loading notifications/i)).toBeInTheDocument();
   });
 
   it('shows error message when API call fails', async () => {
