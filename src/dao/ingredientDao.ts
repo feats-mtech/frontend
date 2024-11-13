@@ -1,6 +1,9 @@
-import axios, { HttpStatusCode } from 'axios';
+import { HttpStatusCode } from 'axios';
+
 import { Ingredient } from 'src/types/Ingredient';
 import { IngredientRowProps } from 'src/sections/inventory/ingredient-table-row';
+
+import axiosInstance from './webCallUtils';
 
 const backendAddress =
   window.RUNTIME_CONFIG?.VITE_BACKEND_INGREDIENT_URL || import.meta.env.VITE_BACKEND_INGREDIENT_URL;
@@ -12,7 +15,7 @@ const backendPort =
 const backendUrl = `${backendAddress}:${backendPort}`;
 export const createIngredient = async (ingredient: Ingredient, userId: number) => {
   try {
-    const result = await axios
+    const result = await axiosInstance
       .post(`${backendUrl}/ingredient/add`, {
         userId,
         name: ingredient.name,
@@ -29,7 +32,7 @@ export const createIngredient = async (ingredient: Ingredient, userId: number) =
 
 export const getIngredientsByUser = async (userId: number): Promise<Ingredient[]> => {
   try {
-    const ingredients = await axios
+    const ingredients = await axiosInstance
       .get(`${backendUrl}/ingredient/getAll/${userId}`)
       .then((response) => response.data);
     return ingredients ? ingredients : [];
@@ -40,7 +43,7 @@ export const getIngredientsByUser = async (userId: number): Promise<Ingredient[]
 
 export const updateIngredient = async (ingredientDetails: IngredientRowProps, userId: number) => {
   try {
-    const result = await axios
+    const result = await axiosInstance
       .post(`${backendUrl}/ingredient/update`, {
         id: ingredientDetails.id,
         name: ingredientDetails.name,
@@ -58,7 +61,7 @@ export const updateIngredient = async (ingredientDetails: IngredientRowProps, us
 
 export const deleteIngredient = async (ingredientId: number) => {
   try {
-    const result = await axios
+    const result = await axiosInstance
       .delete(`${backendUrl}/ingredient/delete/${ingredientId}`)
       .then((response) => response);
     return { success: result.status === HttpStatusCode.Ok };

@@ -1,9 +1,9 @@
-import axios from 'axios';
 import { Recipe } from 'src/types/Recipe';
 import { RecipeCookingStep } from 'src/types/RecipeCookingStep';
 import { RecipeIngredient } from 'src/types/RecipeIngredient';
 import { RecipeReview } from 'src/types/RecipeReview';
-import { checkStatus } from './webCallUtils';
+
+import axiosInstance, { checkStatus } from './webCallUtils';
 
 const backendAddress =
   window.RUNTIME_CONFIG?.VITE_BACKEND_RECIPE_URL || import.meta.env.VITE_BACKEND_RECIPE_URL;
@@ -36,7 +36,9 @@ interface RecipeProps {
 
 export const getAllPublishedRecipe = async (): Promise<Recipe[]> => {
   try {
-    const result = await axios.get(`${backendUrl}/recipe/published`).then((response) => response);
+    const result = await axiosInstance
+      .get(`${backendUrl}/recipe/published`)
+      .then((response) => response);
 
     const recipesList: Recipe[] = [];
     if (checkStatus(result.status)) {
@@ -58,7 +60,7 @@ export const getAllPublishedRecipe = async (): Promise<Recipe[]> => {
 
 export const getRecipeById = async (recipeId: number): Promise<Recipe | null> => {
   try {
-    const result = await axios
+    const result = await axiosInstance
       .get(`${backendUrl}/recipe/${recipeId}/with-reviews`)
       .then((response) => response);
     if (checkStatus(result.status)) {
@@ -79,7 +81,7 @@ export const getRecipeById = async (recipeId: number): Promise<Recipe | null> =>
 export const getAllRecipeByCreatorId = async (creatorId: number): Promise<Recipe[]> => {
   try {
     const recipesList: Recipe[] = [];
-    const result = await axios
+    const result = await axiosInstance
       .get(`${backendUrl}/recipe/creator/${creatorId}`)
       .then((response) => response);
     if (checkStatus(result.status)) {
@@ -101,7 +103,7 @@ export const getAllRecipeByCreatorId = async (creatorId: number): Promise<Recipe
 
 export const deleteRecipeById = async (recipeId: number) => {
   try {
-    const result = await axios
+    const result = await axiosInstance
       .delete(`${backendUrl}/recipe/${recipeId}`)
       .then((response) => response);
     return { success: checkStatus(result.status), data: result.data };
@@ -114,7 +116,7 @@ export const updateRecipeToDb = async (recipe: Recipe) => {
   try {
     var result;
     if (recipe.id === -1) {
-      result = await axios
+      result = await axiosInstance
         .post(`${backendUrl}/recipe`, {
           creatorId: recipe.creatorId,
           name: recipe.name,
@@ -132,7 +134,7 @@ export const updateRecipeToDb = async (recipe: Recipe) => {
         })
         .then((response) => response);
     } else {
-      result = await axios
+      result = await axiosInstance
         .put(`${backendUrl}/recipe/${recipe.id}`, {
           id: recipe.id,
           creatorId: recipe.creatorId,
@@ -161,7 +163,7 @@ export const updateRecipeToDb = async (recipe: Recipe) => {
 export const getRecommendedRecipeByCreatorId = async (creatorId: number): Promise<Recipe[]> => {
   try {
     const recipesList: Recipe[] = [];
-    const result = await axios
+    const result = await axiosInstance
       .get(`${backendUrl}/recipe/recommend?isByRating=false&isDesc=true&userId=${creatorId}`)
       .then((response) => response);
     if (checkStatus(result.status)) {
