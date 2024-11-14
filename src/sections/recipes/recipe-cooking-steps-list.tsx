@@ -105,7 +105,7 @@ export const RecipeCookingStepsList = (props: RecipeCookingStepListProps) => {
                   placeholder="Cooking Step Description"
                   multiline
                   rows={3}
-                  name="description"
+                  name="step-description"
                   disabled={!editable}
                   value={cookingStep ? cookingStep.description : ''}
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
