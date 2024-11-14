@@ -35,6 +35,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         role: result.data.role,
       };
       setUser(user);
+      localStorage.setItem('userId', user?.id.toString());
     }
     return result;
   };

@@ -1,5 +1,6 @@
-import axios from 'axios';
 import { Notification } from 'src/types/Notification';
+
+import axiosInstance from './webCallUtils';
 
 const backendAddress =
   window.RUNTIME_CONFIG?.VITE_BACKEND_NOTIFICATION_URL ||
@@ -13,7 +14,7 @@ const backendUrl = `${backendAddress}:${backendPort}`;
 
 export const getNotifications = async (userId: number, limit: number = 5) => {
   try {
-    const response = await axios.get(`${backendUrl}/notification/${userId}`, {
+    const response = await axiosInstance.get(`${backendUrl}/notification/${userId}`, {
       params: { limit },
     });
     return { success: true, data: response.data as Notification[] };
@@ -24,7 +25,7 @@ export const getNotifications = async (userId: number, limit: number = 5) => {
 
 export const getUnreadCount = async (userId: number) => {
   try {
-    const response = await axios.get(`${backendUrl}/notification/${userId}/unread-count`);
+    const response = await axiosInstance.get(`${backendUrl}/notification/${userId}/unread-count`);
     return { success: true, data: response.data as number };
   } catch (error) {
     return { success: false, error: error.message };
@@ -36,7 +37,10 @@ export const createNotification = async (
   notification: Omit<Notification, 'id' | 'userId' | 'createDateTime' | 'isRead'>,
 ) => {
   try {
-    const response = await axios.post(`${backendUrl}/notification/${userId}/create`, notification);
+    const response = await axiosInstance.post(
+      `${backendUrl}/notification/${userId}/create`,
+      notification,
+    );
     return { success: true, data: response.data };
   } catch (error) {
     return { success: false, error: error.message };
@@ -45,7 +49,7 @@ export const createNotification = async (
 
 export const markAsRead = async (notificationId: number, userId: number) => {
   try {
-    await axios.put(`${backendUrl}/notification/${notificationId}/mark-read`, null, {
+    await axiosInstance.put(`${backendUrl}/notification/${notificationId}/mark-read`, null, {
       params: { userId },
     });
     return { success: true };
@@ -56,7 +60,7 @@ export const markAsRead = async (notificationId: number, userId: number) => {
 
 export const markAllAsRead = async (userId: number) => {
   try {
-    await axios.put(`${backendUrl}/notification/${userId}/mark-all-read`);
+    await axiosInstance.put(`${backendUrl}/notification/${userId}/mark-all-read`);
     return { success: true };
   } catch (error) {
     return { success: false, error: error.message };

@@ -1,6 +1,6 @@
-import axios from 'axios';
 import { RecipeReview } from 'src/types/RecipeReview';
-import { checkStatus } from './webCallUtils';
+
+import axiosInstance, { checkStatus } from './webCallUtils';
 
 const backendAddress =
   window.RUNTIME_CONFIG?.VITE_BACKEND_REVIEW_URL || import.meta.env.VITE_BACKEND_REVIEW_URL;
@@ -12,7 +12,7 @@ const backendUrl = `${backendAddress}:${backendPort}`;
 
 export const submitReviews = async (reviewItem: RecipeReview) => {
   try {
-    const result = await axios
+    const result = await axiosInstance
       .post(`${backendUrl}/recipe/${reviewItem.recipeId}/reviews`, reviewItem)
       .then((response) => response);
 
