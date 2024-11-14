@@ -18,9 +18,11 @@ export const login = async (username: string, password: string) => {
         password,
       })
       .then((response) => response);
+
+    localStorage.setItem('jwtToken', result?.data?.jwt);
     return {
       success: result.status === HttpStatusCode.Ok,
-      data: result.data,
+      data: result.data.user,
       statusCode: result.status,
     };
   } catch (error) {

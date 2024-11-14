@@ -1,5 +1,8 @@
-import axios, { HttpStatusCode } from 'axios';
+import { HttpStatusCode } from 'axios';
+
 import { UserFormDetails } from 'src/types/User';
+
+import axiosInstance from './webCallUtils';
 
 const backendAddress =
   window.RUNTIME_CONFIG?.VITE_BACKEND_USER_URL || import.meta.env.VITE_BACKEND_USER_URL;
@@ -12,7 +15,7 @@ const backendUrl = `${backendAddress}:${backendPort}`;
 export const registerUser = async (userFormDetails: UserFormDetails) => {
   try {
     const { username, password, displayName, email } = userFormDetails;
-    const result = await axios
+    const result = await axiosInstance
       .post(`${backendUrl}/user/add`, {
         name: username,
         password,
@@ -30,7 +33,9 @@ export const registerUser = async (userFormDetails: UserFormDetails) => {
 
 export const getAllUsers = async () => {
   try {
-    const result = await axios.get(`${backendUrl}/user/getAll`).then((response) => response);
+    const result = await axiosInstance
+      .get(`${backendUrl}/user/getAll`)
+      .then((response) => response);
     return result.status ? result.data : [];
   } catch (error) {
     return { success: false, error: error.message };
@@ -39,7 +44,9 @@ export const getAllUsers = async () => {
 
 export const banUser = async (userId: number) => {
   try {
-    const result = await axios.put(`${backendUrl}/user/${userId}/ban`).then((response) => response);
+    const result = await axiosInstance
+      .put(`${backendUrl}/user/${userId}/ban`)
+      .then((response) => response);
     return result.status ? result.data : [];
   } catch (error) {
     return { success: false, error: error.message };
@@ -48,7 +55,7 @@ export const banUser = async (userId: number) => {
 
 export const unbanUser = async (userId: number) => {
   try {
-    const result = await axios
+    const result = await axiosInstance
       .put(`${backendUrl}/user/${userId}/unban`)
       .then((response) => response);
     return result.status ? result.data : [];
