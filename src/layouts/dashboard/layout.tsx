@@ -19,6 +19,7 @@ import { HeaderSection } from '../core/header-section';
 import { AccountPopover } from '../components/account-popover';
 import { NotificationsPopover } from '../components/notifications-popover';
 import { useAuth } from 'src/context/AuthContext';
+import { NotificationsWebSocket } from '../components/notifications-websocket';
 
 export type DashboardLayoutProps = {
   sx?: SxProps<Theme>;
@@ -31,6 +32,7 @@ export type DashboardLayoutProps = {
 export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) {
   const theme = useTheme();
 
+  const [useWebSocket, setUseWebSocket] = useState(true);
   const [navOpen, setNavOpen] = useState(false);
   const { user } = useAuth();
 
@@ -94,7 +96,11 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
             ),
             rightArea: (
               <Box gap={1} display="flex" alignItems="center">
-                <NotificationsPopover />
+                {useWebSocket ? (
+                  <NotificationsWebSocket enabled={useWebSocket} />
+                ) : (
+                  <NotificationsPopover enabled={!useWebSocket} />
+                )}
                 <AccountPopover data={accountData.filter(Boolean)} />
               </Box>
             ),
