@@ -117,7 +117,9 @@ export const RecipeIngredientsList = (props: RecipeIngredientsListProps) => {
                   options={ingredientTypeOptions}
                   freeSolo
                   onInputChange={(event, value) => updateIngredient(index, 'name', value)}
-                  renderInput={(params) => <TextField {...params} label="Ingredient Name" />}
+                  renderInput={(params) => (
+                    <TextField {...params} name="ingredient-name" label="Ingredient Name" />
+                  )}
                 />
                 <Typography variant="caption" color={'var(--palette-error-main)'}>
                   {getIngredientNameHelperText(highlightHelperText, ingredient.name)}
@@ -126,6 +128,7 @@ export const RecipeIngredientsList = (props: RecipeIngredientsListProps) => {
               <Grid item sm={1}>
                 <TextField
                   disabled={!editable}
+                  name="quantity"
                   label="Quantity"
                   value={ingredient ? ingredient.quantity : 0}
                   onChange={(event) => updateIngredient(index, 'quantity', event.target.value)}
@@ -144,7 +147,9 @@ export const RecipeIngredientsList = (props: RecipeIngredientsListProps) => {
                   options={uomOptions}
                   freeSolo
                   onInputChange={(event, value) => updateIngredient(index, 'uom', value)}
-                  renderInput={(params) => <TextField {...params} label="Unit Of Measurement" />}
+                  renderInput={(params) => (
+                    <TextField {...params} name="uom" label="Unit Of Measurement" />
+                  )}
                 />
                 <Typography variant="caption" color={'var(--palette-error-main)'}>
                   {getIngredientUOMHelperText(highlightHelperText, ingredient.uom)}
