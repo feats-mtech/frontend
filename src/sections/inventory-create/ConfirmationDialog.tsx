@@ -34,12 +34,14 @@ interface ConfirmationDialogProps {
   openDialog: boolean;
   handleCloseDialog: () => void;
   ingredient: Ingredient;
+  onError: (message: any) => void; 
 }
 
 export const ConfirmationDialog = ({
   openDialog,
   handleCloseDialog,
   ingredient,
+  onError,
 }: ConfirmationDialogProps) => {
   const { user } = useAuth();
 
@@ -55,6 +57,8 @@ export const ConfirmationDialog = ({
       setIsSuccess(true);
     } else {
       setIsError(true);
+      const errorMessage = (result as { success: false; message: string }).message || 'add failed, please retry';
+      onError(errorMessage);
     }
     setLoading(false);
     handleCloseDialog();
@@ -92,6 +96,7 @@ export const ConfirmationDialog = ({
         handleCloseSnackbar={handleCloseSnackbar}
         severity="success"
         message="Ingredient added successfully!"
+        ariaLabel="add-success-snackbar"
       />
 
       <ResponseSnackbar
@@ -99,6 +104,7 @@ export const ConfirmationDialog = ({
         handleCloseSnackbar={handleCloseSnackbar}
         severity="error"
         message="Failed to add the ingredient. Please try again."
+        ariaLabel="add-failed-snackbar"
       />
     </>
   );

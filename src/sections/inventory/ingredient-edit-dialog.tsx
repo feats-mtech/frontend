@@ -77,7 +77,8 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
 
   return (
     <>
-      <Dialog onClose={handleClose} open={open}>
+      <Dialog onClose={handleClose} open={open}
+      data-testid="edit-ingredient-dialog">
         <DialogTitle>Edit Ingredient Details for {selectedIngredient.name}</DialogTitle>
         <List sx={{ pt: 0 }}>
           <>
@@ -89,6 +90,9 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
                 value={ingredientDetails.name}
                 onChange={handleChange}
                 fullWidth
+                inputProps={{
+                  'data-testid': 'edit-ingredient-name-input'
+                }}
               />
             </ListItem>
             <ListItem>
@@ -101,6 +105,9 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
                 value={ingredientDetails.quantity}
                 onChange={handleChange}
                 fullWidth
+                inputProps={{
+                  'data-testid': 'edit-ingredient-quantity-input'
+                }}
               />
             </ListItem>
             <ListItem>
@@ -117,6 +124,9 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
                         maxHeight: 200,
                       },
                     },
+                  }}
+                  inputProps={{
+                    'data-testid': 'edit-ingredient-uom-select'
                   }}
                 >
                   <MenuItem value="pieces">pieces</MenuItem>
@@ -138,6 +148,9 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
                 value={ingredientDetails.expiryDate.split('T')[0]} // YYYY-MM-DD
                 onChange={handleChange}
                 fullWidth
+                inputProps={{
+                  'data-testid': 'edit-ingredient-expiry-date-input'
+                }}
               />
             </ListItem>
             <ListItem>
@@ -150,10 +163,13 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
                   JSON.stringify(ingredientDetails) === JSON.stringify(selectedIngredient) ||
                   loading
                 }
+                data-testid="save-edit-button"
               >
                 {loading ? 'Editing...' : 'Save'}
               </Button>
-              <Button variant="contained" color="error" onClick={handleClose} sx={{ ml: 'auto' }}>
+              <Button variant="contained" color="error" onClick={handleClose} sx={{ ml: 'auto' }}
+              data-testid="cancel-edit-button"
+              >
                 Cancel
               </Button>
             </ListItem>

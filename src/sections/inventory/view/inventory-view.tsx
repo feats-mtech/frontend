@@ -29,7 +29,7 @@ import { getIngredientsByUser } from 'src/dao/ingredientDao';
 import { useTable } from 'src/components/table';
 import { ResponseSnackbar } from '../ingredient-snackbar';
 import { useAuth } from 'src/context/AuthContext';
-
+ 
 export function InventoryView() {
   const { user } = useAuth();
   const router = useRouter();
@@ -159,6 +159,7 @@ export function InventoryView() {
         handleCloseSnackbar={handleCloseSnackbar}
         severity="success"
         message="Ingredient deleted successfully!"
+        ariaLabel="delete-success-snackbar" 
       />
 
       <ResponseSnackbar
@@ -166,6 +167,7 @@ export function InventoryView() {
         handleCloseSnackbar={handleCloseSnackbar}
         severity="error"
         message="Failed to delete the ingredient. Please try again."
+        ariaLabel="delete-failed-snackbar" 
       />
     </DashboardContent>
   );

@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { TextField, Grid, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { ResponseSnackbar } from 'src/sections/inventory/ingredient-snackbar';  // 添加导入
 
 import { DashboardContent } from 'src/layouts/dashboard';
 import { Iconify } from 'src/components/iconify';
@@ -21,6 +22,20 @@ export function InventoryCreateView() {
   const [quantity, setQuantity] = useState(0);
   const [expiryDate, setExpiryDate] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
+
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    severity: 'success' | 'error'; // Updated to allow 'error'
+    message: string;
+  }>({
+    open: false,
+    severity: 'success',
+    message: ''
+  });
+
+  const handleCloseSnackbar = () => {
+    setSnackbar(prev => ({ ...prev, open: false }));
+  };
 
   const handleOpenDialog = () => setOpenDialog(true);
   const handleCloseDialog = () => setOpenDialog(false);
@@ -92,6 +107,9 @@ export function InventoryCreateView() {
                 value={unitOfMeasurement}
                 name="unit"
                 onChange={(e) => setUnitOfMeasurement(e.target.value)}
+                inputProps={{
+                  'aria-label': 'unit of measurement' //add
+                }}
                 MenuProps={{
                   PaperProps: {
                     style: {
@@ -136,6 +154,21 @@ export function InventoryCreateView() {
         openDialog={openDialog}
         handleCloseDialog={handleCloseDialog}
         ingredient={ingredientDetails}
+        onError={(message) => {
+          setSnackbar({
+            open: true,
+            severity: 'error',
+            message: "Failed to add the ingredient. Please try again."
+          });
+        }}
+      />
+
+      <ResponseSnackbar 
+        isOpen={snackbar.open}
+        handleCloseSnackbar={handleCloseSnackbar}
+        severity={snackbar.severity}
+        message={snackbar.message}
+        ariaLabel="create-snackbar"
       />
     </DashboardContent>
   );
