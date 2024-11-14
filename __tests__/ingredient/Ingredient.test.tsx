@@ -13,7 +13,7 @@ import { ThemeProvider } from '../../src/theme/theme-provider';
 import { MemoryRouter } from 'react-router-dom';
 
 
-// 模拟 window.matchMedia
+//  window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: jest.fn().mockImplementation(query => ({
@@ -75,8 +75,7 @@ describe('InventoryView', () => {
       </ThemeProvider>
     </MemoryRouter>
     );
-
-    // Wait for the table to be rendered
+ 
     await waitFor(() => {
       expect(screen.getByRole('table')).toBeInTheDocument();
     });
@@ -110,34 +109,33 @@ describe('InventoryView', () => {
     });
   });
 
-  // it('filters ingredients by name in search bar', async () => {
-  //   jest
-  //     .spyOn(require('../../src/dao/ingredientDao'), 'getIngredientsByUser')
-  //     .mockResolvedValue(mockIngredients);
+  it('filters ingredients by name in search bar', async () => {
+    jest
+      .spyOn(require('../../src/dao/ingredientDao'), 'getIngredientsByUser')
+      .mockResolvedValue(mockIngredients);
 
-  //   render(<InventoryView />);
+    render(<InventoryView />);
 
-  //   const input = screen.getByPlaceholderText(/Search/i);
+    const input = screen.getByPlaceholderText(/Search/i);
 
-  //   await userEvent.click(input);
-  //   await userEvent.type(input, 'apple');
+    await userEvent.click(input);
+    await userEvent.type(input, 'apple');
 
-  //   await waitFor(() => {
-  //     expect(screen.getByText(/apple/i)).toBeInTheDocument();
-  //     expect(screen.queryByText(/orange/i)).not.toBeInTheDocument();
-  //     expect(screen.queryByText(/papaya/i)).not.toBeInTheDocument();
-  //   });
+    await waitFor(() => {
+      expect(screen.getByText(/apple/i)).toBeInTheDocument();
+      expect(screen.queryByText(/orange/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/papaya/i)).not.toBeInTheDocument();
+    });
 
-  //   await userEvent.type(input, 'mango'); // mango does not exist
-  //   await waitFor(() => {
-  //     expect(screen.getByText('Not found')).toBeInTheDocument();
-  //     expect(screen.getByText(/No results found for/i)).toBeInTheDocument;
-  //   });
-  // });
+    await userEvent.type(input, 'mango'); // mango does not exist
+    await waitFor(() => {
+      expect(screen.getByText('Not found')).toBeInTheDocument();
+      expect(screen.getByText(/No results found for/i)).toBeInTheDocument;
+    });
+  });
 
- 
 
-  // Create - 创建操作测试
+  // Create 
   describe('Create Operations', () => {
     it('should create new ingredient successfully', async () => {
 
@@ -186,7 +184,7 @@ describe('InventoryView', () => {
   });
 
 
-  // Update - 更新操作测试
+  // Update
   describe('Update Operations', () => {
     it('should update ingredient successfully', async () => {
       const mockUpdateIngredient = jest.fn().mockResolvedValue({
@@ -201,23 +199,18 @@ describe('InventoryView', () => {
         render(<InventoryView />);
       });
 
-      // Wait for the ingredients to load
       await waitFor(() => {
         expect(screen.getByText(/Inventory/i)).toBeInTheDocument();
       });
 
-      // 点击更多选项按钮
       const moreOptionsButton = screen.getByTestId('more-options-button-1');
       fireEvent.click(moreOptionsButton);
 
-      // 点击编辑按钮
       const editButton = screen.getByTestId('edit-button-1');
       fireEvent.click(editButton);
 
-      // 验证对话框打开
       expect(screen.getByTestId('edit-ingredient-dialog')).toBeInTheDocument();
 
-      // 更新表单字段
       const nameInput = screen.getByTestId('edit-ingredient-name-input');
       const quantityInput = screen.getByTestId('edit-ingredient-quantity-input');
       const uomSelect = screen.getByTestId('edit-ingredient-uom-select');
@@ -229,14 +222,12 @@ describe('InventoryView', () => {
         fireEvent.change(uomSelect, { target: { value: 'pieces' } });
         fireEvent.change(expiryDateInput, { target: { value: '2024-12-31' } });
       });
-
-      // 点击保存
+ 
       const saveButton = screen.getByTestId('save-edit-button');
       await act(async () => {
         fireEvent.click(saveButton);
       });
-
-      // 验证更新调用
+ 
       expect(mockUpdateIngredient).toHaveBeenCalledWith(
         expect.objectContaining({
           id: '1',
@@ -249,14 +240,8 @@ describe('InventoryView', () => {
       );
     });
 
-      // Verify success message appears
-      // await waitFor(() => {
-      // expect(setIsSuccess).toHaveBeenCalledWith(true);
-      // expect(fetchIngredientsForUser).toHaveBeenCalled();
-      // });
- 
-  });
 
+  });
 
   // delete
   describe('Delete Operations', () => {
@@ -270,9 +255,7 @@ describe('InventoryView', () => {
 
       // Mock the getIngredientsByUser function to return mockIngredients
       jest.spyOn(ingredientDao, 'getIngredientsByUser').mockResolvedValue(mockIngredients);
-
-      const setIsSuccessMock = jest.fn();
-      const setIsErrorMock = jest.fn();
+ 
 
       // Render component
       render(
@@ -307,7 +290,7 @@ describe('InventoryView', () => {
   
       // Verify success message appears
       await waitFor(() => {
-        expect(screen.getByText(/ingredient deleted successfully/i)).toBeInTheDocument(); // 检查成功消息
+        expect(screen.getByText(/ingredient deleted successfully/i)).toBeInTheDocument();  
       });
     });
   });

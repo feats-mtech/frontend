@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { TextField, Grid, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
-import { ResponseSnackbar } from 'src/sections/inventory/ingredient-snackbar';  // 添加导入
+import { ResponseSnackbar } from 'src/sections/inventory/ingredient-snackbar';   
 
 import { DashboardContent } from 'src/layouts/dashboard';
 import { Iconify } from 'src/components/iconify';
