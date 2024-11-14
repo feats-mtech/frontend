@@ -7,7 +7,6 @@ export const checkStatus = (code: number): boolean => code >= 200 && code < 300;
 const axiosInstance: AxiosInstance = axios.create({});
 
 axiosInstance.interceptors.request.use((config) => {
-  console.log('start config ', config);
   const token = localStorage.getItem('jwtToken');
   if (token && config.headers) {
     config.headers['Authorization'] = `Bearer ${token}`;
