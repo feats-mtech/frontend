@@ -90,6 +90,7 @@ export function InventoryCreateView() {
               <Select
                 label="Unit of measurement"
                 value={unitOfMeasurement}
+                name="unit"
                 onChange={(e) => setUnitOfMeasurement(e.target.value)}
                 MenuProps={{
                   PaperProps: {
