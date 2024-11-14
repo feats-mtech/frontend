@@ -168,7 +168,7 @@ export function InventoryCreateView() {
         handleCloseSnackbar={handleCloseSnackbar}
         severity={snackbar.severity}
         message={snackbar.message}
-        ariaLabel="create-snackbar"
+        ariaLabel="Ingredient-created" 
       />
     </DashboardContent>
   );

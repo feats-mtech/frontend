@@ -268,12 +268,14 @@ export function RecipesDetailView() {
         handleCloseSnackbar={handleCloseSnackbar}
         severity="success"
         message="Recipe saved successfully!"
+        ariaLabel="Recipe-saved-success"
       />
       <ResponseSnackbar
         isOpen={isUpdatedFailure}
         handleCloseSnackbar={handleCloseSnackbar}
         severity="error"
         message="Recipe saved failed!"
+        ariaLabel="Recipe-saved-failed"
       />
 
       <Dialog open={openRecipeCreatedSuccessfulDialog} onClose={handleNavigateToMyRecipe}>

@@ -96,7 +96,7 @@ export const ConfirmationDialog = ({
         handleCloseSnackbar={handleCloseSnackbar}
         severity="success"
         message="Ingredient added successfully!"
-        ariaLabel="add-success-snackbar"
+        ariaLabel="Ingredient-added-successful"
       />
 
       <ResponseSnackbar
@@ -104,7 +104,7 @@ export const ConfirmationDialog = ({
         handleCloseSnackbar={handleCloseSnackbar}
         severity="error"
         message="Failed to add the ingredient. Please try again."
-        ariaLabel="add-failed-snackbar"
+        ariaLabel="Ingredient-added-failed"
       />
     </>
   );

@@ -159,7 +159,7 @@ export function InventoryView() {
         handleCloseSnackbar={handleCloseSnackbar}
         severity="success"
         message="Ingredient deleted successfully!"
-        ariaLabel="delete-success-snackbar" 
+        ariaLabel="Ingredient-delete-success" 
       />
 
       <ResponseSnackbar
@@ -167,7 +167,7 @@ export function InventoryView() {
         handleCloseSnackbar={handleCloseSnackbar}
         severity="error"
         message="Failed to delete the ingredient. Please try again."
-        ariaLabel="delete-failed-snackbar" 
+        ariaLabel="Ingredient-delete-failed" 
       />
     </DashboardContent>
   );
