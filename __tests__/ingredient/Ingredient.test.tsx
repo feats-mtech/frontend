@@ -56,32 +56,8 @@ describe('InventoryView', () => {
 
     // Mock API calls
     jest.spyOn(ingredientDao, 'getIngredientsByUser').mockResolvedValue(mockIngredients);
-
-    
   });
-  const renderComponent = async () => {
-    // Mock the fetch call before rendering
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve({ data: mockIngredients }),
-      } as Response)
-    );
 
-    const result = render(
-      <MemoryRouter>  
-      <ThemeProvider>
-        <InventoryView />
-      </ThemeProvider>
-    </MemoryRouter>
-    );
- 
-    await waitFor(() => {
-      expect(screen.getByRole('table')).toBeInTheDocument();
-    });
-
-    return result;
-  };
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -134,7 +110,6 @@ describe('InventoryView', () => {
     });
   });
 
-
   // Create 
   describe('Create Operations', () => {
     it('should create new ingredient successfully', async () => {
@@ -182,7 +157,6 @@ describe('InventoryView', () => {
     });
 
   });
-
 
   // Update
   describe('Update Operations', () => {
@@ -239,8 +213,6 @@ describe('InventoryView', () => {
         1
       );
     });
-
-
   });
 
   // delete
@@ -255,13 +227,12 @@ describe('InventoryView', () => {
 
       // Mock the getIngredientsByUser function to return mockIngredients
       jest.spyOn(ingredientDao, 'getIngredientsByUser').mockResolvedValue(mockIngredients);
- 
 
       // Render component
       render(
         <MemoryRouter>
           <ThemeProvider>
-            <InventoryView                 />
+            <InventoryView/>
           </ThemeProvider>
         </MemoryRouter>
       );
@@ -273,7 +244,7 @@ describe('InventoryView', () => {
       const row = screen.getByText(/apple/i).closest('tr');
       const moreButton = within(row!).getByTestId('more-options-button-1');
       fireEvent.click(moreButton);
- 
+
   
       // Now the menu items should be visible
       await waitFor(() => {
