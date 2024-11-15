@@ -104,7 +104,7 @@ const NotificationsDisplay = (props: notificationDisplayProps) => {
           <List disablePadding>
             {notifications.map((notification) => (
               <ListItem
-                key={notification.title}
+                key={notification.id}
                 sx={{
                   py: 1.5,
                   px: 2.5,
@@ -118,7 +118,7 @@ const NotificationsDisplay = (props: notificationDisplayProps) => {
                 </ListItemIcon>
 
                 <ListItemText
-                  primary={notification.id}
+                  primary={notification.title}
                   secondary={
                     // <Typography
                     //   variant="body2"
