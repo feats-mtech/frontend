@@ -145,6 +145,7 @@ export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
           </Grid>
           <Grid item xs={2} justifyContent="flex-end">
             <Gauge
+              data-id="rdif"
               {...{
                 height: 50,
                 width: 50,
