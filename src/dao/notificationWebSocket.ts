@@ -15,9 +15,9 @@ class notificationWebSocketDao {
   constructor(setWebsocketReply: React.Dispatch<React.SetStateAction<any>>) {
     this.setWebsocketReply = setWebsocketReply;
   }
-
   connect(userId: number) {
-    this.webSocket = new WebSocket(`ws://localhost:8089/ws?userId=${userId}`);
+    const wsUrl = backendUrl.replace(/^https?:\/\//, '');
+    this.webSocket = new WebSocket(`ws://${wsUrl}/ws?userId=${userId}`);
 
     this.webSocket.addEventListener('open', this.handleWebSocketOpen);
     this.webSocket.addEventListener('message', this.handleWebSocketMessage);

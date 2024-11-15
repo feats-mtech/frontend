@@ -37,7 +37,6 @@ const NotificationsWebSocket = (props: NotificationsWebSocketProps) => {
     }
   }, []);
   const connectWebSocket = () => {
-    console.log('connectWebSocket'); //important for troubleshooting...ask pinardy....
     if (!enabled) {
       return;
     }
