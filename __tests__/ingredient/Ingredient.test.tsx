@@ -152,6 +152,7 @@ describe('InventoryView', () => {
     fireEvent.click(option);
 
     const tableHeader = screen.getByRole('columnheader', { name: /expiry date/i });
+    // set expiry date depending on index, so choose column expiry date
     const sortLabel = within(tableHeader).getByRole('button', {
       name: /expiry date/i,
     });
