@@ -56,6 +56,7 @@ export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
     <Label
       variant="inverted"
       color="info"
+      data-id="rdsc"
       sx={{
         zIndex: 9,
         top: 16,
