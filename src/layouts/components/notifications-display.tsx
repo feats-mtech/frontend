@@ -118,7 +118,7 @@ const NotificationsDisplay = (props: notificationDisplayProps) => {
                 </ListItemIcon>
 
                 <ListItemText
-                  primary={notification.id}
+                  primary={notification.title}
                   secondary={
                     // <Typography
                     //   variant="body2"
