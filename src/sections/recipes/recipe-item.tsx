@@ -71,6 +71,7 @@ export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
   const renderImg = (
     <Box
       component="img"
+      data-id="rimg"
       alt={recipe.name}
       src={recipe.image}
       sx={{
@@ -90,6 +91,7 @@ export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
     <Label
       variant="inverted"
       color="warning"
+      data-id="rrating"
       sx={{
         zIndex: 9,
         top: 16,
@@ -136,7 +138,7 @@ export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
       <Stack spacing={2} sx={{ p: 2 }}>
         <Grid container alignItems={'center'}>
           <Grid item xs={10}>
-            <Typography variant="subtitle1" noWrap>
+            <Typography data-id="rname" variant="subtitle1" noWrap>
               {recipe.name}
             </Typography>
           </Grid>
@@ -163,7 +165,7 @@ export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
             />
           </Grid>
         </Grid>
-        <Typography variant="body1">{recipe.description}</Typography>
+        <Typography data-id="rdsc" variant="body1">{recipe.description}</Typography>
 
         <Typography variant="caption" textAlign={'right'}>
           Last Updated: {fDateTime(recipe.updateDatetime)}
