@@ -11,7 +11,7 @@
     "module": "ESNext",
     "jsx": "react-jsx",
     "skipLibCheck": true,
-
+    "types": ["node", "jest"],
     "esModuleInterop": true,
     "isolatedModules": true,
     "resolveJsonModule": true,
@@ -30,7 +30,7 @@
     "noImplicitAny": true,
     "noImplicitThis": true
   },
-  "include": ["src"],
+  "include": ["src", "src/**/*"],
   "exclude": ["node_modules"],
   "references": [
     {

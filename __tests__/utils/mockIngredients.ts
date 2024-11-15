@@ -22,7 +22,31 @@ export const mockIngredients: Ingredient[] = [
     name: 'papaya',
     uom: 'kg',
     // 3 months from now
-    expiryDate: new Date(new Date().setMonth(new Date().getMonth() + 3)).toISOString(),
+    expiryDate: new Date(new Date().setMonth(new Date().getMonth() + 6)).toISOString(),
+    quantity: 3,
+  },
+  {
+    id: 4,
+    name: 'bean',
+    uom: 'g',
+    // 2 days from now
+    expiryDate: new Date(new Date().setMonth(new Date().getMonth() + 8)).toISOString(),
+    quantity: 5,
+  },
+  {
+    id: 5,
+    name: 'bread',
+    uom: 'pieces',
+    // 4 days from now
+    expiryDate: new Date(new Date().setMonth(new Date().getMonth() + 10)).toISOString(),
+    quantity: 1,
+  },
+  {
+    id: 6,
+    name: 'milk',
+    uom: 'l',
+    // 3 months from now
+    expiryDate: new Date(new Date().setMonth(new Date().getMonth() + 12)).toISOString(),
     quantity: 3,
   },
 ];

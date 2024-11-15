@@ -66,7 +66,11 @@ export function IngredientTableRow({
 
   return (
     <>
-      <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
+      <TableRow hover tabIndex={-1} 
+        role="checkbox" 
+        selected={selected}
+        data-testid="ingredient-row"
+      >
         <TableCell padding="checkbox">
           <Checkbox disableRipple checked={selected} onChange={onSelectRow} />
         </TableCell>

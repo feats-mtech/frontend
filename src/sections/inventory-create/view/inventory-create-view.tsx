@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { TextField, Grid, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
-import { ResponseSnackbar } from 'src/sections/inventory/ingredient-snackbar';   
+import { ResponseSnackbar } from 'src/sections/inventory/ingredient-snackbar';
 
 import { DashboardContent } from 'src/layouts/dashboard';
 import { Iconify } from 'src/components/iconify';
@@ -38,6 +38,7 @@ export function InventoryCreateView() {
   };
 
   const handleOpenDialog = () => setOpenDialog(true);
+
   const handleCloseDialog = () => setOpenDialog(false);
 
   const ingredientDetails: Ingredient = {
@@ -47,7 +48,9 @@ export function InventoryCreateView() {
     expiryDate: expiryDate,
   };
 
-  const handleSubmit = (event: React.FormEvent) => event.preventDefault();
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+  }
 
   return (
     <DashboardContent>
@@ -163,12 +166,12 @@ export function InventoryCreateView() {
         }}
       />
 
-      <ResponseSnackbar 
+      <ResponseSnackbar
         isOpen={snackbar.open}
         handleCloseSnackbar={handleCloseSnackbar}
         severity={snackbar.severity}
         message={snackbar.message}
-        ariaLabel="Ingredient-created" 
+        ariaLabel="Ingredient-created"
       />
     </DashboardContent>
   );

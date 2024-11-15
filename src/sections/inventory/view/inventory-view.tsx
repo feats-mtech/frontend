@@ -129,6 +129,7 @@ export function InventoryView() {
                       fetchIngredientsForUser={fetchIngredientsForUser}
                       setIsSuccess={setIsSuccess}
                       setIsError={setIsError}
+                      
                     />
                   ))}
 
