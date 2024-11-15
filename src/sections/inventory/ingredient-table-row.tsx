@@ -66,7 +66,13 @@ export function IngredientTableRow({
 
   return (
     <>
-      <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
+      <TableRow
+        hover
+        tabIndex={-1}
+        role="checkbox"
+        selected={selected}
+        data-testid="ingredient-row"
+      >
         <TableCell padding="checkbox">
           <Checkbox disableRipple checked={selected} onChange={onSelectRow} />
         </TableCell>
@@ -87,7 +93,7 @@ export function IngredientTableRow({
         <TableCell>{fDate(row.expiryDate)}</TableCell>
 
         <TableCell align="right">
-          <IconButton onClick={handleOpenPopover}>
+          <IconButton data-testid={`more-options-button-${row.id}`} onClick={handleOpenPopover}>
             <Iconify icon="eva:more-vertical-fill" />
           </IconButton>
         </TableCell>
@@ -116,7 +122,7 @@ export function IngredientTableRow({
             },
           }}
         >
-          <MenuItem onClick={handleCloseEditDialog}>
+          <MenuItem data-testid={`edit-button-${row.id}`} onClick={handleCloseEditDialog}>
             <Iconify icon="solar:pen-bold" />
             Edit
           </MenuItem>

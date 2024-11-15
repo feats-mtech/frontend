@@ -56,6 +56,7 @@ export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
     <Label
       variant="inverted"
       color="info"
+      data-id="rcui"
       sx={{
         zIndex: 9,
         top: 16,
@@ -144,6 +145,7 @@ export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
           </Grid>
           <Grid item xs={2} justifyContent="flex-end">
             <Gauge
+              data-id="rdif"
               {...{
                 height: 50,
                 width: 50,

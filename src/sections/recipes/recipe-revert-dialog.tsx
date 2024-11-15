@@ -57,6 +57,7 @@ export default function RecipeRevertDialog(props: RecipeRevertDialogProps): JSX.
         handleCloseSnackbar={handleCloseSnackbar}
         severity="success"
         message="Recipe details reverted"
+        ariaLabel="Recipe-revert-success"
       />
     </>
   );

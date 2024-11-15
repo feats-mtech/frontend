@@ -34,12 +34,14 @@ interface ConfirmationDialogProps {
   openDialog: boolean;
   handleCloseDialog: () => void;
   ingredient: Ingredient;
+  onError: (message: any) => void;
 }
 
 export const ConfirmationDialog = ({
   openDialog,
   handleCloseDialog,
   ingredient,
+  onError,
 }: ConfirmationDialogProps) => {
   const { user } = useAuth();
 
@@ -55,6 +57,9 @@ export const ConfirmationDialog = ({
       setIsSuccess(true);
     } else {
       setIsError(true);
+      const errorMessage =
+        (result as { success: false; message: string }).message || 'add failed, please retry';
+      onError(errorMessage);
     }
     setLoading(false);
     handleCloseDialog();
@@ -64,15 +69,15 @@ export const ConfirmationDialog = ({
     setIsSuccess(false);
     setIsError(false);
   };
+  // console.log('Dialog open state:', openDialog);
 
   return (
     <>
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
+      <Dialog open={openDialog} onClose={handleCloseDialog} data-testid="confirm-dialog">
         <DialogTitle>Confirm Addition</DialogTitle>
         <DialogContent>
           <DialogContentText>Please review the ingredient details.</DialogContentText>
           <br />
-
           <IngredientDetailRow label="Item Name" ingredientDetail={ingredient.name} />
           <IngredientDetailRow label="Quantity" ingredientDetail={String(ingredient.quantity)} />
           <IngredientDetailRow label="Unit of Measurement" ingredientDetail={ingredient.uom} />
@@ -82,7 +87,12 @@ export const ConfirmationDialog = ({
           <Button onClick={handleCloseDialog} color="secondary">
             Cancel
           </Button>
-          <Button onClick={handleSubmit} color="primary" disabled={loading}>
+          <Button
+            onClick={handleSubmit}
+            color="primary"
+            disabled={loading}
+            data-testid="confirm-button"
+          >
             {loading ? 'Creating...' : 'Confirm'}
           </Button>
         </DialogActions>
@@ -92,6 +102,7 @@ export const ConfirmationDialog = ({
         handleCloseSnackbar={handleCloseSnackbar}
         severity="success"
         message="Ingredient added successfully!"
+        ariaLabel="Ingredient-added-successful"
       />
 
       <ResponseSnackbar
@@ -99,6 +110,7 @@ export const ConfirmationDialog = ({
         handleCloseSnackbar={handleCloseSnackbar}
         severity="error"
         message="Failed to add the ingredient. Please try again."
+        ariaLabel="Ingredient-added-failed"
       />
     </>
   );

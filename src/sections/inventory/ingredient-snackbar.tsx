@@ -5,6 +5,7 @@ interface ResponseSnackbarProps {
   handleCloseSnackbar: () => void;
   severity: SEVERITY;
   message: string;
+  ariaLabel: string;
 }
 
 export type SEVERITY = 'error' | 'success' | 'info' | 'warning';
