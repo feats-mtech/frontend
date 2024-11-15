@@ -167,7 +167,9 @@ export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
             />
           </Grid>
         </Grid>
-        <Typography data-id="rdsc" variant="body1">{recipe.description}</Typography>
+        <Typography data-id="rdsc" variant="body1">
+          {recipe.description}
+        </Typography>
 
         <Typography variant="caption" textAlign={'right'}>
           Last Updated: {fDateTime(recipe.updateDatetime)}

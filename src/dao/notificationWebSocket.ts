@@ -1,4 +1,3 @@
-import { Notification } from 'src/types/Notification';
 const backendAddress =
   window.RUNTIME_CONFIG?.VITE_BACKEND_NOTIFICATION_URL ||
   import.meta.env.VITE_BACKEND_NOTIFICATION_URL;
