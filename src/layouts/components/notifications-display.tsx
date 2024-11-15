@@ -104,7 +104,7 @@ const NotificationsDisplay = (props: notificationDisplayProps) => {
           <List disablePadding>
             {notifications.map((notification) => (
               <ListItem
-                key={notification.id}
+                key={notification.title}
                 sx={{
                   py: 1.5,
                   px: 2.5,
