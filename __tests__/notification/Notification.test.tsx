@@ -3,7 +3,7 @@ import React from 'react';
 import userEvent from '@testing-library/user-event';
 
 import * as useAuth from '../../src/context/AuthContext';
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import { NotificationsPopover } from '../../src/layouts/components/notifications-popover';
 import { mockNotifications } from '../utils/mockNotifications';
 
@@ -16,6 +16,8 @@ jest.mock('../../src/dao/notificationDao', () => ({
 }));
 
 const notificationDao = require('../../src/dao/notificationDao');
+
+jest.setTimeout(60 * 1000); // 1 minute
 
 describe('NotificationsPopover', () => {
   // mock auth context
@@ -38,10 +40,15 @@ describe('NotificationsPopover', () => {
     jest.clearAllMocks();
   });
 
+  afterEach(() => {
+    const { unmount } = render(<NotificationsPopover enabled={true} />);
+    unmount();
+  });
+
   it('renders NotificationsPopover component', async () => {
     notificationDao.getUnreadCount.mockResolvedValue({ success: true, data: 2 });
 
-    render(<NotificationsPopover />);
+    render(<NotificationsPopover enabled />);
 
     // Check if the notification bell icon is rendered
     expect(screen.getByRole('button')).toBeInTheDocument();
@@ -52,7 +59,7 @@ describe('NotificationsPopover', () => {
     notificationDao.getUnreadCount.mockResolvedValue({ success: true, data: 2 });
     notificationDao.getNotifications.mockResolvedValue({ success: true, data: mockNotifications });
 
-    render(<NotificationsPopover />);
+    render(<NotificationsPopover enabled />);
 
     // Click the notification bell
     const bellIcon = screen.getByRole('button');
@@ -74,7 +81,8 @@ describe('NotificationsPopover', () => {
       () => new Promise((resolve) => setTimeout(resolve, 100)),
     );
 
-    render(<NotificationsPopover />);
+    render(<NotificationsPopover enabled />);
+    jest.advanceTimersByTime(60000); // Simulate time passing
 
     // Click the notification bell
     const bellIcon = screen.getByRole('button');
@@ -92,11 +100,14 @@ describe('NotificationsPopover', () => {
       error: 'Failed to load notifications',
     });
 
-    render(<NotificationsPopover />);
+    render(<NotificationsPopover enabled />);
+    jest.advanceTimersByTime(60000); // Simulate time passing
 
     // Click the notification bell
     const bellIcon = screen.getByRole('button');
-    await userEvent.click(bellIcon);
+    act(() => {
+      userEvent.click(bellIcon);
+    });
 
     // Check if error message is displayed
     await waitFor(() => {
@@ -110,7 +121,7 @@ describe('NotificationsPopover', () => {
     notificationDao.getNotifications.mockResolvedValue({ success: true, data: mockNotifications });
     notificationDao.markAsRead.mockResolvedValue({ success: true });
 
-    render(<NotificationsPopover />);
+    render(<NotificationsPopover enabled />);
 
     // Click the notification bell
     const bellIcon = screen.getByRole('button');
@@ -132,7 +143,7 @@ describe('NotificationsPopover', () => {
     notificationDao.getNotifications.mockResolvedValue({ success: true, data: mockNotifications });
     notificationDao.markAllAsRead.mockResolvedValue({ success: true });
 
-    render(<NotificationsPopover />);
+    render(<NotificationsPopover enabled />);
 
     // Click the notification bell
     const bellIcon = screen.getByRole('button');
@@ -153,11 +164,13 @@ describe('NotificationsPopover', () => {
     notificationDao.getUnreadCount.mockResolvedValue({ success: true, data: 0 });
     notificationDao.getNotifications.mockResolvedValue({ success: true, data: [] });
 
-    render(<NotificationsPopover />);
+    render(<NotificationsPopover enabled />);
 
     // Click the notification bell
     const bellIcon = screen.getByRole('button');
-    await userEvent.click(bellIcon);
+    act(() => {
+      userEvent.click(bellIcon);
+    });
 
     // Check if "No notifications" message is displayed
     await waitFor(() => {

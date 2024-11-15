@@ -52,8 +52,9 @@ const NotificationsPopover = (props: NotificationsPopoverProps) => {
       }
     } catch (err) {
       setError('Error loading notifications');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const fetchUnreadCount = async () => {
