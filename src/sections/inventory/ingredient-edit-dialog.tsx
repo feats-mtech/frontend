@@ -77,8 +77,7 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
 
   return (
     <>
-      <Dialog onClose={handleClose} open={open}
-      data-testid="edit-ingredient-dialog">
+      <Dialog onClose={handleClose} open={open} data-testid="edit-ingredient-dialog">
         <DialogTitle>Edit Ingredient Details for {selectedIngredient.name}</DialogTitle>
         <List sx={{ pt: 0 }}>
           <>
@@ -91,7 +90,7 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
                 onChange={handleChange}
                 fullWidth
                 inputProps={{
-                  'data-testid': 'edit-ingredient-name-input'
+                  'data-testid': 'edit-ingredient-name-input',
                 }}
               />
             </ListItem>
@@ -106,7 +105,7 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
                 onChange={handleChange}
                 fullWidth
                 inputProps={{
-                  'data-testid': 'edit-ingredient-quantity-input'
+                  'data-testid': 'edit-ingredient-quantity-input',
                 }}
               />
             </ListItem>
@@ -126,7 +125,7 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
                     },
                   }}
                   inputProps={{
-                    'data-testid': 'edit-ingredient-uom-select'
+                    'data-testid': 'edit-ingredient-uom-select',
                   }}
                 >
                   <MenuItem value="pieces">pieces</MenuItem>
@@ -149,7 +148,7 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
                 onChange={handleChange}
                 fullWidth
                 inputProps={{
-                  'data-testid': 'edit-ingredient-expiry-date-input'
+                  'data-testid': 'edit-ingredient-expiry-date-input',
                 }}
               />
             </ListItem>
@@ -167,8 +166,12 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
               >
                 {loading ? 'Editing...' : 'Save'}
               </Button>
-              <Button variant="contained" color="error" onClick={handleClose} sx={{ ml: 'auto' }}
-              data-testid="cancel-edit-button"
+              <Button
+                variant="contained"
+                color="error"
+                onClick={handleClose}
+                sx={{ ml: 'auto' }}
+                data-testid="cancel-edit-button"
               >
                 Cancel
               </Button>

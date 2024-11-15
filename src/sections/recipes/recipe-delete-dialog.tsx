@@ -150,7 +150,7 @@ export default function RecipeDeleteDialog(props: RecipeDeleteDialogProps): JSX.
         handleCloseSnackbar={handleCloseSnackbar}
         severity="error"
         message="Recipe deletion failed"
-        ariaLabel="Recipe-delete-failed" 
+        ariaLabel="Recipe-delete-failed"
       />
     </>
   );

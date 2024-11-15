@@ -1,22 +1,22 @@
-import '@testing-library/jest-dom';
 import React from 'react';
+import { MemoryRouter } from 'react-router-dom';
+
+import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
-import { cleanup, RenderResult, within } from '@testing-library/react';
+import { within, render, screen, waitFor, fireEvent, act } from '@testing-library/react';
+
 import * as useAuth from '../../src/context/AuthContext';
 import * as useRouter from '../../src/routes/hooks/use-router';
-import { render, screen, waitFor, fireEvent, act } from '@testing-library/react';
 import { InventoryView } from '../../src/sections/inventory/view/inventory-view';
 import { InventoryCreateView } from '../../src/sections/inventory-create/view/inventory-create-view';
 import { mockIngredients } from '../utils/mockIngredients';
 import * as ingredientDao from '../../src/dao/ingredientDao';
 import { ThemeProvider } from '../../src/theme/theme-provider';
-import { MemoryRouter } from 'react-router-dom';
 
-
-//  window.matchMedia
+// window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: jest.fn().mockImplementation(query => ({
+  value: jest.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,
@@ -29,7 +29,6 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 describe('InventoryView', () => {
-
   // mock contexts and router
   beforeAll(() => {
     jest.clearAllMocks();
@@ -59,7 +58,6 @@ describe('InventoryView', () => {
     jest.spyOn(ingredientDao, 'getIngredientsByUser').mockResolvedValue(mockIngredients);
   });
 
-
   it('renders InventoryView component', async () => {
     render(<InventoryView />);
     await waitFor(() => {
@@ -83,7 +81,6 @@ describe('InventoryView', () => {
     });
   });
 
-  // mock pagination
   it('should handle pagination correctly', async () => {
     jest.spyOn(ingredientDao, 'getIngredientsByUser').mockResolvedValue(mockIngredients);
 
@@ -92,7 +89,7 @@ describe('InventoryView', () => {
         <ThemeProvider>
           <InventoryView />
         </ThemeProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await waitFor(() => {
@@ -128,7 +125,6 @@ describe('InventoryView', () => {
     });
   });
 
-  // mock sort
   it('should sort ingredients when clicking column headers', async () => {
     jest
       .spyOn(require('../../src/dao/ingredientDao'), 'getIngredientsByUser')
@@ -139,7 +135,7 @@ describe('InventoryView', () => {
         <ThemeProvider>
           <InventoryView />
         </ThemeProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     await waitFor(() => {
@@ -156,7 +152,6 @@ describe('InventoryView', () => {
     const sortLabel = within(tableHeader).getByRole('button', {
       name: /expiry date/i,
     });
-    console.log('Sort Label element:', sortLabel.outerHTML);
 
     // click first time
     await user.click(sortLabel);
@@ -164,7 +159,9 @@ describe('InventoryView', () => {
     await waitFor(() => {
       const rows = screen.getAllByTestId('ingredient-row');
       expect(rows[0]).toHaveTextContent(mockIngredients[0].name);
-      expect(rows[rows.length - 1]).toHaveTextContent(mockIngredients[mockIngredients.length - 1].name);
+      expect(rows[rows.length - 1]).toHaveTextContent(
+        mockIngredients[mockIngredients.length - 1].name,
+      );
     });
 
     await user.click(sortLabel);
@@ -176,16 +173,14 @@ describe('InventoryView', () => {
     });
   });
 
-  // mock Create 
   describe('Create Operations', () => {
     it('should create new ingredient successfully', async () => {
-
       const mockCreateIngredient = jest.fn().mockResolvedValue({
         success: true,
         data: {
           id: 1,
-          ...mockIngredients[0]
-        }
+          ...mockIngredients[0],
+        },
       });
       jest.spyOn(ingredientDao, 'createIngredient').mockImplementation(mockCreateIngredient);
 
@@ -194,11 +189,13 @@ describe('InventoryView', () => {
           <ThemeProvider>
             <InventoryCreateView />
           </ThemeProvider>
-        </MemoryRouter>
+        </MemoryRouter>,
       );
 
       // check if form can submit
-      const submitButton = screen.getByRole('button', { name: /add ingredient/i }) as HTMLButtonElement;
+      const submitButton = screen.getByRole('button', {
+        name: /add ingredient/i,
+      }) as HTMLButtonElement;
 
       const nameInput = screen.getByLabelText(/item name/i);
       fireEvent.change(nameInput, {
@@ -230,7 +227,7 @@ describe('InventoryView', () => {
 
       fireEvent.click(submitButton);
 
-      // // check if Dialog box can display
+      // check if Dialog box can display
       const confirmDialog = await screen.findByTestId('confirm-dialog');
       expect(confirmDialog).toBeInTheDocument();
 
@@ -242,17 +239,18 @@ describe('InventoryView', () => {
         expect(screen.getByRole('alert')).toHaveTextContent(/ingredient added successfully/i);
       });
 
-      expect(mockCreateIngredient).toHaveBeenCalledWith({
-        name: mockIngredients[0].name,
-        quantity: mockIngredients[0].quantity,
-        uom: mockIngredients[0].uom,
-        expiryDate: formattedDate, // need YYYY-MM-DD
-      },
-        1);
+      expect(mockCreateIngredient).toHaveBeenCalledWith(
+        {
+          name: mockIngredients[0].name,
+          quantity: mockIngredients[0].quantity,
+          uom: mockIngredients[0].uom,
+          expiryDate: formattedDate, // need YYYY-MM-DD
+        },
+        1,
+      );
     });
   });
 
-  // // mock Update
   describe('Update Operations', () => {
     it('should update ingredient successfully', async () => {
       const mockUpdateIngredient = jest.fn().mockResolvedValue({
@@ -304,17 +302,16 @@ describe('InventoryView', () => {
           uom: 'pieces',
           expiryDate: '2024-12-31',
         }),
-        1
+        1,
       );
     });
   });
 
-  // // mock Delete
   describe('Delete Operations', () => {
     it('should delete ingredient successfully', async () => {
       // Mock delete API call
       const mockDeleteIngredient = jest.fn().mockResolvedValue({
-        success: true
+        success: true,
       });
 
       jest.spyOn(ingredientDao, 'deleteIngredient').mockImplementation(mockDeleteIngredient);
@@ -328,7 +325,7 @@ describe('InventoryView', () => {
           <ThemeProvider>
             <InventoryView />
           </ThemeProvider>
-        </MemoryRouter>
+        </MemoryRouter>,
       );
 
       // Wait for initial data load
@@ -358,5 +355,4 @@ describe('InventoryView', () => {
       });
     });
   });
-
 });

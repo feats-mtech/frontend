@@ -57,7 +57,8 @@ export const ConfirmationDialog = ({
       setIsSuccess(true);
     } else {
       setIsError(true);
-      const errorMessage = (result as { success: false; message: string }).message || 'add failed, please retry';
+      const errorMessage =
+        (result as { success: false; message: string }).message || 'add failed, please retry';
       onError(errorMessage);
     }
     setLoading(false);
@@ -72,11 +73,7 @@ export const ConfirmationDialog = ({
 
   return (
     <>
-      <Dialog
-        open={openDialog}
-        onClose={handleCloseDialog}
-        data-testid="confirm-dialog"
-      >
+      <Dialog open={openDialog} onClose={handleCloseDialog} data-testid="confirm-dialog">
         <DialogTitle>Confirm Addition</DialogTitle>
         <DialogContent>
           <DialogContentText>Please review the ingredient details.</DialogContentText>

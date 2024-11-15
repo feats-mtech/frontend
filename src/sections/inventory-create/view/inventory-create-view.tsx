@@ -30,11 +30,11 @@ export function InventoryCreateView() {
   }>({
     open: false,
     severity: 'success',
-    message: ''
+    message: '',
   });
 
   const handleCloseSnackbar = () => {
-    setSnackbar(prev => ({ ...prev, open: false }));
+    setSnackbar((prev) => ({ ...prev, open: false }));
   };
 
   const handleOpenDialog = () => setOpenDialog(true);
@@ -50,7 +50,7 @@ export function InventoryCreateView() {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-  }
+  };
 
   return (
     <DashboardContent>
@@ -111,7 +111,7 @@ export function InventoryCreateView() {
                 name="unit"
                 onChange={(e) => setUnitOfMeasurement(e.target.value)}
                 inputProps={{
-                  'aria-label': 'unit of measurement' //add
+                  'aria-label': 'unit of measurement', //add
                 }}
                 MenuProps={{
                   PaperProps: {
@@ -161,7 +161,7 @@ export function InventoryCreateView() {
           setSnackbar({
             open: true,
             severity: 'error',
-            message: "Failed to add the ingredient. Please try again."
+            message: 'Failed to add the ingredient. Please try again.',
           });
         }}
       />

@@ -51,7 +51,7 @@ export function IngredientTableRow({
   const handleOpenPopover = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     setOpenPopover(event.currentTarget);
   }, []);
- 
+
   const handleClosePopover = useCallback(() => setOpenPopover(null), []);
 
   const handleCloseEditDialog = useCallback(() => {
@@ -66,8 +66,10 @@ export function IngredientTableRow({
 
   return (
     <>
-      <TableRow hover tabIndex={-1} 
-        role="checkbox" 
+      <TableRow
+        hover
+        tabIndex={-1}
+        role="checkbox"
         selected={selected}
         data-testid="ingredient-row"
       >
@@ -91,10 +93,7 @@ export function IngredientTableRow({
         <TableCell>{fDate(row.expiryDate)}</TableCell>
 
         <TableCell align="right">
-          <IconButton 
-            data-testid={`more-options-button-${row.id}`}
-            onClick={handleOpenPopover}
-          >
+          <IconButton data-testid={`more-options-button-${row.id}`} onClick={handleOpenPopover}>
             <Iconify icon="eva:more-vertical-fill" />
           </IconButton>
         </TableCell>
@@ -106,7 +105,6 @@ export function IngredientTableRow({
         onClose={handleClosePopover}
         anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        
       >
         <MenuList
           disablePadding
@@ -124,9 +122,7 @@ export function IngredientTableRow({
             },
           }}
         >
-          <MenuItem 
-            data-testid={`edit-button-${row.id}`}
-            onClick={handleCloseEditDialog}>
+          <MenuItem data-testid={`edit-button-${row.id}`} onClick={handleCloseEditDialog}>
             <Iconify icon="solar:pen-bold" />
             Edit
           </MenuItem>
