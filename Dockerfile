@@ -39,6 +39,7 @@ COPY /scripts/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 EXPOSE 80
+EXPOSE 443
 
 # CMD ["nginx", "-g", "daemon off;"]
 
