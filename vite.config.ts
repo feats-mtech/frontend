@@ -41,7 +41,14 @@ export default ({ mode }: { mode: string }) => {
         },
       ],
     },
-    server: { port: Number(process.env.VITE_PORT), host: process.env.VITE_HOST },
+    server: {
+      port: Number(process.env.VITE_PORT),
+      host: process.env.VITE_HOST,
+      https: {
+        key: fs.readFileSync('/etc/ssl/certs/key.pem'),
+        cert: fs.readFileSync('/etc/ssl/certs/cert.pem'),
+      },
+    },
     preview: { port: Number(process.env.VITE_PORT), host: true },
   });
 };
