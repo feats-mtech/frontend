@@ -8,8 +8,8 @@ export default ({ mode }: { mode: string }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
   const envPrefix = process.env.NODE_ENV;
 
-  const keyPath = '/etc/ssl/certs/key.pem';
-  const certPath = '/etc/ssl/certs/cert.pem';
+  const keyPath = '/etc/ssl/certs/tls.key';
+  const certPath = '/etc/ssl/certs/tls.cert';
 
   const httpsConfig =
     fs.existsSync(keyPath) && fs.existsSync(certPath)
