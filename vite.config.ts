@@ -9,7 +9,7 @@ export default ({ mode }: { mode: string }) => {
   const envPrefix = process.env.NODE_ENV;
 
   const keyPath = '/etc/ssl/certs/tls.key';
-  const certPath = '/etc/ssl/certs/tls.cert';
+  const certPath = '/etc/ssl/certs/tls.crt';
 
   const httpsConfig =
     fs.existsSync(keyPath) && fs.existsSync(certPath)
@@ -17,7 +17,7 @@ export default ({ mode }: { mode: string }) => {
           key: fs.readFileSync(keyPath),
           cert: fs.readFileSync(certPath),
         }
-      : false;
+      : undefined;
 
   return defineConfig({
     base: './',
@@ -57,10 +57,6 @@ export default ({ mode }: { mode: string }) => {
       port: Number(process.env.VITE_PORT),
       host: process.env.VITE_HOST,
       https: httpsConfig,
-      // https: {
-      //   key: fs.readFileSync('/etc/ssl/certs/key.pem'),
-      //   cert: fs.readFileSync('/etc/ssl/certs/cert.pem'),
-      // },
     },
     preview: { port: Number(process.env.VITE_PORT), host: true },
   });
