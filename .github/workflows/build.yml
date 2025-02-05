@@ -77,6 +77,25 @@ jobs:
         run: |
           docker push ${{ secrets.REGISTRY_NAME }}/feats-frontend:latest
 
+      - name: Run Trivy vulnerability scanner
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ${{ secrets.REGISTRY_NAME }}/feats-frontend:latest
+          format: 'json'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+          output: 'trivy-results.json'
+
+      - name: Archive Trivy scan artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-results
+          path: |
+            ./trivy-results.json
+
       - name: Push Docker image (version) to DigitalOcean Container Registry
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
