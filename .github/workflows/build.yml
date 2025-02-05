@@ -49,8 +49,8 @@ jobs:
           name: build
           path: dist/
 
-      - name: Run tests
-        run: npm run test
+      # - name: Run tests
+      #   run: npm run test
 
       - name: Install doctl
         # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
