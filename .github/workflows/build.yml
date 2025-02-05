@@ -77,6 +77,16 @@ jobs:
         run: |
           docker push ${{ secrets.REGISTRY_NAME }}/feats-frontend:latest
 
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ${{ secrets.REGISTRY_NAME }}/feats-frontend:latest
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
       - name: Push Docker image (version) to DigitalOcean Container Registry
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
