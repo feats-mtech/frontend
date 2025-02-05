@@ -53,29 +53,34 @@ jobs:
         run: npm run test
 
       - name: Install doctl
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
       - name: Build container image
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: docker build -t ${{ secrets.REGISTRY_NAME }}/feats-frontend:latest .
 
       - name: Log in to DigitalOcean Container Registry with short-lived credentials
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: doctl registry login --expiry-seconds 1200
 
       # Docker steps to run only when merged to main
       - name: get-npm-version
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         id: package-version
         uses: martinbeentjes/npm-get-version-action@v1.3.1
 
       - name: Push Docker image (latest) to DigitalOcean Container Registry
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           docker push ${{ secrets.REGISTRY_NAME }}/feats-frontend:latest
+
+      - name: Scan Docker image with Docker Scout
+        # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          docker scout cves ${{ secrets.REGISTRY_NAME }}/feats-frontend:latest
 
       - name: Push Docker image (version) to DigitalOcean Container Registry
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
