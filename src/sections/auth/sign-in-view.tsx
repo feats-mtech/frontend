@@ -32,6 +32,10 @@ export function SignInView() {
     setResult(false);
   }, [router, username, password]);
 
+  const handleGoogleSignIn = useCallback(async () => {
+    // TODO: implement Google oauth2 sign-in
+  }, []);
+
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter') handleSignIn();
   };
@@ -113,6 +117,20 @@ export function SignInView() {
           onClick={handleSignIn}
         >
           Sign in
+        </LoadingButton>
+        <LoadingButton
+          fullWidth
+          size="large"
+          type="button"
+          color="primary"
+          variant="outlined"
+          startIcon={
+            <img src="/google-icon.svg" alt="Google Logo" style={{ width: 24, height: 24 }} />
+          }
+          style={{ marginTop: 20 }}
+          onClick={handleGoogleSignIn}
+        >
+          Continue with Google
         </LoadingButton>
       </Box>
     </>
