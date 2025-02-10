@@ -14,6 +14,7 @@ export const CONFIG: ConfigValue = {
 declare global {
   interface Window {
     RUNTIME_CONFIG?: {
+      VITE_BACKEND_HAS_DOMAIN_NAME?: string;
       VITE_BACKEND_AUTHENTICATE_URL?: string;
       VITE_BACKEND_AUTHENTICATE_PORT?: string;
       VITE_BACKEND_INGREDIENT_URL?: string;
