@@ -79,6 +79,7 @@ export const ConfirmationDialog = ({
           <DialogContentText>Please review the ingredient details.</DialogContentText>
           <br />
           <IngredientDetailRow label="Item Name" ingredientDetail={ingredient.name} />
+          <IngredientDetailRow label="Item Image" ingredientDetail={String(ingredient.image)} />
           <IngredientDetailRow label="Quantity" ingredientDetail={String(ingredient.quantity)} />
           <IngredientDetailRow label="Unit of Measurement" ingredientDetail={ingredient.uom} />
           <IngredientDetailRow label="Expiry Date" ingredientDetail={ingredient.expiryDate} />

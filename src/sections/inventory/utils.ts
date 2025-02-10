@@ -80,6 +80,7 @@ export const mapToIngredientRowProps = (ingredients: Ingredient[]): IngredientRo
     consumeBy: ingredient.expiryDate,
     expiryDate: ingredient.expiryDate,
     avatarUrl: `/assets/images/avatar/avatar-${(ingredient.id ?? 0) + 1}.webp`,
+    image: ingredient.image,
   }));
 };
 export const mapToRecipeRowProps = (recipes: Recipe[]): RecipeRowProps[] => {

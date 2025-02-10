@@ -25,6 +25,7 @@ export type IngredientRowProps = {
   expiryDate: string;
   quantity: number;
   avatarUrl: string;
+  image: string;
 };
 
 type IngredientTableRowProps = {
@@ -79,7 +80,7 @@ export function IngredientTableRow({
 
         <TableCell component="th" scope="row">
           <Box gap={2} display="flex" alignItems="center">
-            <Avatar alt={row.name} src={row.avatarUrl} />
+            <Avatar alt={row.name} src={`data:image/jpeg;base64,${row.image}`} />
             {row.name}
           </Box>
         </TableCell>

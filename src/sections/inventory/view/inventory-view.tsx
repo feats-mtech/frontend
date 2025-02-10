@@ -42,6 +42,9 @@ export function InventoryView() {
 
   const fetchIngredientsForUser = useCallback(async () => {
     const ingredients = await getIngredientsByUser(user?.id as number);
+    for (let i = 0; i < ingredients.length; i++) {
+      console.log(ingredients[i]);
+    }
     setIngredients(mapToIngredientRowProps(ingredients));
   }, []);
 

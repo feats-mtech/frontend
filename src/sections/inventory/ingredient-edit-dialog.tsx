@@ -12,7 +12,7 @@ import {
 import { IngredientRowProps } from './ingredient-table-row';
 
 import { TextField, Button } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { updateIngredient } from 'src/dao/ingredientDao';
 import { useAuth } from 'src/context/AuthContext';
 
@@ -39,6 +39,7 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
     useState<IngredientRowProps>(selectedIngredient);
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [itemDisplayImage, setDisplayItemImage] = useState('');
 
   const handleClose = () => handleIsOpenEditDialog(false);
 
@@ -56,9 +57,17 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
     handleClose();
   };
 
+  const handleFileChange = (e: any | null) => {
+    setIngredientDetails({
+      ...ingredientDetails,
+      image: e.target.files[0],
+    });
+    setDisplayItemImage(URL.createObjectURL(e.target.files[0]));
+  };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('handliong change');
     const { name, value } = e.target;
-    const lettersOnlyPattern = /^[a-zA-Z\s]*$/;
+    const lettersOnlyPattern = /^[a-zA-Z0-9\s]*$/;
 
     if (name === 'name' && !lettersOnlyPattern.test(value)) return;
 
@@ -81,6 +90,24 @@ export const IngredientEditDialog = (props: IngredientEditDialogProps) => {
         <DialogTitle>Edit Ingredient Details for {selectedIngredient.name}</DialogTitle>
         <List sx={{ pt: 0 }}>
           <>
+            <ListItem>
+              <input type="file" onChange={handleFileChange} />
+              <br />
+              {itemDisplayImage ? (
+                <img src={itemDisplayImage} alt="item" width={200} height={200} />
+              ) : (
+                <>
+                  {ingredientDetails.image && (
+                    <img
+                      src={`data:image/jpeg;base64,${ingredientDetails.image}`}
+                      alt="ingredient"
+                      width={200}
+                      height={200}
+                    />
+                  )}
+                </>
+              )}
+            </ListItem>
             <ListItem>
               <TextField
                 required

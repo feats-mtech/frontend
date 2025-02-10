@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { TextField, Grid, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { TextField, Grid, Select, MenuItem, FormControl, InputLabel, styled } from '@mui/material';
 import { ResponseSnackbar } from 'src/sections/inventory/ingredient-snackbar';
 
 import { DashboardContent } from 'src/layouts/dashboard';
@@ -22,6 +22,13 @@ export function InventoryCreateView() {
   const [quantity, setQuantity] = useState(0);
   const [expiryDate, setExpiryDate] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
+  const [itemImage, setItemImage] = useState('');
+  const [itemDisplayImage, setDisplayItemImage] = useState('');
+
+  const handleFileChange = (e: any | null) => {
+    setItemImage(e.target.files[0]);
+    setDisplayItemImage(URL.createObjectURL(e.target.files[0]));
+  };
 
   const [snackbar, setSnackbar] = useState<{
     open: boolean;
@@ -43,6 +50,7 @@ export function InventoryCreateView() {
 
   const ingredientDetails: Ingredient = {
     name: itemName,
+    image: itemImage,
     quantity: quantity,
     uom: unitOfMeasurement,
     expiryDate: expiryDate,
@@ -51,7 +59,17 @@ export function InventoryCreateView() {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
   };
-
+  // const VisuallyHiddenInput = styled('input')({
+  //   // clip: 'rect(0 0 0 0)',
+  //   // clipPath: 'inset(50%)',
+  //   height: 1,
+  //   // overflow: 'hidden',
+  //   // position: 'absolute',
+  //   bottom: 0,
+  //   left: 0,
+  //   whiteSpace: 'nowrap',
+  //   width: 1,
+  // });
   return (
     <DashboardContent>
       <Box display="flex" alignItems="center" mb={5}>
@@ -71,6 +89,32 @@ export function InventoryCreateView() {
       <Box component="form" onSubmit={handleSubmit} noValidate>
         <Grid container spacing={3}>
           <Grid item xs={3} sm={12}>
+            {/* <Button
+              component="label"
+              role={undefined}
+              variant="contained"
+              tabIndex={-1}
+              onChange={handleFileChange}
+            >
+              Upload Image
+              <VisuallyHiddenInput type="file" />
+            </Button> */}
+            <input type="file" onChange={handleFileChange} />
+            <br />
+            {itemDisplayImage && <img src={itemDisplayImage} alt="item" width={200} height={200} />}
+
+            {/* sx={{
+        top: 0,
+        width: 1,
+        height: 1,
+        ml: 0.5,
+        cursor: 'pointer',
+        objectFit: 'cover',
+        position: 'absolute',
+      }} */}
+            {/* <input type="file" onChange={handleFileChange}/> */}
+          </Grid>
+          <Grid item xs={3} sm={12}>
             <TextField
               required
               placeholder={'e.g. banana'}
@@ -78,8 +122,8 @@ export function InventoryCreateView() {
               label="Item name"
               value={itemName}
               onChange={(e) => {
-                const lettersOnly = e.target.value.replace(/[^a-zA-Z\s]/g, ''); // Allow only letters and spaces
-                setItemName(lettersOnly);
+                const lettersNumberOnly = e.target.value.replace(/[^a-zA-Z0-9\s]/g, ''); // Allow only letters and spaces
+                setItemName(lettersNumberOnly);
               }}
             />
           </Grid>

@@ -4,4 +4,6 @@ export interface Ingredient {
   quantity: number;
   uom: string;
   expiryDate: string;
+
+  image: string;
 }
