@@ -8,7 +8,10 @@ const backendPort =
   window.RUNTIME_CONFIG?.VITE_BACKEND_AUTHENTICATE_PORT ||
   import.meta.env.VITE_BACKEND_AUTHENTICATE_PORT;
 
-const backendUrl = `${backendAddress}:${backendPort}`;
+const backendUrl =
+  window.RUNTIME_CONFIG?.VITE_BACKEND_HAS_DOMAIN_NAME == 'true'
+    ? backendAddress
+    : `${backendAddress}:${backendPort}`;
 
 export const login = async (username: string, password: string) => {
   try {

@@ -8,7 +8,10 @@ const backendAddress =
 const backendPort =
   window.RUNTIME_CONFIG?.VITE_BACKEND_REVIEW_PORT || import.meta.env.VITE_BACKEND_REVIEW_PORT;
 
-const backendUrl = `${backendAddress}:${backendPort}`;
+const backendUrl =
+  window.RUNTIME_CONFIG?.VITE_BACKEND_HAS_DOMAIN_NAME == 'true'
+    ? backendAddress
+    : `${backendAddress}:${backendPort}`;
 
 export const submitReviews = async (reviewItem: RecipeReview) => {
   try {
