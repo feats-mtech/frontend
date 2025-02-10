@@ -32,7 +32,7 @@ export type DashboardLayoutProps = {
 export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) {
   const theme = useTheme();
 
-  const [useWebSocket, setUseWebSocket] = useState(true);
+  const [useWebSocket, setUseWebSocket] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
   const { user } = useAuth();
 
