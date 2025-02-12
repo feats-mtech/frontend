@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -14,13 +14,26 @@ import { useAuth } from 'src/context/AuthContext';
 
 export function SignInView() {
   const router = useRouter();
-  const { loginUser } = useAuth();
+  const { loginUser, loginUserByGoogle, getLoginUserDetails } = useAuth();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [result, setResult] = useState<boolean | null>(null);
   const [statusCode, setStatusCode] = useState<number | null>(null);
+
+  useEffect(() => {
+    //TODO: passive call upon page load to check for user authentication status, currently working for google login, need to implement it for normal login....
+    console.log('try to get if the person is login or not.....');
+    const result = getLoginUserDetails();
+    console.log('result for login user details:', result);
+    // if (result.success) {
+    //   setResult(true);
+    //   router.push('/');
+    // }
+    // setStatusCode(result.statusCode);
+    // setResult(false);
+  }, []);
 
   const handleSignIn = useCallback(async () => {
     const result = await loginUser(username, password);
@@ -33,8 +46,8 @@ export function SignInView() {
   }, [router, username, password]);
 
   const handleGoogleSignIn = useCallback(async () => {
-    // TODO: implement Google oauth2 sign-in
-  }, []);
+    loginUserByGoogle();
+  }, [router]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter') handleSignIn();
