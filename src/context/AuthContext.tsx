@@ -1,5 +1,10 @@
 import { ReactNode, createContext, useState, useContext } from 'react';
-import { login, loginByGoogle, getLoginUserDetails as getUserDetails } from 'src/dao/authDao';
+import {
+  login,
+  loginByGoogle,
+  getLoginUserDetails as getUserDetails,
+  logout,
+} from 'src/dao/authDao';
 
 import { User } from 'src/types/User';
 
@@ -27,8 +32,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const getLoginUserDetails = async (): Promise<loginResult> => {
     const result = await getUserDetails();
-    console.log('result for login user details:', result);
-
+    if (result.success) {
+      const user: User = {
+        name: result.data.name,
+        id: result.data.id,
+        displayName: result.data.displayName,
+        email: result.data.email,
+        status: result.data.status,
+        role: result.data.role,
+      };
+      setUser(user);
+      localStorage.setItem('userId', user?.id.toString());
+    }
     return result;
   };
   const loginUser = async (username: string, password: string): Promise<loginResult> => {
@@ -51,10 +66,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const loginUserByGoogle = async () => {
     loginByGoogle();
   };
-  const logoutUser = () => setUser(null);
+  const logoutUser = () => {
+    logout();
+
+    setUser(null);
+  };
 
   const isAuthenticated = !!user;
-
   return (
     <AuthContext.Provider
       value={{

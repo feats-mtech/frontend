@@ -14,7 +14,7 @@ import { useAuth } from 'src/context/AuthContext';
 
 export function SignInView() {
   const router = useRouter();
-  const { loginUser, loginUserByGoogle, getLoginUserDetails } = useAuth();
+  const { loginUser, loginUserByGoogle, getLoginUserDetails, isAuthenticated, user } = useAuth();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
@@ -23,16 +23,17 @@ export function SignInView() {
   const [statusCode, setStatusCode] = useState<number | null>(null);
 
   useEffect(() => {
-    //TODO: passive call upon page load to check for user authentication status, currently working for google login, need to implement it for normal login....
-    console.log('try to get if the person is login or not.....');
-    const result = getLoginUserDetails();
-    console.log('result for login user details:', result);
-    // if (result.success) {
-    //   setResult(true);
-    //   router.push('/');
-    // }
-    // setStatusCode(result.statusCode);
-    // setResult(false);
+    //try get auth details from backend
+    handleAuthDetailsRetrival();
+  }, []);
+  const handleAuthDetailsRetrival = useCallback(async () => {
+    const result = await getLoginUserDetails();
+    if (!result.success) {
+      //normal to not have user session yet. so dont need to display error to user.
+      return;
+    }
+    setResult(true);
+    router.push('/');
   }, []);
 
   const handleSignIn = useCallback(async () => {

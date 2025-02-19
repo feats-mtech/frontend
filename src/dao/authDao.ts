@@ -32,6 +32,11 @@ export const login = async (username: string, password: string) => {
     return { success: false, error: error.message, statusCode: error.status };
   }
 };
+export const logout = async () => {
+  //for oauth2 logout
+  window.location.href = `${backendUrl}/authenticate/logout`;
+};
+
 export const getLoginUserDetails = async () => {
   try {
     const result = await axios
