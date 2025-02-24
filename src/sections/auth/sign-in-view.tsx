@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -14,13 +14,27 @@ import { useAuth } from 'src/context/AuthContext';
 
 export function SignInView() {
   const router = useRouter();
-  const { loginUser } = useAuth();
+  const { loginUser, loginUserByGoogle, getLoginUserDetails, isAuthenticated, user } = useAuth();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [result, setResult] = useState<boolean | null>(null);
   const [statusCode, setStatusCode] = useState<number | null>(null);
+
+  useEffect(() => {
+    //try get auth details from backend
+    handleAuthDetailsRetrival();
+  }, []);
+  const handleAuthDetailsRetrival = useCallback(async () => {
+    const result = await getLoginUserDetails();
+    if (!result.success) {
+      //normal to not have user session yet. so dont need to display error to user.
+      return;
+    }
+    setResult(true);
+    router.push('/');
+  }, []);
 
   const handleSignIn = useCallback(async () => {
     const result = await loginUser(username, password);
@@ -31,6 +45,10 @@ export function SignInView() {
     setStatusCode(result.statusCode);
     setResult(false);
   }, [router, username, password]);
+
+  const handleGoogleSignIn = useCallback(async () => {
+    loginUserByGoogle();
+  }, [router]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter') handleSignIn();
@@ -113,6 +131,20 @@ export function SignInView() {
           onClick={handleSignIn}
         >
           Sign in
+        </LoadingButton>
+        <LoadingButton
+          fullWidth
+          size="large"
+          type="button"
+          color="primary"
+          variant="outlined"
+          startIcon={
+            <img src="/google-icon.svg" alt="Google Logo" style={{ width: 24, height: 24 }} />
+          }
+          style={{ marginTop: 20 }}
+          onClick={handleGoogleSignIn}
+        >
+          Continue with Google
         </LoadingButton>
       </Box>
     </>
