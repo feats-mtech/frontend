@@ -32,7 +32,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const getLoginUserDetails = async (): Promise<loginResult> => {
     const result = await getUserDetails();
-    if (result.success) {
+    if (result?.success) {
       const user: User = {
         name: result.data.name,
         id: result.data.id,
@@ -46,6 +46,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
     return result;
   };
+
   const loginUser = async (username: string, password: string): Promise<loginResult> => {
     const result = await login(username, password);
     if (result.success) {
@@ -66,13 +67,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const loginUserByGoogle = async () => {
     loginByGoogle();
   };
+
   const logoutUser = () => {
     logout();
-
     setUser(null);
   };
 
   const isAuthenticated = !!user;
+
   return (
     <AuthContext.Provider
       value={{

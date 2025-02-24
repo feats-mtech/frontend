@@ -44,6 +44,8 @@ describe('InventoryView', () => {
       },
       loginUser: jest.fn(),
       logoutUser: jest.fn(),
+      loginUserByGoogle: jest.fn(),
+      getLoginUserDetails: jest.fn(),
     }));
 
     jest.spyOn(useRouter, 'useRouter').mockImplementation(() => ({

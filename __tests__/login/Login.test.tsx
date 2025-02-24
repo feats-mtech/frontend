@@ -11,6 +11,8 @@ import { mockUsers, mockCurrentUser } from '../utils/mockUsers';
 // Mock authDao
 jest.mock('src/dao/authDao', () => ({
   login: jest.fn(),
+  loginUserByGoogle: jest.fn(),
+  getLoginUserDetails: jest.fn(),
 }));
 
 // Mock Iconify component
