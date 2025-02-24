@@ -14,7 +14,7 @@ import { useAuth } from 'src/context/AuthContext';
 
 export function SignInView() {
   const router = useRouter();
-  const { loginUser, loginUserByGoogle, getLoginUserDetails, isAuthenticated, user } = useAuth();
+  const { loginUser, loginUserByGoogle, getLoginUserDetails } = useAuth();
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
@@ -24,11 +24,12 @@ export function SignInView() {
 
   useEffect(() => {
     //try get auth details from backend
-    handleAuthDetailsRetrival();
+    handleAuthDetailsRetrieval();
   }, []);
-  const handleAuthDetailsRetrival = useCallback(async () => {
+
+  const handleAuthDetailsRetrieval = useCallback(async () => {
     const result = await getLoginUserDetails();
-    if (!result.success) {
+    if (!result?.success) {
       //normal to not have user session yet. so dont need to display error to user.
       return;
     }

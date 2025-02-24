@@ -69,7 +69,6 @@ export const ConfirmationDialog = ({
     setIsSuccess(false);
     setIsError(false);
   };
-  // console.log('Dialog open state:', openDialog);
 
   return (
     <>

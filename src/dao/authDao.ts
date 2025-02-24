@@ -43,9 +43,6 @@ export const getLoginUserDetails = async () => {
       .get(`${backendUrl}/authenticate/info`, { withCredentials: true })
       .then((response) => response);
 
-    console.log('result for login user :', result);
-    console.log('result for login user data:', result.data);
-    console.log('result for login user data.name:', result.data.name);
     localStorage.setItem('jwtToken', result?.data?.jwt);
     return {
       success: result.status === HttpStatusCode.Ok,
