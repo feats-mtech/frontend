@@ -34,8 +34,46 @@ export function RegisterView() {
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
 
+  const [passwordStrength, setPasswordStrength] = useState<string | null>(null);
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
+
+  //add new password rules
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+
+    const lengthValid = newPassword.length >= 8;
+    const upperCaseValid = /[A-Z]/.test(newPassword);
+    const lowerCaseValid = /[a-z]/.test(newPassword);
+    const numberValid = /\d/.test(newPassword);
+    const specialCharValid = /[!@#$%^&*(),.?":{}|<>]/.test(newPassword);
+
+    let errors: string[] = [];
+
+    if (!lengthValid) {
+      errors.push('At least 8 characters');
+    }
+    if (!upperCaseValid) {
+      errors.push('At least one uppercase letter');
+    }
+    if (!lowerCaseValid) {
+      errors.push('At least one lowercase letter');
+    }
+    if (!numberValid) {
+      errors.push('At least one number');
+    }
+    if (!specialCharValid) {
+      errors.push('At least one special character');
+    }
+
+    if (errors.length > 0) {
+      setPasswordStrength(`Password must include: ${errors.join(', ')}`);
+    } else {
+      setPasswordStrength(null);
+    }
+  };
 
   const handleRegister = useCallback(async () => {
     const formDetails: UserFormDetails = {
@@ -53,9 +91,9 @@ export function RegisterView() {
       return;
     }
 
-    // Validate password minimum length
-    if (password.length < 7) {
-      setPasswordError('Password must be at least 7 characters long');
+    // Validate password
+    if (passwordStrength) {
+      setPasswordError(passwordStrength);
       return;
     }
 
@@ -151,12 +189,9 @@ export function RegisterView() {
             ),
           }}
           error={!!passwordError}
-          helperText={passwordError}
+          helperText={passwordError || passwordStrength}
           value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-            setPasswordError(null);
-          }}
+          onChange={handlePasswordChange}
           sx={{ mb: 3 }}
         />
 
