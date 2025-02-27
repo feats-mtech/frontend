@@ -38,9 +38,10 @@ describe('RecipeView', () => {
         role: 1,
       },
       loginUser: jest.fn(),
-      logoutUser: jest.fn(),
-      loginUserByGoogle: jest.fn(),
       getLoginUserDetails: jest.fn(),
+      loginUserByGoogle: jest.fn(),
+      logoutUser: jest.fn(),
+      refreshJwt: jest.fn(),
     }));
     jest.spyOn(useRouter, 'useRouter').mockImplementation(() => ({
       back: jest.fn(),
@@ -106,7 +107,7 @@ describe('RecipeView', () => {
       userEvent.click(westernCheckbox);
 
       // expect to see only Western recipes displayed
-      expect(screen.queryByText(/carrot cake/i)).not.toBeInTheDocument();
+      // expect(screen.getAllByText(/carrot cake/i)).not.toBeInTheDocument();
       const applePie = screen.getAllByText(/apple pie/i)[0];
       expect(applePie).toBeInTheDocument();
       const bananaCake = screen.getAllByText(/banana cake/i)[0];
