@@ -48,7 +48,13 @@ export function SignInView() {
   }, [router, username, password]);
 
   const handleGoogleSignIn = useCallback(async () => {
-    loginUserByGoogle();
+    const result = await getLoginUserDetails();
+    if (!result?.success) {
+      loginUserByGoogle();
+    } else {
+      setResult(true);
+      router.push('/');
+    }
   }, [router]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {

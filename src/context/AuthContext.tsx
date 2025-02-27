@@ -1,9 +1,10 @@
-import { ReactNode, createContext, useState, useContext } from 'react';
+import { ReactNode, createContext, useState, useContext, useEffect } from 'react';
 import {
   login,
   loginByGoogle,
   getLoginUserDetails as getUserDetails,
-  logout,
+  logoutUser,
+  refreshJwt,
 } from 'src/dao/authDao';
 
 import { User } from 'src/types/User';
@@ -19,6 +20,7 @@ interface AuthContextProps {
   getLoginUserDetails: () => Promise<loginResult>;
   loginUserByGoogle: () => void;
   logoutUser: () => void;
+  refreshJwt: () => void;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -68,11 +70,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     loginByGoogle();
   };
 
-  const logoutUser = () => {
-    logout();
-    setUser(null);
-  };
-
   const isAuthenticated = !!user;
 
   return (
@@ -84,6 +81,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         loginUserByGoogle,
         getLoginUserDetails,
         logoutUser,
+        refreshJwt,
       }}
     >
       {children}

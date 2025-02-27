@@ -1,6 +1,6 @@
 import type { Theme, SxProps, Breakpoint } from '@mui/material/styles';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
@@ -21,6 +21,7 @@ import { NotificationsPopover } from '../components/notifications-popover';
 import { useAuth } from 'src/context/AuthContext';
 import { NotificationsWebSocket } from '../components/notifications-websocket';
 
+const REFRESH_JWT_INTERVAL = 50000;
 export type DashboardLayoutProps = {
   sx?: SxProps<Theme>;
   children: React.ReactNode;
@@ -30,6 +31,15 @@ export type DashboardLayoutProps = {
 };
 
 export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) {
+  const { refreshJwt } = useAuth();
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      refreshJwt();
+    }, REFRESH_JWT_INTERVAL);
+
+    // Cleanup function to clear the interval when the component is unmounted
+    return () => clearInterval(intervalId);
+  }, []); // Empty dependency array ensures the effect runs once when the component mounts
   const theme = useTheme();
 
   const [useWebSocket, setUseWebSocket] = useState(false);
