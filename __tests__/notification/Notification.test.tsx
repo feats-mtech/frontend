@@ -33,9 +33,10 @@ describe('NotificationsPopover', () => {
         role: 1,
       },
       loginUser: jest.fn(),
-      logoutUser: jest.fn(),
-      loginUserByGoogle: jest.fn(),
       getLoginUserDetails: jest.fn(),
+      loginUserByGoogle: jest.fn(),
+      logoutUser: jest.fn(),
+      refreshJwt: jest.fn(),
     }));
 
     // Reset all mocks
