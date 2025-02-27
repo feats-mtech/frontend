@@ -188,8 +188,8 @@ export function RegisterView() {
               </InputAdornment>
             ),
           }}
-          error={!!passwordError}
-          helperText={passwordError || passwordStrength}
+          error={!!passwordStrength}
+          helperText={passwordStrength}
           value={password}
           onChange={handlePasswordChange}
           sx={{ mb: 3 }}
