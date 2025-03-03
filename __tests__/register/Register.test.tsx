@@ -76,6 +76,7 @@ describe('RegisterView', () => {
     const { registerButton } = setup();
     expect(registerButton).toHaveAttribute('disabled');
   });
+
   it('validates email format', async () => {
     const { emailInput, registerButton } = setup();
 
@@ -129,9 +130,7 @@ describe('RegisterView', () => {
     // Try to register
     await userEvent.click(registerButton);
 
-    // Look for helper text by helper-text ID
     await waitFor(() => {
-      screen.debug(); // 🔍 打印 UI 结构，看看 "Passwords do not match" 是否存在
       expect(screen.queryByText('Passwords do not match')).toBeInTheDocument();
     });
   });
