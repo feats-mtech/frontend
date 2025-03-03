@@ -39,8 +39,8 @@ describe('RegisterView', () => {
       username: 'testuser',
       displayName: 'Test User',
       email: 'test@example.com',
-      password: 'password123',
-      confirmPassword: 'password123',
+      password: 'Password123!',
+      confirmPassword: 'Password123!',
     };
 
     if (skipField !== 'username') {
@@ -76,6 +76,7 @@ describe('RegisterView', () => {
     const { registerButton } = setup();
     expect(registerButton).toHaveAttribute('disabled');
   });
+
   it('validates email format', async () => {
     const { emailInput, registerButton } = setup();
 
@@ -97,22 +98,22 @@ describe('RegisterView', () => {
     expect(emailInputElement).toHaveAttribute('aria-invalid', 'true');
   });
 
-  it('validates password length', async () => {
+  it('validates password complexity', async () => {
     const { passwordInput, registerButton } = setup();
 
     // Fill all fields
     await fillFormExcept('password');
 
-    // Input short password
-    await userEvent.type(passwordInput, 'short');
+    // Input weakpass password
+    await userEvent.type(passwordInput, 'weakpass');
 
     // Try to register
     await userEvent.click(registerButton);
 
     // Look for helper text by helper-text ID
     await waitFor(() => {
-      const helperTexts = screen.getAllByText('Password must be at least 7 characters long');
-      expect(helperTexts[0]).toBeInTheDocument();
+      const errors = screen.getAllByText(/password must include/i);
+      expect(errors.length).toBeGreaterThan(0);
     });
   });
 
@@ -123,16 +124,14 @@ describe('RegisterView', () => {
     await fillFormExcept();
     await userEvent.clear(passwordInput);
     await userEvent.clear(confirmPasswordInput);
-    await userEvent.type(passwordInput, 'password123');
+    await userEvent.type(passwordInput, 'Password123!');
     await userEvent.type(confirmPasswordInput, 'differentpass');
 
     // Try to register
     await userEvent.click(registerButton);
 
-    // Look for helper text by helper-text ID
     await waitFor(() => {
-      const helperTexts = screen.getAllByText('Passwords do not match');
-      expect(helperTexts[0]).toBeInTheDocument();
+      expect(screen.queryByText('Passwords do not match')).toBeInTheDocument();
     });
   });
 
@@ -153,15 +152,17 @@ describe('RegisterView', () => {
     await userEvent.type(usernameInput, 'testuser');
     await userEvent.type(displayNameInput, 'Test User');
     await userEvent.type(emailInput, 'test@example.com');
-    await userEvent.type(passwordInput, 'password123');
-    await userEvent.type(confirmPasswordInput, 'password123');
+    await userEvent.type(passwordInput, 'Password123!');
+    await userEvent.type(confirmPasswordInput, 'Password123!');
 
     // Submit the form
     fireEvent.click(registerButton);
 
     // Verify success message and navigation
-    await waitFor(() => {
-      expect(screen.getByText(/Your account has been successfully created!/i)).toBeInTheDocument();
+    await waitFor(async () => {
+      expect(
+        await screen.findByText(/Your account has been successfully created!/i),
+      ).toBeInTheDocument();
     });
   });
 
@@ -182,8 +183,8 @@ describe('RegisterView', () => {
     await userEvent.type(usernameInput, 'testuser');
     await userEvent.type(displayNameInput, 'Test User');
     await userEvent.type(emailInput, 'test@example.com');
-    await userEvent.type(passwordInput, 'password123');
-    await userEvent.type(confirmPasswordInput, 'password123');
+    await userEvent.type(passwordInput, 'Password123!');
+    await userEvent.type(confirmPasswordInput, 'Password123!');
 
     // Submit the form
     fireEvent.click(registerButton);
