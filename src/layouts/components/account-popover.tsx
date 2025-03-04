@@ -51,6 +51,8 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
 
   const handleLogout = useCallback(() => {
     handleClosePopover();
+    localStorage.removeItem('jwtToken');
+    localStorage.removeItem('userId');
     logoutUser();
     router.push('/sign-in');
   }, [logoutUser, handleClosePopover, router]);
