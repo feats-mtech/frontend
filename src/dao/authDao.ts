@@ -1,5 +1,5 @@
 import axios, { HttpStatusCode } from 'axios';
-import axiosInstance from './webCallUtils';
+import axiosInstance, { checkStatus } from './webCallUtils';
 
 const backendAddress =
   window.RUNTIME_CONFIG?.VITE_BACKEND_AUTHENTICATE_URL ||
@@ -16,18 +16,39 @@ const backendUrl =
 
 export const login = async (username: string, password: string) => {
   try {
-    const result = await axios
-      .post(`${backendUrl}/authenticate/login`, {
-        name: username,
-        password,
-      })
+    const resultNonce = await axios
+      .get(`${backendUrl}/public/assignNonce`)
       .then((response) => response);
 
-    localStorage.setItem('jwtToken', result?.data?.jwt);
+    if (checkStatus(resultNonce.status)) {
+      const nonceToken = resultNonce?.data;
+
+      const result = await axios
+        .post(
+          `${backendUrl}/authenticate/login`,
+          {
+            name: username,
+            password,
+          },
+          {
+            headers: {
+              Nonce: nonceToken,
+            },
+          },
+        )
+        .then((response) => response);
+
+      localStorage.setItem('jwtToken', result?.data?.jwt);
+      return {
+        success: result.status === HttpStatusCode.Ok,
+        data: result.data.user,
+        statusCode: result.status,
+      };
+    }
     return {
-      success: result.status === HttpStatusCode.Ok,
-      data: result.data.user,
-      statusCode: result.status,
+      success: false,
+      data: null,
+      statusCode: HttpStatusCode.InternalServerError,
     };
   } catch (error) {
     return { success: false, error: error.message, statusCode: error.status };
