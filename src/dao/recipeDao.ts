@@ -106,9 +106,7 @@ export const getAllRecipeByCreatorId = async (creatorId: number): Promise<Recipe
 
 export const deleteRecipeById = async (recipeId: number) => {
   try {
-    const result = await axiosInstance
-      .delete(`${backendUrl}/recipe/${recipeId}`)
-      .then((response) => response);
+    const result = await axiosInstance.delete(`${backendUrl}/recipe/${recipeId}`);
     return { success: checkStatus(result.status), data: result.data };
   } catch (error) {
     return { success: false, error: error.message };
@@ -119,42 +117,38 @@ export const updateRecipeToDb = async (recipe: Recipe) => {
   try {
     var result;
     if (recipe.id === -1) {
-      result = await axiosInstance
-        .post(`${backendUrl}/recipe`, {
-          creatorId: recipe.creatorId,
-          name: recipe.name,
-          image: recipe.image,
-          description: recipe.description,
-          cookingTimeInMin: recipe.cookingTimeInMin,
-          difficultyLevel: recipe.difficultyLevel,
-          rating: recipe.rating,
-          status: recipe.status,
-          createDatetime: recipe.createDatetime,
-          updateDatetime: recipe.updateDatetime,
-          ingredients: recipe.ingredients,
-          cookingSteps: recipe.cookingSteps,
-          cuisine: recipe.cuisine,
-        })
-        .then((response) => response);
+      result = await axiosInstance.post(`${backendUrl}/recipe`, {
+        creatorId: recipe.creatorId,
+        name: recipe.name,
+        image: recipe.image,
+        description: recipe.description,
+        cookingTimeInMin: recipe.cookingTimeInMin,
+        difficultyLevel: recipe.difficultyLevel,
+        rating: recipe.rating,
+        status: recipe.status,
+        createDatetime: recipe.createDatetime,
+        updateDatetime: recipe.updateDatetime,
+        ingredients: recipe.ingredients,
+        cookingSteps: recipe.cookingSteps,
+        cuisine: recipe.cuisine,
+      });
     } else {
-      result = await axiosInstance
-        .put(`${backendUrl}/recipe/${recipe.id}`, {
-          id: recipe.id,
-          creatorId: recipe.creatorId,
-          name: recipe.name,
-          image: recipe.image,
-          description: recipe.description,
-          cookingTimeInMin: recipe.cookingTimeInMin,
-          difficultyLevel: recipe.difficultyLevel,
-          rating: recipe.rating,
-          status: recipe.status,
-          createDatetime: recipe.createDatetime,
-          updateDatetime: recipe.updateDatetime,
-          ingredients: recipe.ingredients,
-          cookingSteps: recipe.cookingSteps,
-          cuisine: recipe.cuisine,
-        })
-        .then((response) => response);
+      result = await axiosInstance.put(`${backendUrl}/recipe/${recipe.id}`, {
+        id: recipe.id,
+        creatorId: recipe.creatorId,
+        name: recipe.name,
+        image: recipe.image,
+        description: recipe.description,
+        cookingTimeInMin: recipe.cookingTimeInMin,
+        difficultyLevel: recipe.difficultyLevel,
+        rating: recipe.rating,
+        status: recipe.status,
+        createDatetime: recipe.createDatetime,
+        updateDatetime: recipe.updateDatetime,
+        ingredients: recipe.ingredients,
+        cookingSteps: recipe.cookingSteps,
+        cuisine: recipe.cuisine,
+      });
     }
 
     return { success: checkStatus(result.status), data: result.data };
@@ -166,9 +160,9 @@ export const updateRecipeToDb = async (recipe: Recipe) => {
 export const getRecommendedRecipeByCreatorId = async (creatorId: number): Promise<Recipe[]> => {
   try {
     const recipesList: Recipe[] = [];
-    const result = await axiosInstance
-      .get(`${backendUrl}/recipe/recommend?isByRating=false&isDesc=true&userId=${creatorId}`)
-      .then((response) => response);
+    const result = await axiosInstance.get(
+      `${backendUrl}/recipe/recommend?isByRating=false&isDesc=true&userId=${creatorId}`,
+    );
     if (checkStatus(result.status)) {
       result.data.map((item: RecipeProps) => {
         const temp: Recipe = {

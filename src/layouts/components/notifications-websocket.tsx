@@ -23,8 +23,8 @@ const NotificationsWebSocket = (props: NotificationsWebSocketProps) => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [websocketReply, setWebsocketReply] = useState<any>(null);
-
   const [webSocketService, setWebSocketService] = useState<notificationWebSocketDao | null>(null);
+
   useEffect(() => {
     if (!enabled) {
       return;
@@ -36,6 +36,7 @@ const NotificationsWebSocket = (props: NotificationsWebSocketProps) => {
       connectWebSocket();
     }
   }, []);
+
   const connectWebSocket = () => {
     if (!enabled) {
       return;
@@ -46,6 +47,7 @@ const NotificationsWebSocket = (props: NotificationsWebSocketProps) => {
       service.connect(user.id);
     }
   };
+
   useEffect(() => {
     if (websocketReply == null) {
       return;

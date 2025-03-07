@@ -23,20 +23,18 @@ export const login = async (username: string, password: string) => {
     if (checkStatus(resultNonce.status)) {
       const nonceToken = resultNonce?.data;
 
-      const result = await axios
-        .post(
-          `${backendUrl}/authenticate/login`,
-          {
-            name: username,
-            password,
+      const result = await axios.post(
+        `${backendUrl}/authenticate/login`,
+        {
+          name: username,
+          password,
+        },
+        {
+          headers: {
+            Nonce: nonceToken,
           },
-          {
-            headers: {
-              Nonce: nonceToken,
-            },
-          },
-        )
-        .then((response) => response);
+        },
+      );
 
       localStorage.setItem('jwtToken', result?.data?.jwt);
       return {
@@ -54,15 +52,18 @@ export const login = async (username: string, password: string) => {
     return { success: false, error: error.message, statusCode: error.status };
   }
 };
+
 export const loginByGoogle = async () => {
   window.location.href = `${backendUrl}/oauth2/authorization/google`;
 };
+
 export const refreshJwt = async () => {
   const result = await axiosInstance.get(`${backendUrl}/authenticate/refreshJwt`, {
     withCredentials: true,
   });
   localStorage.setItem('jwtToken', result?.data?.jwt);
 };
+
 export const getLoginUserDetails = async () => {
   try {
     const result = await axios
@@ -79,6 +80,7 @@ export const getLoginUserDetails = async () => {
     return { success: false, error: error.message, statusCode: error.status };
   }
 };
+
 export const logoutUser = async () => {
   //for oauth2 logout
   window.location.href = `${backendUrl}/logout`;

@@ -18,16 +18,14 @@ const backendUrl =
 export const registerUser = async (userFormDetails: UserFormDetails) => {
   try {
     const { username, password, displayName, email } = userFormDetails;
-    const result = await axiosInstance
-      .post(`${backendUrl}/user/add`, {
-        name: username,
-        password,
-        displayName,
-        email,
-        status: 2, // active
-        role: 2, // user
-      })
-      .then((response) => response);
+    const result = await axiosInstance.post(`${backendUrl}/user/add`, {
+      name: username,
+      password,
+      displayName,
+      email,
+      status: 2, // active
+      role: 2, // user
+    });
     return { success: result.status === HttpStatusCode.Ok, data: result.data };
   } catch (error) {
     return { success: false, error: error.message };
@@ -36,9 +34,7 @@ export const registerUser = async (userFormDetails: UserFormDetails) => {
 
 export const getAllUsers = async () => {
   try {
-    const result = await axiosInstance
-      .get(`${backendUrl}/user/getAll`)
-      .then((response) => response);
+    const result = await axiosInstance.get(`${backendUrl}/user/getAll`);
     return result.status ? result.data : [];
   } catch (error) {
     return { success: false, error: error.message };
@@ -47,9 +43,7 @@ export const getAllUsers = async () => {
 
 export const banUser = async (userId: number) => {
   try {
-    const result = await axiosInstance
-      .put(`${backendUrl}/user/${userId}/ban`)
-      .then((response) => response);
+    const result = await axiosInstance.put(`${backendUrl}/user/${userId}/ban`);
     return result.status ? result.data : [];
   } catch (error) {
     return { success: false, error: error.message };
@@ -58,9 +52,7 @@ export const banUser = async (userId: number) => {
 
 export const unbanUser = async (userId: number) => {
   try {
-    const result = await axiosInstance
-      .put(`${backendUrl}/user/${userId}/unban`)
-      .then((response) => response);
+    const result = await axiosInstance.put(`${backendUrl}/user/${userId}/unban`);
     return result.status ? result.data : [];
   } catch (error) {
     return { success: false, error: error.message };

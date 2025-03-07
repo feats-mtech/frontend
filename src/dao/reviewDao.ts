@@ -15,9 +15,10 @@ const backendUrl =
 
 export const submitReviews = async (reviewItem: RecipeReview) => {
   try {
-    const result = await axiosInstance
-      .post(`${backendUrl}/recipe/${reviewItem.recipeId}/reviews`, reviewItem)
-      .then((response) => response);
+    const result = await axiosInstance.post(
+      `${backendUrl}/recipe/${reviewItem.recipeId}/reviews`,
+      reviewItem,
+    );
 
     if (checkStatus(result.status)) {
       return true;
