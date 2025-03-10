@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useState, useContext, useEffect } from 'react';
+import { ReactNode, createContext, useState, useContext } from 'react';
 import {
   login,
   loginByGoogle,

@@ -127,7 +127,7 @@ export const RecipeDetails = (props: RecipeDetailsProps) => {
               disableClearable
               value={recipe ? recipe.cuisine : ''}
               options={cuisineTypeOptions}
-              onChange={(event, value, reason, details) => setCuisine(value)}
+              onChange={(event, value) => setCuisine(value)}
               renderInput={(params) => <TextField {...params} label="Cuisine" />}
             />
 

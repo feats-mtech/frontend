@@ -157,7 +157,7 @@ export function InventoryCreateView() {
         openDialog={openDialog}
         handleCloseDialog={handleCloseDialog}
         ingredient={ingredientDetails}
-        onError={(message) => {
+        onError={() => {
           setSnackbar({
             open: true,
             severity: 'error',

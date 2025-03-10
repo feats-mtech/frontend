@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from 'src/context/AuthContext';
 
 import { Notification } from 'src/types/Notification';
@@ -7,7 +7,7 @@ import notificationWebSocketDao from 'src/dao/notificationWebSocket';
 
 import { NotificationsDisplay } from './notifications-display';
 import {
-  markAsRead,
+  // markAsRead,
   markAllAsRead,
   getNotifications,
   getUnreadCount,
@@ -116,9 +116,8 @@ const NotificationsWebSocket = (props: NotificationsWebSocketProps) => {
     }
     if (!user) return;
     try {
-      const result = await markAsRead(notificationId, user.id);
+      // const result = await markAsRead(notificationId, user.id);
       //dont need to update, the above function should call backend and update the notification, which will then trigger a websocket message to me...
-
       //   if (result.success && webSocketService) {
       //     webSocketService.sendMarkAsReadMessage(notificationId);
       //   }
