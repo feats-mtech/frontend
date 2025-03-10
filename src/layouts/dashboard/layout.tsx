@@ -41,8 +41,7 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
     return () => clearInterval(intervalId);
   }, []); // Empty dependency array ensures the effect runs once when the component mounts
   const theme = useTheme();
-
-  const [useWebSocket, setUseWebSocket] = useState(false);
+  const useWebSocket = false;
   const [navOpen, setNavOpen] = useState(false);
   const { user } = useAuth();
 

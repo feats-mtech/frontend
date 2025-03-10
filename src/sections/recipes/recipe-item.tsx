@@ -156,7 +156,7 @@ export function RecipeItem({ recipe }: { recipe: RecipeItemProps }) {
                 cornerRadius: 1,
               }}
               cornerRadius="50%"
-              sx={(theme) => ({
+              sx={() => ({
                 [`& .${gaugeClasses.valueText}`]: {
                   fontSize: 10,
                 },
