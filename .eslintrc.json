@@ -52,6 +52,7 @@
     "react/display-name": 0,
     "jsx-a11y/no-autofocus": 0,
     "no-undef": 0,
+    "react/no-danger": "error",
     "@typescript-eslint/no-unused-vars": [
       "warn",
       {
