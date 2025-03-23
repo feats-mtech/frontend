@@ -121,7 +121,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           echo "Cloning repository..."
-          git clone https://x-access-token:${{ secrets.TARGET_REPO_TOKEN }}@github.com/feats/deployment.git
+          git clone https://x-access-token:${{ secrets.TARGET_REPO_TOKEN }}@github.com/feats-mtech/deployment.git
           echo "Cloned repository, checking structure:"
           ls -la deployment
 
