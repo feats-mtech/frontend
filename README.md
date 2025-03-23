@@ -1,4 +1,8 @@
-# Frontend (Practice Module)
+# fEATs frontend
+
+fEATs is a platform for tracking your ingredients and their expiry dates. You can also add, publish and share your recipes with other people.
+
+This repository hosts the frontend code of fEATs. The frontend is implemented in ReactJS.
 
 ### Getting Started
 

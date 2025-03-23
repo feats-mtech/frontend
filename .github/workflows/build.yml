@@ -121,7 +121,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           echo "Cloning repository..."
-          git clone https://x-access-token:${{ secrets.TARGET_REPO_TOKEN }}@github.com/sus-practice-module/deployment.git
+          git clone https://x-access-token:${{ secrets.TARGET_REPO_TOKEN }}@github.com/feats/deployment.git
           echo "Cloned repository, checking structure:"
           ls -la deployment
 
@@ -140,7 +140,7 @@ jobs:
         run: |
           cd deployment
           echo "Current directory: $(pwd)"
-          git config --global user.email "pinardy.yang@gmail.com"
+          git config --global user.email "feats@gmail.com"
           git config --global user.name "GitHub Action"
           git add k8s/test/frontend-test.yml
           git commit -m "[frontend-test] update image version to ${{ env.IMAGE_VERSION }}"
@@ -154,6 +154,6 @@ jobs:
           SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
         with:
           source-directory: './deployment'
-          destination-github-username: 'sus-practice-module'
+          destination-github-username: 'feats'
           destination-repository-name: 'deployment'
-          user-email: pinardy.yang@gmail.com
+          user-email: feats@gmail.com
