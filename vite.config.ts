@@ -3,6 +3,7 @@ import checker from 'vite-plugin-checker';
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import fs from 'fs';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 export default ({ mode }: { mode: string }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
@@ -21,6 +22,9 @@ export default ({ mode }: { mode: string }) => {
 
   return defineConfig({
     base: './',
+    build: {
+      sourcemap: true,
+    },
     envDir: `./env/${envPrefix}`,
     assetsInclude: ['**/*.svg', '**/*.webp'],
     plugins: [
@@ -35,6 +39,11 @@ export default ({ mode }: { mode: string }) => {
           position: 'tl',
           initialIsOpen: false,
         },
+      }),
+      visualizer({
+        open: true, // open the report in your browser automatically
+        filename: 'stats.html', // output file inside dist
+        template: 'treemap', // 'treemap' | 'sunburst' | 'network'
       }),
     ],
     resolve: {
