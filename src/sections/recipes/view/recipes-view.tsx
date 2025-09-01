@@ -1,11 +1,11 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
+import { lazy, Suspense, useState, useCallback, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 
-import { RecipeItem } from '../recipe-item';
 import { RecipeSort } from '../recipe-sort';
 import { RecipeFilters } from '../recipe-filters';
 import type { FiltersProps } from '../recipe-filters';
@@ -25,6 +25,23 @@ import { Recipe } from 'src/types/Recipe';
 import { Iconify } from 'src/components/iconify';
 
 import { getAllPublishedRecipe } from 'src/dao/recipeDao';
+
+const LazyRecipeItem = lazy(() =>
+  import('../recipe-item').then((mod) => ({ default: mod.RecipeItem })),
+);
+
+const RecipeItemInView = ({ recipe }: { recipe: Recipe }) => {
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
+  return (
+    <div ref={ref} style={{ minHeight: 200 }}>
+      {inView ? (
+        <Suspense fallback={<div>Loading...</div>}>
+          <LazyRecipeItem recipe={recipe} />
+        </Suspense>
+      ) : null}
+    </div>
+  );
+};
 
 export function RecipesView() {
   const router = useRouter();
@@ -170,7 +187,7 @@ export function RecipesView() {
         <Grid container spacing={3}>
           {displayRecipes.map((recipe: Recipe) => (
             <Grid item key={recipe.id} xs={12} sm={8} md={4} padding={1}>
-              <RecipeItem recipe={recipe} />
+              <RecipeItemInView recipe={recipe} />
             </Grid>
           ))}
         </Grid>
