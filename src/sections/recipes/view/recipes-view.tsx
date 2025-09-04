@@ -48,9 +48,7 @@ export function RecipesView() {
   const [allRecipes, setAllRecipe] = useState<Recipe[]>([]);
   const [displayRecipes, setDisplayRecipes] = useState<Recipe[]>([]);
   const [sortBy, setSortBy] = useState('Newest');
-
   const [openFilter, setOpenFilter] = useState(false);
-
   const [filters, setFilters] = useState<FiltersProps>(DEFAULT_FILTERS);
 
   useEffect(() => {
@@ -80,9 +78,8 @@ export function RecipesView() {
 
   const setRecipe = (recipeList: Recipe[]) => setAllRecipe(recipeList);
 
-  //used to handle change in filters, any additional logic to the filter need to be done...
+  // handle change in filters, any additional logic to the filter need to be done...
   useEffect(() => {
-    //need to ensure the filter options is maintained,
     const categories = filters.categories;
 
     if (categories.length === 0) {
@@ -95,7 +92,7 @@ export function RecipesView() {
     }
   }, [filters]);
 
-  //react to changes in recipes, filters, sortBy to update displayRecipes
+  // react to changes in recipes, filters, sortBy to update displayRecipes
   useEffect(() => {
     const filteredRecipes = allRecipes.filter(
       (recipe) =>
