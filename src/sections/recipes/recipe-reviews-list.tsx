@@ -55,7 +55,7 @@ export const RecipeReviewsList = (props: RecipeReviewsListProps) => {
       ) : (
         <Grid container padding={2}>
           {recipeReviews?.map((review: RecipeReview, index) => (
-            <Grid key={review.id} xs={12} paddingBottom={2}>
+            <Grid key={review.id} item xs={12} paddingBottom={2}>
               <Grid container spacing={1}>
                 <Grid item xs={9}>
                   {/* TODO : need to pull the creator name instead */}
@@ -63,7 +63,7 @@ export const RecipeReviewsList = (props: RecipeReviewsListProps) => {
                         {review.creatorId + ''}
                       </Typography> */}
                 </Grid>
-                <Grid xs={2}>
+                <Grid item xs={2}>
                   <Rating
                     disabled={!creation}
                     name="Difficulty Label"
@@ -73,10 +73,10 @@ export const RecipeReviewsList = (props: RecipeReviewsListProps) => {
                     }}
                   />
                 </Grid>
-                <Grid xs={2}>
+                <Grid item xs={2}>
                   <Typography variant="body2">{fDateTime(review.updateDatetime)}</Typography>
                 </Grid>
-                <Grid xs={10}>
+                <Grid item xs={10}>
                   <TextField
                     fullWidth={true}
                     id="outlined-textarea"

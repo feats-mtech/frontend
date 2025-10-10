@@ -53,10 +53,8 @@ export function generateDefaultRecipe(): Recipe {
     rating: 0,
     status: 1,
     draftRecipe: null,
-
     createDatetime: new Date(),
     updateDatetime: new Date(),
-
     cookingSteps: [],
     ingredients: [],
     reviews: [],
@@ -76,23 +74,22 @@ export function RecipesDetailView() {
     useState<boolean>(false);
 
   const { inputRecipeId } = useParams();
-  //values for generating the form.
   const [recipe, setRecipe] = useState<Recipe>(generateDefaultRecipe());
   const [recipeIngredients, setRecipeIngredients] = useState<RecipeIngredient[]>([]);
   const [recipeCookingSteps, setRecipeCookingSteps] = useState<RecipeCookingStep[]>([]);
   const [recipeReviews, setRecipeReviews] = useState<RecipeReview[]>([]);
+  const [originalRecipe, setOriginalRecipe] = useState<Recipe>(generateDefaultRecipe());
 
-  const [orginialRecipe, setOrginialRecipe] = useState<Recipe>(generateDefaultRecipe());
   useEffect(() => {
-    //constructor
     //recipeId = new, then it is a new recipe
     // = number and can get recipe from backend == display in form..read only
     // = number and cant get recipe just error the whole page...
     getRecipeFromServer();
   }, []);
+
   useEffect(() => {
     loadFromOrginalRecipe();
-  }, [orginialRecipe]);
+  }, [originalRecipe]);
 
   useEffect(() => {
     if (creation) {
@@ -111,16 +108,16 @@ export function RecipesDetailView() {
   };
 
   const loadFromOrginalRecipe = () => {
-    if (orginialRecipe.draftRecipe == null || !ownerMode) {
-      setRecipe(orginialRecipe);
-      setRecipeCookingSteps(orginialRecipe.cookingSteps || []);
-      setRecipeIngredients(orginialRecipe.ingredients || []);
-      setRecipeReviews(orginialRecipe.reviews || []);
+    if (originalRecipe.draftRecipe == null || !ownerMode) {
+      setRecipe(originalRecipe);
+      setRecipeCookingSteps(originalRecipe.cookingSteps || []);
+      setRecipeIngredients(originalRecipe.ingredients || []);
+      setRecipeReviews(originalRecipe.reviews || []);
     } else {
-      setRecipe(orginialRecipe.draftRecipe);
-      setRecipeCookingSteps(orginialRecipe.draftRecipe.cookingSteps || []);
-      setRecipeIngredients(orginialRecipe.draftRecipe.ingredients || []);
-      setRecipeReviews(orginialRecipe.draftRecipe.reviews || []);
+      setRecipe(originalRecipe.draftRecipe);
+      setRecipeCookingSteps(originalRecipe.draftRecipe.cookingSteps || []);
+      setRecipeIngredients(originalRecipe.draftRecipe.ingredients || []);
+      setRecipeReviews(originalRecipe.draftRecipe.reviews || []);
     }
   };
 
@@ -135,12 +132,12 @@ export function RecipesDetailView() {
         cookingSteps: [...[], generateDefaultCookingStep()],
         ingredients: [...[], generateDefaultIngredient()],
       };
-      setOrginialRecipe(...[], combineItem);
+      setOriginalRecipe(...[], combineItem);
       setCreation(true);
       return;
     } else if (!isNaN(+recipeId)) {
       const recipesDetails = await getRecipeById(+recipeId);
-      setOrginialRecipe(recipesDetails ? recipesDetails : generateDefaultRecipe());
+      setOriginalRecipe(recipesDetails ? recipesDetails : generateDefaultRecipe());
 
       setOwnerMode(user ? user.id === recipesDetails?.creatorId : false);
       return;
@@ -200,11 +197,6 @@ export function RecipesDetailView() {
     setIsUpdatedSuccess(false);
     setIsUpdatedFailure(false);
   };
-
-  // const executeRecipe = () => {
-  //   saveRecipe();
-  //   setIsUpdatedSuccess(true);
-  // };
 
   const handleNavigateToMyRecipe = useCallback(() => {
     router.push('/my-recipes');
@@ -291,38 +283,6 @@ export function RecipesDetailView() {
           </Button>
         </DialogActions>
       </Dialog>
-      {/* <Typography variant="body2">recipe ID :{recipe.id}</Typography>
-      <Typography variant="body2">recipe name :{recipe.name}</Typography>
-      <Typography variant="body2">recipe difficultyLevel :{recipe.difficultyLevel}</Typography>
-      <Typography variant="body2">recipe cuisine :{recipe.cuisine}</Typography>
-      <Typography variant="body2">recipe description :{recipe.description}</Typography>
-      ==================
-      {recipeIngredients?.map((ingredient: RecipeIngredient) => (
-        <div>
-          <Typography variant="body2" sx={{ mb: 2 }}></Typography>
-
-          <Typography variant="body2">ingredient name :{ingredient.name}</Typography>
-          <Typography variant="body2">ingredient quantity :{ingredient.quantity}</Typography>
-          <Typography variant="body2">ingredient uom :{ingredient.uom}</Typography>
-        </div>
-      ))}
-      ==================
-      {recipeCookingSteps?.map((step: RecipeCookingStep) => (
-        <div>
-          <Typography variant="body2" sx={{ mb: 2 }}></Typography>
-
-          <Typography variant="body2">step description :{step.description}</Typography>
-        </div>
-      ))}
-      ==================
-      {recipeReviews?.map((review: RecipeReview) => (
-        <div>
-          <Typography variant="body2" sx={{ mb: 2 }}></Typography>
-
-          <Typography variant="body2">review comments :{review.comments}</Typography>
-        </div>
-      ))}
-      <Pagination count={10} color="primary" sx={{ mt: 8, mx: 'auto' }} /> */}
     </DashboardContent>
   );
 }

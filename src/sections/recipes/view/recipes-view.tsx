@@ -1,11 +1,11 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
+import { lazy, Suspense, useState, useCallback, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 
-import { RecipeItem } from '../recipe-item';
 import { RecipeSort } from '../recipe-sort';
 import { RecipeFilters } from '../recipe-filters';
 import type { FiltersProps } from '../recipe-filters';
@@ -26,14 +26,29 @@ import { Iconify } from 'src/components/iconify';
 
 import { getAllPublishedRecipe } from 'src/dao/recipeDao';
 
+const LazyRecipeItem = lazy(() =>
+  import('../recipe-item').then((mod) => ({ default: mod.RecipeItem })),
+);
+
+const RecipeItemInView = ({ recipe }: { recipe: Recipe }) => {
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
+  return (
+    <div ref={ref} style={{ minHeight: 200 }}>
+      {inView ? (
+        <Suspense fallback={<div>Loading...</div>}>
+          <LazyRecipeItem recipe={recipe} />
+        </Suspense>
+      ) : null}
+    </div>
+  );
+};
+
 export function RecipesView() {
   const router = useRouter();
   const [allRecipes, setAllRecipe] = useState<Recipe[]>([]);
   const [displayRecipes, setDisplayRecipes] = useState<Recipe[]>([]);
   const [sortBy, setSortBy] = useState('Newest');
-
   const [openFilter, setOpenFilter] = useState(false);
-
   const [filters, setFilters] = useState<FiltersProps>(DEFAULT_FILTERS);
 
   useEffect(() => {
@@ -63,9 +78,8 @@ export function RecipesView() {
 
   const setRecipe = (recipeList: Recipe[]) => setAllRecipe(recipeList);
 
-  //used to handle change in filters, any additional logic to the filter need to be done...
+  // handle change in filters, any additional logic to the filter need to be done...
   useEffect(() => {
-    //need to ensure the filter options is maintained,
     const categories = filters.categories;
 
     if (categories.length === 0) {
@@ -78,7 +92,7 @@ export function RecipesView() {
     }
   }, [filters]);
 
-  //react to changes in recipes, filters, sortBy to update displayRecipes
+  // react to changes in recipes, filters, sortBy to update displayRecipes
   useEffect(() => {
     const filteredRecipes = allRecipes.filter(
       (recipe) =>
@@ -170,7 +184,7 @@ export function RecipesView() {
         <Grid container spacing={3}>
           {displayRecipes.map((recipe: Recipe) => (
             <Grid item key={recipe.id} xs={12} sm={8} md={4} padding={1}>
-              <RecipeItem recipe={recipe} />
+              <RecipeItemInView recipe={recipe} />
             </Grid>
           ))}
         </Grid>
